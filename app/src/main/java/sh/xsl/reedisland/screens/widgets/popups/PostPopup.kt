@@ -615,7 +615,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                 message(R.string.acknowledge_post_rules)
                 positiveButton(R.string.submit) {
                     applicationDataStore.acknowledgementPostingRule()
-                    openLinksWithOtherApps(DawnConstants.ADNMBHost + "/forum", caller)
+                    openLinksWithOtherApps(DawnConstants.ADNMBHost, caller)
                 }
                 negativeButton(R.string.cancel)
             }
