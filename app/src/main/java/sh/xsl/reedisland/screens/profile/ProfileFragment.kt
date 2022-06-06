@@ -291,7 +291,6 @@ class ProfileFragment : DaggerFragment() {
                 negativeButton(R.string.cancel) {
                     dismiss()
                 }
-                getActionButton(WhichButton.NEUTRAL).updateTextColor(Color.RED)
             }
         }
 
@@ -342,7 +341,6 @@ class ProfileFragment : DaggerFragment() {
                 negativeButton(R.string.cancel) {
                     dismiss()
                 }
-                getActionButton(WhichButton.NEUTRAL).updateTextColor(Color.RED)
             }
         } catch (e: Exception) {
             toast("没有读取到有效饼干。请检查图片有效性。如果确认图片为合理饼干，请通过软件反馈联系作者并附上$cookieJson")

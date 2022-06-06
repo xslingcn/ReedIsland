@@ -145,14 +145,22 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         return APIDataResponse.create(service.getNMBQuote(id, if (userhash!=null) reedSession.plus(";$userhash") else reedSession), NMBJsonParser.QuoteParser())
     }
 
-    suspend fun addFeed(uuid: String, tid: String): APIMessageResponse {
+    suspend fun addFeed(
+        tid: String,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIMessageResponse {
         Timber.i("Adding Feed $tid...")
-        return APIMessageResponse.create(service.addNMBFeed(uuid, tid))
+        return APIMessageResponse.create(service.addNMBFeed(tid, if (userhash!=null) reedSession.plus(";$userhash") else reedSession))
     }
 
-    suspend fun delFeed(uuid: String, tid: String): APIMessageResponse {
+    suspend fun delFeed(
+        tid: String,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIMessageResponse {
         Timber.i("Deleting Feed $tid...")
-        return APIMessageResponse.create(service.delNMBFeed(uuid, tid))
+        return APIMessageResponse.create(service.delNMBFeed(tid, if (userhash!=null) reedSession.plus(";$userhash") else reedSession))
     }
 
     // Note: userhash should be already converted to header style beforehand

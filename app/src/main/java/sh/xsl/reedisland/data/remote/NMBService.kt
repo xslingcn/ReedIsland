@@ -66,16 +66,16 @@ interface NMBService {
     fun getNMBPosts(@Query("id") fid: String, @Query("page") page: Int, @Header("Cookie") cookie: String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
-    @GET("api/v1/feed?page=1")
+    @GET("api/v1/feed")
     fun getNMBFeeds(@Query("page") page: Int, @Header("Cookie") cookie:String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/addFeed")
-    fun addNMBFeed(@Query("uuid") uuid: String, @Query("tid") tid: String): Call<ResponseBody>
+    fun addNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie:String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/delFeed")
-    fun delNMBFeed(@Query("uuid") uuid: String, @Query("tid") tid: String): Call<ResponseBody>
+    fun delNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie:String): Call<ResponseBody>
 
 //    @Headers("Domain-Name: nmb")
 //    @GET("api/v1/showf")
