@@ -85,16 +85,7 @@ class FeedRepository @Inject constructor(
                 DataResource.create(webService.getFeeds(page))
             if (response.status == LoadingStatus.SUCCESS) {
                 emit(DataResource.create<List<FeedAndPost>>(convertFeedData(response.data!!, page), emptyList()))
-            } else if(JSONObject(response.message).optInt("errcode")==1012){
-                emit(
-                    DataResource.create<List<FeedAndPost>>(
-                        LoadingStatus.ERROR,
-                        emptyList(),
-                        "没有饼干，无法读取订阅..."
-                    )
-                )
-            }
-            else {
+            } else {
                 emit(
                     DataResource.create<List<FeedAndPost>>(
                         response.status,
