@@ -295,8 +295,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     waitForPositiveButton = true
                 ) { _, index, _ ->
                     val uri = when (index) {
-//                        0 -> Uri.parse(DawnConstants.DOWNLOAD_ADNMB)
-                        0 -> Uri.parse(release.downloadUrl)
+                        0 -> Uri.parse(DawnConstants.DOWNLOAD_APP_CENTER)
+                        1 -> Uri.parse(release.downloadUrl)
 //                        2 -> Uri.parse(DawnConstants.DOWNLOAD_GOOGLE_PLAY)
                         else -> Uri.parse("https://github.com/xslingcn/ReedIsland")
                     }

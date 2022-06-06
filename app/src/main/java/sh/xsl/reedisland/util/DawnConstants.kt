@@ -73,6 +73,7 @@ object DawnConstants {
     const val DOWNLOAD_ADNMB = "https://app.adnmb.com"
     const val DOWNLOAD_GITHUB = "https://github.com/fishballzzz/DawnIslandK/releases/latest"
     const val DOWNLOAD_GOOGLE_PLAY = "https://play.google.com/store/apps/details?id=sh.xsl.reedisland"
+    const val DOWNLOAD_APP_CENTER = "https://install.appcenter.ms/users/xsling/apps/reedisland/distribution_groups/reedisland"
 
     const val USER_AGENT = "User-Agent: REED-DAWN-${sh.xsl.reedisland.BuildConfig.VERSION_NAME}"
 }

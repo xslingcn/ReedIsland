@@ -299,6 +299,7 @@
 
     <string-array name="download_options">
 <!--        <item>芦苇岛(下载前请检查版本)</item>-->
+        <item>Microsoft</item>
         <item>Github</item>
 <!--        <item>Google Play</item>-->
     </string-array>
