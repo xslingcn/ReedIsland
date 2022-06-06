@@ -1,34 +1,33 @@
 {
   "project_info": {
-    "project_number": "351466802425",
-    "firebase_url": "https://dawnislandk.firebaseio.com",
-    "project_id": "dawnislandk",
-    "storage_bucket": "dawnislandk.appspot.com"
+    "project_number": "875452445286",
+    "project_id": "reedisland-1d85d",
+    "storage_bucket": "reedisland-1d85d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:351466802425:android:2ab956538288afb34a6628",
+        "mobilesdk_app_id": "1:875452445286:android:4cf4924b0f37dc0c0933a7",
         "android_client_info": {
-          "package_name": "com.laotoua.dawnislandk"
+          "package_name": "sh.xsl.reedisland"
         }
       },
       "oauth_client": [
         {
-          "client_id": "351466802425-g8eacf60kl6f528k9o4aqo1u5om7o8sa.apps.googleusercontent.com",
+          "client_id": "875452445286-s9c7o7fmlnuq4etcg65rkmjhg1gs8mdb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDwTmoJ1Qh_6ocAU1Wg1sCzaTYgd27b1XM"
+          "current_key": "AIzaSyAcZfsXiU0lEXwjErpWIMNGoCcWovIcDns"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "351466802425-g8eacf60kl6f528k9o4aqo1u5om7o8sa.apps.googleusercontent.com",
+              "client_id": "875452445286-s9c7o7fmlnuq4etcg65rkmjhg1gs8mdb.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

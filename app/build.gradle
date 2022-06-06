@@ -53,11 +53,11 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.laotoua.dawnislandk"
+        applicationId "sh.xsl.reedisland"
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 48
-        versionName "v1.3.56"
+        versionName "v2.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

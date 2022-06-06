@@ -25,7 +25,7 @@
     app:layout_optimizationLevel="standard|dimensions"
     tools:context=".screens.posts.PostsFragment">
 
-    <com.laotoua.dawnislandk.screens.widgets.FlingInterceptor
+    <sh.xsl.reedisland.screens.widgets.FlingInterceptor
         android:id="@+id/flingInterceptor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -35,7 +35,7 @@
             layout="@layout/widget_srl_and_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </com.laotoua.dawnislandk.screens.widgets.FlingInterceptor>
+    </sh.xsl.reedisland.screens.widgets.FlingInterceptor>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton

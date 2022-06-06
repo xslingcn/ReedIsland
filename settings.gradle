@@ -15,5 +15,5 @@
  *
  */
 
-rootProject.name='DawnIslandK'
+rootProject.name='ReedIsland'
 include ':app'//, 'XPopup'

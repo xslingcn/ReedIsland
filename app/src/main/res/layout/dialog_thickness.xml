@@ -25,7 +25,7 @@
     android:paddingRight="16dp"
     tools:viewBindingIgnore="true">
 
-    <com.laotoua.dawnislandk.screens.widgets.ThicknessPreviewView
+    <sh.xsl.reedisland.screens.widgets.ThicknessPreviewView
         android:id="@+id/thicknessPreviewView"
         android:layout_width="match_parent"
         android:layout_height="128dp" />

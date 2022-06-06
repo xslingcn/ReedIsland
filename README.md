@@ -16,7 +16,7 @@ This app uses Retrofit2(& okhttp) for API calls, Dagger2 for Dependency Injectio
 <img src="https://github.com/fishballzzz/DawnIslandK/blob/master/demo/demo4.gif" width="240"> 
 
 # Downloads 下载
-<a href='https://play.google.com/store/apps/details?id=com.laotoua.dawnislandk&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="240" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
+<a href='https://play.google.com/store/apps/details?id=sh.xsl.reedisland&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img width="240" alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png'/></a>
 
 [Release Asset](https://github.com/fishballzzz/DawnIslandK/releases/latest) 
 

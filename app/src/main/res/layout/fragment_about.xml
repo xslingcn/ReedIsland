@@ -47,14 +47,14 @@
 <!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
 <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-    <include
-        android:id="@+id/appPrivacyAgreement"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <include-->
+<!--        android:id="@+id/appPrivacyAgreement"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 <!--        app:layout_constraintTop_toBottomOf="@id/appFeedback" />-->
 
 <!--    <include-->
@@ -95,7 +95,7 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/appPrivacyAgreement" />
+        app:layout_constraintTop_toTopOf="parent" />
 <!--    app:layout_constraintTop_toBottomOf="@id/changeLog" />-->
 
 

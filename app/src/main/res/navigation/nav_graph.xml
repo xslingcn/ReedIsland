@@ -22,7 +22,7 @@
     app:startDestination="@id/postsFragment">
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.ProfileFragment">
+        android:name="sh.xsl.reedisland.screens.profile.ProfileFragment">
         <action
             android:id="@+id/action_profileFragment_to_aboutFragment"
             app:destination="@id/aboutFragment"
@@ -54,10 +54,10 @@
     </fragment>
     <fragment
         android:id="@+id/sizeCustomizationFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.SizesCustomizationFragment" />
+        android:name="sh.xsl.reedisland.screens.profile.SizesCustomizationFragment" />
     <fragment
         android:id="@+id/postsFragment"
-        android:name="com.laotoua.dawnislandk.screens.posts.PostsFragment"
+        android:name="sh.xsl.reedisland.screens.posts.PostsFragment"
         tools:layout="@layout/fragment_post" >
         <action
             android:id="@+id/action_postsFragment_to_searchFragment"
@@ -77,13 +77,13 @@
 
     <fragment
         android:id="@+id/historyPagerFragment"
-        android:name="com.laotoua.dawnislandk.screens.history.HistoryPagerFragment" />
+        android:name="sh.xsl.reedisland.screens.history.HistoryPagerFragment" />
     <fragment
         android:id="@+id/subscriptionPagerFragment"
-        android:name="com.laotoua.dawnislandk.screens.subscriptions.SubscriptionPagerFragment" />
+        android:name="sh.xsl.reedisland.screens.subscriptions.SubscriptionPagerFragment" />
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.laotoua.dawnislandk.screens.search.SearchFragment"
+        android:name="sh.xsl.reedisland.screens.search.SearchFragment"
         tools:layout="@layout/fragment_search" >
         <argument
             android:name="query"
@@ -91,7 +91,7 @@
     </fragment>
     <fragment
         android:id="@+id/commentsFragment"
-        android:name="com.laotoua.dawnislandk.screens.comments.CommentsFragment">
+        android:name="sh.xsl.reedisland.screens.comments.CommentsFragment">
         <argument
             android:name="id"
             app:argType="string" />
@@ -112,11 +112,11 @@
         app:popExitAnim="@anim/slide_out_right" />
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.AboutFragment"
+        android:name="sh.xsl.reedisland.screens.profile.AboutFragment"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/displaySettingFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.DisplaySettingFragment"
+        android:name="sh.xsl.reedisland.screens.profile.DisplaySettingFragment"
         tools:layout="@layout/fragment_display_setting">
         <action
             android:id="@+id/action_displaySettingFragment_to_sizeCustomizationFragment"
@@ -128,15 +128,15 @@
     </fragment>
     <fragment
         android:id="@+id/generalSettingFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.GeneralSettingFragment"
+        android:name="sh.xsl.reedisland.screens.profile.GeneralSettingFragment"
         tools:layout="@layout/fragment_general_setting" />
     <fragment
         android:id="@+id/commonForumsFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.CommonForumsFragment"
+        android:name="sh.xsl.reedisland.screens.profile.CommonForumsFragment"
         tools:layout="@layout/fragment_common_forums" />
     <fragment
         android:id="@+id/customSettingFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.CustomSettingFragment"
+        android:name="sh.xsl.reedisland.screens.profile.CustomSettingFragment"
         tools:layout="@layout/fragment_custom_setting">
         <action
             android:id="@+id/action_customSettingsFragment_to_commonPostsFragment"
@@ -162,13 +162,13 @@
     </fragment>
     <fragment
         android:id="@+id/commonPostsFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.CommonPostsFragment"
+        android:name="sh.xsl.reedisland.screens.profile.CommonPostsFragment"
         tools:layout="@layout/fragment_common_posts" />
     <fragment
         android:id="@+id/notificationFragment"
-        android:name="com.laotoua.dawnislandk.screens.notification.NotificationFragment"
+        android:name="sh.xsl.reedisland.screens.notification.NotificationFragment"
         tools:layout="@layout/fragment_notification" />
     <fragment
         android:id="@+id/emojiSettingFragment"
-        android:name="com.laotoua.dawnislandk.screens.profile.EmojiSettingFragment" />
+        android:name="sh.xsl.reedisland.screens.profile.EmojiSettingFragment" />
 </navigation>
