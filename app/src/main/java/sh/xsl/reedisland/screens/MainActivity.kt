@@ -78,6 +78,9 @@ import java.net.URLDecoder
 import javax.inject.Inject
 import javax.net.ssl.HttpsURLConnection
 import kotlin.math.max
+import com.microsoft.appcenter.crashes.Crashes
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.AppCenter
 
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -197,6 +200,11 @@ class MainActivity : DaggerAppCompatActivity() {
                 setToolbarTitle(sharedVM.getForumOrTimelineDisplayName(it))
             }
         }
+
+        AppCenter.start(
+            application, "51adb231-476b-4bb4-8b15-b3758243ab16",
+            Analytics::class.java, Crashes::class.java
+        )
     }
 
     private fun handleIntentFilterNavigation(intent: Intent?) {

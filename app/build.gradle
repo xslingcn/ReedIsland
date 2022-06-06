@@ -208,6 +208,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-config-ktx'
     implementation 'com.google.firebase:firebase-perf-ktx'
 
+    // Microsoft AppCenter
+    def appCenterSdkVersion = '4.3.1'
+    implementation "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
+    implementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
+
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.3'
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 }
