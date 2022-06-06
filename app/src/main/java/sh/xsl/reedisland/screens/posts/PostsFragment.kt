@@ -139,10 +139,10 @@ class PostsFragment : BaseNavFragment() {
                         }
                     }
                     positiveButton(R.string.acknowledge)
-//                    @Suppress("DEPRECATION")
-//                    neutralButton(R.string.basic_rules) {
-//                        openLinksWithOtherApps(DawnConstants.ADNMBHost + "/forum", requireActivity())
-//                    }
+                    @Suppress("DEPRECATION")
+                    neutralButton(R.string.basic_rules) {
+                        openLinksWithOtherApps(DawnConstants.ADNMBHost, requireActivity())
+                    }
                 }
                 return true
             }
