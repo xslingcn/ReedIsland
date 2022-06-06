@@ -112,5 +112,13 @@ interface NMBService {
         @Part("content") content: RequestBody?, @Part("water") water: RequestBody?,
         @Part image: MultipartBody.Part?, @Header("Cookie") hash: String
     ): Call<ResponseBody>
+
+    @Headers(DawnConstants.USER_AGENT)
+    @Multipart
+    @POST("api/v2/dutyRoom/report")
+    fun postReport(
+        @Part("threadId") tid: RequestBody, @Part("reason") reason: RequestBody,
+        @Header("Cookie") hash: String
+    ): Call<ResponseBody>
 }
 

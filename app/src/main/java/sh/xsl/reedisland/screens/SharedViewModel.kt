@@ -248,7 +248,8 @@ class SharedViewModel @Inject constructor(
         content: String?,
         waterMark: String?,
         imageFile: File?,
-        cookieHash: String
+        cookieHash: String,
+        report: Boolean? = null
     ): String {
         return webNMBServiceClient.sendPost(
             newPost,
@@ -259,7 +260,8 @@ class SharedViewModel @Inject constructor(
             content,
             waterMark,
             imageFile,
-            cookieHash
+            cookieHash,
+            report = report
         ).run {
             if (this is APIMessageResponse.Success) {
                 if (messageType == APIMessageResponse.MessageType.String) {

@@ -232,14 +232,15 @@ class CommentsFragment : DaggerFragment() {
                                 title(R.string.report_reasons)
                                 listItemsSingleChoice(res = R.array.report_reasons) { _, _, text ->
                                     postPopup.setupAndShow(
-                                        "18",//值班室
-                                        "18",
+                                        getItem(position).id,//举报的串号
+                                        "0",
                                         newPost = true,
-                                        quote = ">>No.${getItem(position).id}\n${
+                                        quote = "${
                                             context.getString(
                                                 R.string.report_reasons
                                             )
-                                        }: $text\n"
+                                        }: $text\n",
+                                        report = true
                                     )
                                 }
                                 cancelOnTouchOutside(false)

@@ -82,6 +82,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     private var cookieHash = ""
     private var targetPage = 1
     private var targetFid = ""
+    private var report: Boolean? = null
 
     private var selectedCookie: Cookie? = null
     private var postCookie: Button? = null
@@ -139,7 +140,8 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
 
     private fun updateTitle(targetId: String?, newPost: Boolean) {
         findViewById<TextView>(R.id.postTitle).text =
-            if (newPost) "${context.getString(R.string.new_post)} > ${getForumTitle(targetId!!)}"
+            if (report == true) context.getString(R.string.report)
+            else if (newPost) "${context.getString(R.string.new_post)} > ${getForumTitle(targetId!!)}"
             else "${context.getString(R.string.reply_comment)} > $targetId"
     }
 
@@ -177,6 +179,34 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         updateCookies()
         updateForumButton(targetId, newPost)
         quote?.run { postContent?.editText?.text?.insert(0, quote) }
+        updateReportButtons()
+    }
+
+    fun updateReportButtons(){
+        findViewById<Button>(R.id.forumRule).apply {
+            if(report == true) visibility = View.INVISIBLE
+        }
+        findViewById<Button>(R.id.postForum).apply {
+            if(report == true) visibility = View.GONE
+        }
+        findViewById<Button>(R.id.postExpand).apply {
+            if(report == true) visibility = View.GONE
+        }
+        findViewById<Button>(R.id.postLuwei).apply {
+            if(report == true) visibility = View.INVISIBLE
+        }
+        findViewById<Button>(R.id.postCamera).apply {
+            if(report == true) visibility = View.INVISIBLE
+        }
+        findViewById<Button>(R.id.postImage).apply {
+            if(report == true) visibility = View.INVISIBLE
+        }
+        findViewById<Button>(R.id.postDoodle).apply {
+            if(report == true) visibility = View.INVISIBLE
+        }
+        findViewById<Button>(R.id.postSave).apply {
+            if(report == true) visibility = View.INVISIBLE
+        }
     }
 
     fun setupAndShow(
@@ -184,10 +214,12 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         targetFid: String,
         newPost: Boolean = false,
         targetPage: Int = 1,
-        quote: String? = null
+        quote: String? = null,
+        report: Boolean? = null
     ) {
         this.targetPage = targetPage
         this.targetFid = targetFid
+        this.report = report
         XPopup.Builder(context)
             .setPopupCallback(object : SimpleCallback() {
                 override fun beforeShow(popupView: BasePopupView?) {
@@ -633,11 +665,12 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                 content,
                 waterMark,
                 imageFile,
-                cookieHash
+                cookieHash,
+                report
             ).let { message ->
                 postProgressDialog.dismiss()
                 dismissWith {
-                    if (message == "回复成功") {
+                    if (message == "Ok") {
                         sharedVM.searchAndSavePost(
                             newPost,
                             targetId!!,
@@ -650,7 +683,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                         selectedCookie?.let { applicationDataStore.setLastUsedCookie(it) }
                     }
                 }
-                Toast.makeText(caller, message, Toast.LENGTH_LONG).show()
+                Toast.makeText(caller, "发送成功", Toast.LENGTH_LONG).show()
             }
         }
     }

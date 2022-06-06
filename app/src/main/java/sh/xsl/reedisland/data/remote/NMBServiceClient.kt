@@ -171,7 +171,8 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         email: String?, title: String?,
         content: String?, water: String?,
         image: File?, userhash: String,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSession,
+        report: Boolean? = null
     ): APIMessageResponse {
         return withContext(Dispatchers.IO) {
             Timber.d("Posting to $targetId...")
@@ -181,7 +182,14 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
                     imagePart = MultipartBody.Part.createFormData("image", image.name, this)
                 }
             }
-            val call = if (newPost) {
+            val call = if(report == true){
+                service.postReport(
+                    targetId.toRequestBody(),
+                    content!!.toRequestBody(),
+                    reedSession.plus(";$userhash")
+                )
+            }
+            else if (newPost) {
                 service.postNewPost(
                     targetId.toRequestBody(), name?.toRequestBody(),
                     email?.toRequestBody(), title?.toRequestBody(),
