@@ -81,11 +81,8 @@ sealed class APIDataResponse<T>(
 
                 return withContext(Dispatchers.IO) {
                     val msg = response.errorBody()?.string()
-                    val errorMsg = if (msg.isNullOrEmpty()) {
-                        response.message()
-                    } else {
-                        msg
-                    }
+                    val errorMsg = if(!msg.isNullOrEmpty()) JSONObject(msg).optString("errmsg",msg) else response.message()
+                    Timber.e(errorMsg)
                     Error(errorMsg ?: "unknown error")
                 }
             } catch (e: Exception) {

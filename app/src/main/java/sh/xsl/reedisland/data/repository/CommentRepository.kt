@@ -261,31 +261,31 @@ class CommentRepository @Inject constructor(
             return SingleLiveEvent.create("已经订阅过了哦\n取消订阅请长按按钮")
         }
 
-        return webService.addFeed(DawnApp.applicationDataStore.getFeedId(), id).run {
-            if (this is APIMessageResponse.Success && messageType == APIMessageResponse.MessageType.String) {
+        return webService.addFeed(id).run {
+            if (this is APIMessageResponse.Success && messageType == APIMessageResponse.MessageType.String && message == "Ok") {
                 coroutineScope {
                     launch {
                         val newFeed = Feed(1, 1, id, DawnApp.currentDomain, LocalDateTime.now())
                         feedDao.addFeedToTopAndIncrementFeedIds(newFeed)
                     }
                 }
-                SingleLiveEvent.create(message)
+                SingleLiveEvent.create("订阅成功(ゝ∀･)")
             } else {
-                Timber.e("Response type: ${this.javaClass.simpleName}\n $message")
-                SingleLiveEvent.create("订阅失败...是不是已经订阅了或者网络出问题了呢?")
+                Timber.e("Response type: ${this.javaClass.simpleName} $message")
+                SingleLiveEvent.create("订阅失败...$message")
             }
         }
     }
 
     suspend fun deleteFeed(id: String): SingleLiveEvent<String> {
         Timber.d("Deleting Feed $id")
-        return webService.delFeed(DawnApp.applicationDataStore.getFeedId(), id).run {
-            if (this is APIMessageResponse.Success) {
+        return webService.delFeed(id).run {
+            if (this is APIMessageResponse.Success && messageType == APIMessageResponse.MessageType.String && message == "Ok") {
                 coroutineScope { launch { feedDao.deleteFeedAndDecrementFeedIdsById(id) } }
-                SingleLiveEvent.create(message)
+                SingleLiveEvent.create("取消订阅成功(ゝ∀･)")
             } else {
-                Timber.e(message)
-                SingleLiveEvent.create("删除订阅失败...\n$message")
+                Timber.e("Response type: ${this.javaClass.simpleName} $message")
+                SingleLiveEvent.create("删除订阅失败...$message")
             }
         }
     }

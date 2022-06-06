@@ -60,6 +60,8 @@ sealed class APIMessageResponse(
                 val regex = "[\\S\\s]*<html[\\S\\s]*>[\\S\\s]*</html[\\S\\s]*>[\\S\\s]*".toRegex()
                 val response = withContext(Dispatchers.IO) { call.execute() }
 
+                Timber.d(call.request().url.toString())
+                Timber.d("Headers: ${call.request().headers}")
                 if (response.isSuccessful) {
                     val body = response.body()
                     body?.close()
@@ -70,20 +72,16 @@ sealed class APIMessageResponse(
                     return withContext(Dispatchers.Default) {
                         if(JSONObject(resBody).run { getInt("errcode") } == 0){
                             Success(
-                                MessageType.String, "回复成功"
+                                MessageType.String, "Ok"
                             )
                         }
                         else if (regex.containsMatchIn(resBody)) {
-                            Success(
-                                MessageType.HTML,
-                                "HTML Response",
-                                dom = Jsoup.parse(resBody)
+                            Error(
+                                resBody, Jsoup.parse(resBody)
                             )
                         } else {
-                            Success(
-                                MessageType.String, StringEscapeUtils.unescapeJava(
-                                    resBody.replace("\"", "")
-                                )
+                            Error(
+                                JSONObject(resBody).optString("errmsg",resBody)
                             )
                         }
                     }
@@ -92,11 +90,7 @@ sealed class APIMessageResponse(
                 Timber.e("Response is unsuccessful...")
                 return withContext(Dispatchers.IO) {
                     val msg = response.errorBody()?.string()
-                    val errorMsg = if (msg.isNullOrEmpty()) {
-                        response.message()
-                    } else {
-                        msg
-                    }
+                    val errorMsg = if(!msg.isNullOrEmpty()) JSONObject(msg).optString("errmsg",msg) else response.message()
                     Timber.e(errorMsg)
                     val dom = if (regex.containsMatchIn(errorMsg)) Jsoup.parse(errorMsg) else null
                     Error(errorMsg ?: "unknown error", dom)
