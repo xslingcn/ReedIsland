@@ -24,25 +24,25 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
-    signingConfigs {
-        release {
-            if (project.rootProject.file("local.properties").exists()) {
-                Properties properties = new Properties()
-                properties.load(project.rootProject.file("local.properties").newDataInputStream())
-                def store_file = properties.getProperty("storeFile")
-                def store_password = properties.getProperty("storePassword")
-                def key_alias = properties.getProperty("keyAlias")
-                def key_password = properties.getProperty("keyPassword")
-
-                storeFile file(store_file)
-                storePassword store_password
-                keyAlias key_alias
-                keyPassword key_password
-                v1SigningEnabled true
-                v2SigningEnabled true
-            }
-        }
-    }
+//    signingConfigs {
+//        release {
+//            if (project.rootProject.file("local.properties").exists()) {
+//                Properties properties = new Properties()
+//                properties.load(project.rootProject.file("local.properties").newDataInputStream())
+//                def store_file = properties.getProperty("storeFile")
+//                def store_password = properties.getProperty("storePassword")
+//                def key_alias = properties.getProperty("keyAlias")
+//                def key_password = properties.getProperty("keyPassword")
+//
+//                storeFile file(store_file)
+//                storePassword store_password
+//                keyAlias key_alias
+//                keyPassword key_password
+//                v1SigningEnabled true
+//                v2SigningEnabled true
+//            }
+//        }
+//    }
 
     compileSdkVersion 30
 //    buildToolsVersion "29.0.3"
@@ -97,7 +97,7 @@ android {
             shrinkResources true
 
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
 
             firebaseCrashlytics {
                 mappingFileUploadEnabled true
