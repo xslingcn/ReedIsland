@@ -60,14 +60,14 @@ sealed class APIDataResponse<T>(
                     if (body == null || response.code() == 204) {
                         return Empty()
                     }
-                    val resBody = withContext(Dispatchers.IO) { JSONObject(body.string()).run { optString("result",body.string()) }.toString() }
+                    val resBody = withContext(Dispatchers.IO) { body.string() }
 
                     return withContext(Dispatchers.Default) {
                         try {
                             Timber.d("Trying to parse response with supplied parser...")
                             Timber.d(call.request().url.toString())
                             Timber.d("Header: ${call.request().headers}")
-                            Success("Parse success", parser.parse(resBody))
+                            Success("Parse success", parser.parse(JSONObject(resBody).optString("result",resBody)))
                         } catch (e: Exception) {
                             // server returns non json string
                             Timber.e("Parse failed: $e")

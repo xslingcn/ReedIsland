@@ -403,6 +403,8 @@ class ApplicationDataStore @Inject constructor(
                 null
             }
         }
+        Timber.d("latest release: $latest")
+        Timber.d("current version: $currentVersionCode")
         if (latest != null && latest.versionCode > currentVersionCode) {
             coroutineScope { launch { releaseDao.insertRelease(latest) } }
             return latest
