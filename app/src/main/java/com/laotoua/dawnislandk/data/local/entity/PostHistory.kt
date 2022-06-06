@@ -31,13 +31,13 @@ class PostHistory(
     val postTargetFid: String,
     val postTargetPage: Int, // if replying, indicates posted page for jumps otherwise page 1
     val cookieName: String,
-    val content: String, //content
-    val img: String,
-    val ext: String,
+    val content: String?, //content
+    val img: String?,
+    val ext: String?,
     val domain: String = DawnApp.currentDomain,
     val postDateTime: LocalDateTime = LocalDateTime.now()
 ) {
-    constructor(id: String, targetPage: Int, img: String, ext: String, domain: String, draft: Draft) : this(
+    constructor(id: String, targetPage: Int, img: String?, ext: String?, domain: String, draft: Draft) : this(
         id,
         draft.newPost,
         draft.postTargetId,
@@ -56,7 +56,7 @@ class PostHistory(
         val postTargetId: String, // equals postTargetFid when sending a new Post
         val postTargetFid: String,
         val cookieName: String,
-        var content: String, //content
+        var content: String?, //content
         val postDateTime: LocalDateTime
     )
 

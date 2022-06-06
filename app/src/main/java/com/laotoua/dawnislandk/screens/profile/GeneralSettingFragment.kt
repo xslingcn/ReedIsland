@@ -27,7 +27,6 @@ import com.afollestad.materialdialogs.WhichButton
 import com.afollestad.materialdialogs.actions.getActionButton
 import com.afollestad.materialdialogs.actions.setActionButtonEnabled
 import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
-import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.laotoua.dawnislandk.DawnApp.Companion.applicationDataStore
 import com.laotoua.dawnislandk.R
@@ -44,26 +43,26 @@ class GeneralSettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGeneralSettingBinding.inflate(inflater, container, false)
-        binding?.feedId?.apply {
-            var feedId = applicationDataStore.getFeedId()
-            key.setText(R.string.feedId)
-            summary.text = feedId
-            root.setOnClickListener {
-                if (activity == null || !isAdded) return@setOnClickListener
-                MaterialDialog(requireContext()).show {
-                    lifecycleOwner(this@GeneralSettingFragment)
-                    title(R.string.feedId)
-                    input(hint = feedId, prefill = feedId) { _, text ->
-                        feedId = text.toString()
-                        applicationDataStore.setFeedId(feedId)
-                        summary.text = feedId
-                        toast(R.string.restart_to_apply_setting)
-                    }
-                    positiveButton(R.string.submit)
-                    negativeButton(R.string.cancel)
-                }
-            }
-        }
+//        binding?.feedId?.apply {
+//            var feedId = applicationDataStore.getFeedId()
+//            key.setText(R.string.feedId)
+//            summary.text = feedId
+//            root.setOnClickListener {
+//                if (activity == null || !isAdded) return@setOnClickListener
+//                MaterialDialog(requireContext()).show {
+//                    lifecycleOwner(this@GeneralSettingFragment)
+//                    title(R.string.feedId)
+//                    input(hint = feedId, prefill = feedId) { _, text ->
+//                        feedId = text.toString()
+//                        applicationDataStore.setFeedId(feedId)
+//                        summary.text = feedId
+//                        toast(R.string.restart_to_apply_setting)
+//                    }
+//                    positiveButton(R.string.submit)
+//                    negativeButton(R.string.cancel)
+//                }
+//            }
+//        }
 
         binding?.useReadingProgress?.apply {
             key.setText(R.string.saves_reading_progress)
@@ -169,26 +168,26 @@ class GeneralSettingFragment : Fragment() {
             }
         }
 
-        binding?.clearTrendCache?.apply {
-            key.setText(R.string.clear_trend_cache)
-            root.setOnClickListener {
-                if (activity == null || !isAdded) return@setOnClickListener
-                MaterialDialog(requireContext()).show {
-                    lifecycleOwner(this@GeneralSettingFragment)
-                    title(R.string.clear_trend_cache)
-                    message(R.string.clear_trend_cache_confirm_message)
-                    setActionButtonEnabled(WhichButton.POSITIVE, false)
-                    checkBoxPrompt(R.string.acknowledge) { checked ->
-                        setActionButtonEnabled(WhichButton.POSITIVE, checked)
-                    }
-                    positiveButton(R.string.submit) {
-                        applicationDataStore.nukeTrendTable()
-                        toast(R.string.cleared_trend_cache_message)
-                    }
-                    negativeButton(R.string.cancel)
-                }
-            }
-        }
+//        binding?.clearTrendCache?.apply {
+//            key.setText(R.string.clear_trend_cache)
+//            root.setOnClickListener {
+//                if (activity == null || !isAdded) return@setOnClickListener
+//                MaterialDialog(requireContext()).show {
+//                    lifecycleOwner(this@GeneralSettingFragment)
+//                    title(R.string.clear_trend_cache)
+//                    message(R.string.clear_trend_cache_confirm_message)
+//                    setActionButtonEnabled(WhichButton.POSITIVE, false)
+//                    checkBoxPrompt(R.string.acknowledge) { checked ->
+//                        setActionButtonEnabled(WhichButton.POSITIVE, checked)
+//                    }
+//                    positiveButton(R.string.submit) {
+//                        applicationDataStore.nukeTrendTable()
+//                        toast(R.string.cleared_trend_cache_message)
+//                    }
+//                    negativeButton(R.string.cancel)
+//                }
+//            }
+//        }
 
         binding?.restoreBlockedPosts?.apply {
             key.setText(R.string.restore_blocked_post)

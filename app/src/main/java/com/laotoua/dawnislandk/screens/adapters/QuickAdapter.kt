@@ -281,7 +281,7 @@ class QuickAdapter<T>(
     internal sealed class Payload {
         class PostPayload(
             val now: String,
-            val content: String,
+            val content: String?,
             val sage: String,
             val replyCount: String,
             val title: String,
@@ -290,7 +290,7 @@ class QuickAdapter<T>(
 
         class CommentPayload(
             val now: String,
-            val content: String,
+            val content: String?,
             val sage: String,
             val visible: Boolean,
             val imgUrl: String,

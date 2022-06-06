@@ -77,7 +77,7 @@ class PostsViewModel @Inject constructor(
     fun getPosts() {
         viewModelScope.launch {
             _loadingStatus.postValue(SingleLiveEvent.create(LoadingStatus.LOADING))
-            val fid = _currentFid ?: "-1"
+            val fid = _currentFid ?: "4"
             Timber.d("Getting threads from $fid on page $pageCount")
             webService.getPosts(fid, pageCount).run {
                 if (this is APIDataResponse.Error) {

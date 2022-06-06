@@ -32,6 +32,17 @@ import javax.inject.Inject
 
 class NMBServiceClient @Inject constructor(private val service: NMBService) {
 
+    suspend fun getReedSession(): String{
+        return withContext(Dispatchers.IO) {
+            val response = service.getVersion().execute()
+            if (response.isSuccessful) {
+                response.headers()["Set-Cookie"]?.split(";")?.first() ?: ""
+            } else {
+                ""
+            }
+        }
+    }
+
     suspend fun getNMBSearch(
         query: String,
         page: Int = 1,
@@ -64,7 +75,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
 
     suspend fun getNMBNotice(): APIDataResponse<NMBNotice> {
         Timber.i("Downloading Notice...")
-        return APIDataResponse.create(service.getNMBNotice(), NMBJsonParser.NMBNoticeParser())
+        return APIDataResponse.create(service.getConfig(), NMBJsonParser.NMBNoticeParser())
     }
 
     suspend fun getLuweiNotice(): APIDataResponse<LuweiNotice> {
@@ -72,46 +83,66 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         return APIDataResponse.create(service.getLuweiNotice(), NMBJsonParser.LuweiNoticeParser())
     }
 
-
     suspend fun getCommunities(): APIDataResponse<List<Community>> {
         Timber.i("Downloading Communities and Forums...")
-        return APIDataResponse.create(service.getNMBForumList(), NMBJsonParser.CommunityParser())
+        return APIDataResponse.create(service.getConfig(), NMBJsonParser.CommunityParser())
     }
 
     suspend fun getTimeLines(): APIDataResponse<List<Timeline>> {
         Timber.i("Downloading Timeline Forums...")
-        return APIDataResponse.create(service.getNMBTimelineList(), NMBJsonParser.TimelinesParser())
+        return APIDataResponse.create(service.getConfig(), NMBJsonParser.TimelinesParser())
     }
 
-    suspend fun getPosts(fid: String, page: Int, userhash: String? = DawnApp.applicationDataStore.firstCookieHash): APIDataResponse<List<Post>> {
+    suspend fun getPosts(
+        fid: String,
+        page: Int,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIDataResponse<List<Post>> {
+//        throw RuntimeException("Oh")
         Timber.i("Downloading Posts on Forum $fid...")
-        val call = if (fid.startsWith("-")) service.getNMBTimeLine(fid.substringAfter("-"), page, userhash)
-        else service.getNMBPosts(fid, page)
+        Timber.d(if (userhash!=null) reedSession.plus(";$userhash") else reedSession)
+        val call = service.getNMBPosts(
+            if(fid.startsWith("-")) fid.substringAfter("-")
+            else fid, page,
+            if (userhash!=null) reedSession.plus(";$userhash")
+            else reedSession)
         return APIDataResponse.create(call, NMBJsonParser.PostParser())
     }
 
     suspend fun getComments(
         id: String,
         page: Int,
-        userhash: String? = DawnApp.applicationDataStore.firstCookieHash
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<Post> {
         Timber.i("Downloading Comments on Post $id on Page $page...")
         return APIDataResponse.create(
-            service.getNMBComments(userhash, id, page),
+            service.getNMBComments(
+                if (userhash!=null) reedSession.plus(";$userhash")
+                else reedSession, id, page),
             NMBJsonParser.CommentParser()
         )
     }
 
-    suspend fun getFeeds(uuid: String, page: Int): APIDataResponse<List<Feed.ServerFeed>> {
+    suspend fun getFeeds(
+        page: Int,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIDataResponse<List<Feed.ServerFeed>> {
         Timber.i("Downloading Feeds on Page $page...")
-        return APIDataResponse.create(service.getNMBFeeds(uuid, page), NMBJsonParser.FeedParser())
+        return APIDataResponse.create(service.getNMBFeeds(page, if (userhash!=null) reedSession.plus(";$userhash") else reedSession), NMBJsonParser.FeedParser())
     }
 
 
     // Returns BlankDataResponse(not Error) when comment is deleted
-    suspend fun getQuote(id: String): APIDataResponse<Comment> {
+    suspend fun getQuote(
+        id: String,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIDataResponse<Comment> {
         Timber.i("Downloading Quote $id...")
-        return APIDataResponse.create(service.getNMBQuote(id), NMBJsonParser.QuoteParser())
+        return APIDataResponse.create(service.getNMBQuote(id, if (userhash!=null) reedSession.plus(";$userhash") else reedSession), NMBJsonParser.QuoteParser())
     }
 
     suspend fun addFeed(uuid: String, tid: String): APIMessageResponse {
@@ -131,7 +162,8 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         targetId: String, name: String?,
         email: String?, title: String?,
         content: String?, water: String?,
-        image: File?, userhash: String
+        image: File?, userhash: String,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIMessageResponse {
         return withContext(Dispatchers.IO) {
             Timber.d("Posting to $targetId...")
@@ -147,7 +179,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
                     email?.toRequestBody(), title?.toRequestBody(),
                     content?.toRequestBody(), water?.toRequestBody(),
                     imagePart,
-                    userhash
+                    reedSession.plus(";$userhash")
                 )
             } else {
                 service.postComment(
@@ -155,7 +187,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
                     email?.toRequestBody(), title?.toRequestBody(),
                     content?.toRequestBody(), water?.toRequestBody(),
                     imagePart,
-                    userhash
+                    reedSession.plus(";$userhash")
                 )
             }
             APIMessageResponse.create(call)

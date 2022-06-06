@@ -45,9 +45,9 @@
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:subtitle="adnmb.com"
+        app:subtitle="aweidao.com"
         app:subtitleTextColor="?android:attr/textColorPrimary"
-        app:title="时间线"
+        app:title="版块"
         app:titleTextColor="?android:attr/textColorPrimary"
         android:paddingBottom="1dp" />
 

@@ -64,7 +64,6 @@ import timber.log.Timber
 import java.io.File
 import java.time.Duration
 import java.time.LocalDateTime
-import java.util.*
 
 
 @SuppressLint("ViewConstructor")
@@ -357,7 +356,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
             visibility = if (!newPost && targetFid == "111") View.VISIBLE else View.GONE
 
             setOnClickListener {
-                Toast.makeText(context, "ATM is watching you :)", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(context, "ATM is watching you :)", Toast.LENGTH_SHORT).show()
 //                TODO: Need new mechanism for getting latest id
 //                if (System.currentTimeMillis() - cheatTime < 5000) {
 //                    Toast.makeText(context, "正在请求数据，请稍后。。。", Toast.LENGTH_SHORT).show()
@@ -638,7 +637,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
             ).let { message ->
                 postProgressDialog.dismiss()
                 dismissWith {
-                    if (message.substring(0, 2) == ":)") {
+                    if (message == "回复成功") {
                         sharedVM.searchAndSavePost(
                             newPost,
                             targetId!!,

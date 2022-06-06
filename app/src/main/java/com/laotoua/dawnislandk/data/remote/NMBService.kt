@@ -17,6 +17,7 @@
 
 package com.laotoua.dawnislandk.data.remote
 
+import com.laotoua.dawnislandk.util.DawnConstants
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -42,58 +43,59 @@ interface NMBService {
     @GET("https://cover.acfunwiki.org/luwei.json")
     fun getLuweiNotice(): Call<ResponseBody>
 
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v2/system/getConfig")
+    fun getConfig(): Call<ResponseBody>
+
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v2/system/getVersion")
+    fun getVersion(): Call<ResponseBody>
+
     // uses Host
+    @Headers(DawnConstants.USER_AGENT)
     @GET("Api/search")
     fun getNMBSearch(
         @Query("q") query: String,
         @Query("pageNo") page: Int,
-        @Header("Cookie") hash: String?,
+        @Header("Cookie") cookie: String,
         @Header("Host") host: String
     ): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
-    @GET("Api/getForumList")
-    fun getNMBForumList(): Call<ResponseBody>
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1/showf")
+    fun getNMBPosts(@Query("id") fid: String, @Query("page") page: Int, @Header("Cookie") cookie: String): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
-    @GET("Api/getTimelineList")
-    fun getNMBTimelineList(): Call<ResponseBody>
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1/feed?page=1")
+    fun getNMBFeeds(@Query("page") page: Int, @Header("Cookie") cookie:String): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
-    @GET("Api/showf")
-    fun getNMBPosts(@Query("id") fid: String, @Query("page") page: Int): Call<ResponseBody>
-
-    @Headers("Domain-Name: nmb")
-    @GET("Api/feed")
-    fun getNMBFeeds(@Query("uuid") uuid: String, @Query("page") page: Int): Call<ResponseBody>
-
-    @Headers("Domain-Name: nmb")
-    @GET("Api/addFeed")
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1/addFeed")
     fun addNMBFeed(@Query("uuid") uuid: String, @Query("tid") tid: String): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
-    @GET("Api/delFeed")
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1/delFeed")
     fun delNMBFeed(@Query("uuid") uuid: String, @Query("tid") tid: String): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
-    @GET("Api/timeline/id/{id}")
-    fun getNMBTimeLine(@Path("id") id: String = "1", @Query("page") page: Int, @Header("Cookie") hash: String?): Call<ResponseBody>
+//    @Headers("Domain-Name: nmb")
+//    @GET("api/v1/showf")
+//    fun getNMBTimeLine(@Query("id") id: String = "129", @Query("page") page: Int, @Header("Cookie") hash: String?): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
-    @GET("Api/thread")
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1/thread")
     fun getNMBComments(
-        @Header("Cookie") hash: String?,
+        @Header("Cookie") hash: String,
         @Query("id") id: String,
         @Query("page") page: Int
     ): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb-ref")
-    @GET("Home/Forum/ref")
-    fun getNMBQuote(@Query("id") id: String): Call<ResponseBody>
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1/Home/Forum/ref")
+    fun getNMBQuote(@Query("id") id: String, @Header("Cookie") cookie: String): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
+    @Headers(DawnConstants.USER_AGENT)
     @Multipart
-    @POST("Home/Forum/doReplyThread.html")
+    @POST("api/v1/Home/Forum/doReplyThread.html")
     fun postComment(
         @Part("resto") resto: RequestBody, @Part("name") name: RequestBody?,
         @Part("email") email: RequestBody?, @Part("title") title: RequestBody?,
@@ -101,9 +103,9 @@ interface NMBService {
         @Part image: MultipartBody.Part?, @Header("Cookie") hash: String
     ): Call<ResponseBody>
 
-    @Headers("Domain-Name: nmb")
+    @Headers(DawnConstants.USER_AGENT)
     @Multipart
-    @POST("Home/Forum/doPostThread.html")
+    @POST("api/v1/Home/Forum/doPostThread.html")
     fun postNewPost(
         @Part("fid") fid: RequestBody, @Part("name") name: RequestBody?,
         @Part("email") email: RequestBody?, @Part("title") title: RequestBody?,

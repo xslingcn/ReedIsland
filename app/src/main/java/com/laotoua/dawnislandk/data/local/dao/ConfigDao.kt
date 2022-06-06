@@ -15,12 +15,23 @@
  *
  */
 
-package com.laotoua.dawnislandk.util
+package com.laotoua.dawnislandk.data.local.dao
 
-import com.bumptech.glide.annotation.GlideModule
-import com.bumptech.glide.module.AppGlideModule
+import androidx.lifecycle.LiveData
+import androidx.room.*
+import com.laotoua.dawnislandk.data.local.entity.Config
 
+@Dao
+interface ConfigDao {
+    @Query("SELECT * From Config LIMIT 1")
+    fun getAll(): LiveData<Config>
 
-@GlideModule
-class DawnGlideApp : AppGlideModule() {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(config: Config)
+
+    @Delete
+    suspend fun delete(config:Config)
+
+    @Query("DELETE FROM Config")
+    suspend fun nukeTable()
 }

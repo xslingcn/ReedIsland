@@ -28,20 +28,18 @@ data class Feed(
     val id: Int = 1, // table id for sorting
     val page: Int, // each page has at most 10 feeds, page also helps sorting
     @PrimaryKey val postId: String, //	该串的id
-    val category: String,
     val domain: String = DawnApp.currentDomain,
     var lastUpdatedAt: LocalDateTime = LocalDateTime.now() // timestamp which the row is updated
 ) {
     override fun equals(other: Any?) =
         if (other is Feed) {
-            id == other.id && page == other.page && postId == other.postId && category == other.category
+            id == other.id && page == other.page && postId == other.postId
         } else false
 
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + page.hashCode()
         result = 31 * result + postId.hashCode()
-        result = 31 * result + category.hashCode()
         return result
     }
 
@@ -49,15 +47,14 @@ data class Feed(
     data class ServerFeed(
         @PrimaryKey val id: String,
         val fid: String = "",
-        val category: String,
-        val img: String,
-        val ext: String,
+        val img: String?,
+        val ext: String?,
         val now: String,
         val userid: String,
-        val name: String,
-        val email: String,
-        val title: String,
-        val content: String,
+        val name: String?,
+        val email: String?,
+        val title: String?,
+        val content: String?,
         val admin: String = "0",
         val status: String = "",
         val domain: String = DawnApp.currentDomain

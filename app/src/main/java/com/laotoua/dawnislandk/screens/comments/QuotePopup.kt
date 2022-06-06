@@ -120,7 +120,7 @@ class QuotePopup(
 
         // load image
         findViewById<ImageView>(R.id.attachedImage).run {
-            visibility = if (quote.img.isNotBlank()) {
+            visibility = if (quote.img!=null) {
                 GlideApp.with(context)
                     .load(DawnApp.currentThumbCDN + quote.img + quote.ext)
 //                    .override(250, 250)
@@ -152,7 +152,7 @@ class QuotePopup(
             movementMethod = LinkMovementMethod.getInstance()
             text = transformContent(
                 context,
-                quote.content,
+                quote.content?: "",
                 DawnApp.applicationDataStore.lineHeight,
                 DawnApp.applicationDataStore.segGap, referenceClickListener
             )

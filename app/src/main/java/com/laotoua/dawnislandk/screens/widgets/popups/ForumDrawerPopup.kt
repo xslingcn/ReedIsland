@@ -20,7 +20,6 @@ package com.laotoua.dawnislandk.screens.widgets.popups
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration
-import android.widget.Button
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
@@ -28,7 +27,6 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.laotoua.dawnislandk.DawnApp
 import com.laotoua.dawnislandk.MainNavDirections
 import com.laotoua.dawnislandk.R
 import com.laotoua.dawnislandk.data.local.entity.Community
@@ -37,7 +35,6 @@ import com.laotoua.dawnislandk.data.local.entity.Timeline
 import com.laotoua.dawnislandk.screens.MainActivity
 import com.laotoua.dawnislandk.screens.SharedViewModel
 import com.laotoua.dawnislandk.screens.adapters.CommunityNodeAdapter
-import com.laotoua.dawnislandk.util.DawnConstants
 import com.laotoua.dawnislandk.util.GlideApp
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.DrawerPopupView
@@ -114,11 +111,11 @@ class ForumDrawerPopup(
                 .show()
         }
 
-        findViewById<Button>(R.id.ReedPictureRefresh).setOnClickListener {
-            if (!isShow) return@setOnClickListener
-            reedImageUrl = ""
-            sharedVM.getRandomReedPicture()
-        }
+//        findViewById<Button>(R.id.ReedPictureRefresh).setOnClickListener {
+//            if (!isShow) return@setOnClickListener
+//            reedImageUrl = ""
+//            sharedVM.getRandomReedPicture()
+//        }
 
         findViewById<RecyclerView>(R.id.forumContainer).apply {
             layoutManager = LinearLayoutManager(context)
@@ -152,22 +149,22 @@ class ForumDrawerPopup(
         }
 
 
-        findViewById<MaterialButton>(R.id.hostToggle).apply {
-            when (DawnApp.currentDomain) {
-                DawnConstants.ADNMBDomain -> {
-                    text = "B(*ﾟ∇ﾟ)T"
-                }
-                DawnConstants.TNMBDomain -> {
-                    text = "A(*´∀`)A"
-                }
-            }
-            setOnClickListener {
-                if (!isShow) return@setOnClickListener
-                dismissWith {
-                    if (DawnApp.currentDomain == DawnConstants.TNMBDomain) (context as MainActivity).goToADNMB()
-                    else (context as MainActivity).goToTNMB()
-                }
-            }
-        }
+//        findViewById<MaterialButton>(R.id.hostToggle).apply {
+//            when (DawnApp.currentDomain) {
+//                DawnConstants.ADNMBDomain -> {
+//                    text = "B(*ﾟ∇ﾟ)T"
+//                }
+//                DawnConstants.TNMBDomain -> {
+//                    text = "A(*´∀`)A"
+//                }
+//            }
+//            setOnClickListener {
+//                if (!isShow) return@setOnClickListener
+//                dismissWith {
+//                    if (DawnApp.currentDomain == DawnConstants.TNMBDomain) (context as MainActivity).goToADNMB()
+//                    else (context as MainActivity).goToTNMB()
+//                }
+//            }
+//        }
     }
 }

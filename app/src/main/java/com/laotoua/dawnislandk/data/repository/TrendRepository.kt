@@ -116,7 +116,7 @@ class TrendRepository @Inject constructor(
                 }
             } else {
                 Timber.e(message)
-                DataResource.create(LoadingStatus.ERROR, null, "无法读取A岛热榜...\n$message")
+                DataResource.create(LoadingStatus.ERROR, null, "无法读取芦苇岛热榜...\n$message")
             }
         }
     }
@@ -125,9 +125,9 @@ class TrendRepository @Inject constructor(
         val foundTrends = mutableListOf<DailyTrend>()
         for (reply in data.comments) {
             if (reply.userid == po) {
-                val content = if (reply.content.startsWith("@")) reply.content.substringAfter("<br />\n") else reply.content
-                val list = content.split(trendDelimiter, ignoreCase = true)
-                if (list.size == trendLength) {
+                val content = if (reply.content?.startsWith("@") == true) reply.content.substringAfter("<br />\n") else reply.content
+                val list = content?.split(trendDelimiter, ignoreCase = true)
+                if (list?.size == trendLength) {
                     try {
                         val newDailyTrend = DailyTrend(
                             reply.id,

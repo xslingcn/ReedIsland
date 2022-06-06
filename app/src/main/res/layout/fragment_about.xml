@@ -38,14 +38,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="12dp" />
 
-    <include
-        android:id="@+id/appFeedback"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <include-->
+<!--        android:id="@+id/appFeedback"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <include
         android:id="@+id/appPrivacyAgreement"
@@ -54,34 +54,35 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/appFeedback" />
+        app:layout_constraintTop_toTopOf="parent" />
+<!--        app:layout_constraintTop_toBottomOf="@id/appFeedback" />-->
 
-    <include
-        android:id="@+id/adnmbPrivacyAgreement"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/appPrivacyAgreement" />
+<!--    <include-->
+<!--        android:id="@+id/adnmbPrivacyAgreement"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/appPrivacyAgreement" />-->
 
-    <include
-        android:id="@+id/checkForUpdate"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/adnmbPrivacyAgreement" />
+<!--    <include-->
+<!--        android:id="@+id/checkForUpdate"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/adnmbPrivacyAgreement" />-->
 
-    <include
-        android:id="@+id/changeLog"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/checkForUpdate" />
+<!--    <include-->
+<!--        android:id="@+id/changeLog"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/checkForUpdate" />-->
 
     <TextView
         android:id="@+id/credit"
@@ -94,6 +95,8 @@
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/changeLog" />
+        app:layout_constraintTop_toBottomOf="@id/appPrivacyAgreement" />
+<!--    app:layout_constraintTop_toBottomOf="@id/changeLog" />-->
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

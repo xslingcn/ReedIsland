@@ -49,7 +49,6 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
 import com.afollestad.materialdialogs.checkbox.isCheckPromptChecked
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.animation.AnimationUtils
 import com.laotoua.dawnislandk.DawnApp
 import com.laotoua.dawnislandk.DawnApp.Companion.applicationDataStore
@@ -168,7 +167,6 @@ class MainActivity : DaggerAppCompatActivity() {
         intentsHelper = IntentsHelper(activityResultRegistry, this)
         lifecycle.addObserver(intentsHelper)
 
-
         sharedVM.communityList.observe(this) {
             if (it.status == LoadingStatus.ERROR) {
                 Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
@@ -177,7 +175,6 @@ class MainActivity : DaggerAppCompatActivity() {
             if (it.data.isNullOrEmpty()) return@observe
             if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) forumDrawer?.setCommunities(it.data)
             sharedVM.setForumMappings(it.data)
-            if (sharedVM.selectedForumId.value == null) sharedVM.setForumId(applicationDataStore.getDefaultForumId())
             Timber.i("Loaded ${it.data.size} communities to Adapter")
         }
 
@@ -277,32 +274,35 @@ class MainActivity : DaggerAppCompatActivity() {
     @SuppressLint("CheckResult")
     private suspend fun loadResources() {
         applicationDataStore.loadCookies()
-        applicationDataStore.getLatestRelease()?.let { release ->
-            if (this.isFinishing) return@let
-            MaterialDialog(this).show {
-                lifecycleOwner(this@MainActivity)
-                title(R.string.download_latest_version)
-                icon(R.mipmap.ic_launcher)
-                message(text = release.message)
-                listItemsSingleChoice(
-                    R.array.download_options,
-                    waitForPositiveButton = true
-                ) { _, index, _ ->
-                    val uri = when (index) {
-                        0 -> Uri.parse(DawnConstants.DOWNLOAD_ADNMB)
-                        1 -> Uri.parse(release.downloadUrl)
-                        2 -> Uri.parse(DawnConstants.DOWNLOAD_GOOGLE_PLAY)
-                        else -> Uri.parse("https://github.com/fishballzzz/DawnIslandK")
-                    }
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    if (intent.resolveActivity(packageManager) != null) {
-                        startActivity(intent)
-                    }
-                }
-                positiveButton(R.string.submit)
-                negativeButton(R.string.cancel)
-            }
-        }
+//        applicationDataStore.getLatestRelease()?.let { release ->
+//            if (this.isFinishing) return@let
+//            MaterialDialog(this).show {
+//                lifecycleOwner(this@MainActivity)
+//                title(R.string.download_latest_version)
+//                icon(R.mipmap.ic_launcher)
+//                message(text = release.message)
+//                listItemsSingleChoice(
+//                    R.array.download_options,
+//                    waitForPositiveButton = true
+//                ) { _, index, _ ->
+//                    val uri = when (index) {
+//                        0 -> Uri.parse(DawnConstants.DOWNLOAD_ADNMB)
+//                        1 -> Uri.parse(release.downloadUrl)
+//                        2 -> Uri.parse(DawnConstants.DOWNLOAD_GOOGLE_PLAY)
+//                        else -> Uri.parse("https://github.com/fishballzzz/DawnIslandK")
+//                    }
+//                    val intent = Intent(Intent.ACTION_VIEW, uri)
+//                    if (intent.resolveActivity(packageManager) != null) {
+//                        startActivity(intent)
+//                    }
+//                }
+//                positiveButton(R.string.submit)
+//                negativeButton(R.string.cancel)
+//            }
+//        }
+
+        applicationDataStore.getReedSession()
+        if (sharedVM.selectedForumId.value == null) sharedVM.setForumId(applicationDataStore.getDefaultForumId())
 
         applicationDataStore.getLatestNMBNotice()?.let { notice ->
             if (this.isFinishing) return@let
@@ -320,29 +320,29 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
-        applicationDataStore.getLatestLuweiNotice()?.let { luweiNotice ->
-            sharedVM.setLuweiLoadingBible(luweiNotice.loadingMsgs)
-            sharedVM.setBeiTaiForums(luweiNotice.beitaiForums)
-        }
+//        applicationDataStore.getLatestLuweiNotice()?.let { luweiNotice ->
+//            sharedVM.setLuweiLoadingBible(luweiNotice.loadingMsgs)
+//            sharedVM.setBeiTaiForums(luweiNotice.beitaiForums)
+//        }
 
-        // first time app entry
-        applicationDataStore.getFirstTimeUse().let {
-            if (it) {
-                if (this.isFinishing) return@let
-                MaterialDialog(this).show {
-                    lifecycleOwner(this@MainActivity)
-                    title(res = R.string.announcement)
-                    checkBoxPrompt(R.string.acknowledge) {}
-                    cancelOnTouchOutside(false)
-                    message(R.string.entry_message)
-                    positiveButton(R.string.close) {
-                        if (isCheckPromptChecked()) {
-                            applicationDataStore.setFirstTimeUse()
-                        }
-                    }
-                }
-            }
-        }
+//        // first time app entry
+//        applicationDataStore.getFirstTimeUse().let {
+//            if (it) {
+//                if (this.isFinishing) return@let
+//                MaterialDialog(this).show {
+//                    lifecycleOwner(this@MainActivity)
+//                    title(res = R.string.announcement)
+//                    checkBoxPrompt(R.string.acknowledge) {}
+//                    cancelOnTouchOutside(false)
+//                    message(R.string.entry_message)
+//                    positiveButton(R.string.close) {
+//                        if (isCheckPromptChecked()) {
+//                            applicationDataStore.setFirstTimeUse()
+//                        }
+//                    }
+//                }
+//            }
+//        }
     }
 
     private fun bindNavBarAndNavController() {

@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.apache.commons.text.StringEscapeUtils
+import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import retrofit2.Call
@@ -67,7 +68,12 @@ sealed class APIMessageResponse(
                     }
                     val resBody = withContext(Dispatchers.IO) { body.string() }
                     return withContext(Dispatchers.Default) {
-                        if (regex.containsMatchIn(resBody)) {
+                        if(JSONObject(resBody).run { getInt("errcode") } == 0){
+                            Success(
+                                MessageType.String, "回复成功"
+                            )
+                        }
+                        else if (regex.containsMatchIn(resBody)) {
                             Success(
                                 MessageType.HTML,
                                 "HTML Response",

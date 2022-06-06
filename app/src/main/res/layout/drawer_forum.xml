@@ -37,15 +37,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
-    <Button
-        android:id="@+id/ReedPictureRefresh"
-        style="@style/Widget.App.Button.OutlinedButton.IconOnly"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:icon="@drawable/ic_refresh_24px"
-        app:layout_constraintBottom_toBottomOf="@id/reedImageView"
-        app:layout_constraintEnd_toEndOf="@id/reedImageView"
-        app:strokeWidth="0dp" />
+<!--    <Button-->
+<!--        android:id="@+id/ReedPictureRefresh"-->
+<!--        style="@style/Widget.App.Button.OutlinedButton.IconOnly"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:icon="@drawable/ic_refresh_24px"-->
+<!--        app:layout_constraintBottom_toBottomOf="@id/reedImageView"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/reedImageView"-->
+<!--        app:strokeWidth="0dp" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/forumContainer"
@@ -59,16 +59,16 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <Button
-        android:id="@+id/hostToggle"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:iconGravity="textStart"
-        android:textColor="?android:attr/textColorPrimary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/themeToggle"
-        app:layout_constraintStart_toStartOf="parent" />
+<!--    <Button-->
+<!--        android:id="@+id/hostToggle"-->
+<!--        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:iconGravity="textStart"-->
+<!--        android:textColor="?android:attr/textColorPrimary"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/themeToggle"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
 
     <Button
         android:id="@+id/themeToggle"
@@ -79,6 +79,7 @@
         android:textColor="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/hostToggle" />
+        app:layout_constraintStart_toStartOf="parent" />
+<!--        app:layout_constraintStart_toEndOf="@id/hostToggle" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

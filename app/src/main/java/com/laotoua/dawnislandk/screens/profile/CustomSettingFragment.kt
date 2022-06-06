@@ -26,10 +26,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.WhichButton
-import com.afollestad.materialdialogs.actions.setActionButtonEnabled
-import com.afollestad.materialdialogs.input.getInputField
-import com.afollestad.materialdialogs.input.input
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
@@ -42,7 +38,6 @@ import com.laotoua.dawnislandk.screens.SharedViewModel
 import com.laotoua.dawnislandk.screens.util.ContentTransformation
 import com.laotoua.dawnislandk.screens.util.Layout.toast
 import com.laotoua.dawnislandk.screens.util.Layout.updateSwitchSummary
-import com.laotoua.dawnislandk.util.DawnConstants
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -160,33 +155,33 @@ class CustomSettingFragment : DaggerFragment() {
             }
         }
 
-        binding?.defaultSubscriptionPage?.apply {
-            key.setText(R.string.edit_subscription_default_page)
-            val items = listOf(getString(R.string.trend), getString(R.string.my_feed))
-            summary.text = if (applicationDataStore.getSubscriptionPagerFeedIndex() == 1) {
-                getString(R.string.trend)
-            } else {
-                getString(R.string.my_feed)
-            }
-            root.setOnClickListener {
-                if (activity == null || !isAdded) return@setOnClickListener
-                MaterialDialog(requireContext()).show {
-                    lifecycleOwner(this@CustomSettingFragment)
-                    title(R.string.edit_subscription_default_page)
-                    listItemsSingleChoice(items = items) { _, index, _ ->
-                        applicationDataStore.setSubscriptionPagerFeedIndex(1 - index)
-                        toast(R.string.restart_to_apply_setting)
-                        if (index == 1) {
-                            summary.text = getString(R.string.trend)
-                        } else {
-                            summary.text = getString(R.string.my_feed)
-                        }
-                    }
-                    positiveButton(R.string.submit)
-                    negativeButton(R.string.cancel)
-                }
-            }
-        }
+//        binding?.defaultSubscriptionPage?.apply {
+//            key.setText(R.string.edit_subscription_default_page)
+//            val items = listOf(getString(R.string.trend), getString(R.string.my_feed))
+//            summary.text = if (applicationDataStore.getSubscriptionPagerFeedIndex() == 1) {
+//                getString(R.string.trend)
+//            } else {
+//                getString(R.string.my_feed)
+//            }
+//            root.setOnClickListener {
+//                if (activity == null || !isAdded) return@setOnClickListener
+//                MaterialDialog(requireContext()).show {
+//                    lifecycleOwner(this@CustomSettingFragment)
+//                    title(R.string.edit_subscription_default_page)
+//                    listItemsSingleChoice(items = items) { _, index, _ ->
+//                        applicationDataStore.setSubscriptionPagerFeedIndex(1 - index)
+//                        toast(R.string.restart_to_apply_setting)
+//                        if (index == 1) {
+//                            summary.text = getString(R.string.trend)
+//                        } else {
+//                            summary.text = getString(R.string.my_feed)
+//                        }
+//                    }
+//                    positiveButton(R.string.submit)
+//                    negativeButton(R.string.cancel)
+//                }
+//            }
+//        }
 
         binding?.defaultHistoryPage?.apply {
             key.setText(R.string.edit_history_default_page)
@@ -241,107 +236,107 @@ class CustomSettingFragment : DaggerFragment() {
             }
         }
 
-        binding?.setBaseCdn?.apply {
-            key.setText(R.string.set_base_cdn)
-            var baseCDN = applicationDataStore.getBaseCDN()
-            summary.text = if (baseCDN == "auto") "自动" else baseCDN
-            root.setOnClickListener {
-                if (activity == null || !isAdded) return@setOnClickListener
-                MaterialDialog(requireActivity()).show {
-                    lifecycleOwner(this@CustomSettingFragment)
-                    title(R.string.set_base_cdn)
-                    listItemsSingleChoice(R.array.base_cdn_options, waitForPositiveButton = true) { _, index, text ->
-                        when (index) {
-                            0, 1, 2, 3 -> {
-                                baseCDN = if (index == 0) "auto" else text.toString()
-                                applicationDataStore.setBaseCDN(baseCDN)
-                                summary.text = if (index == 0) "自动" else baseCDN
-                                toast(R.string.restart_to_apply_setting)
-                            }
-                            4 -> {
-                                MaterialDialog(requireActivity()).show {
-                                    lifecycleOwner(this@CustomSettingFragment)
-                                    title(R.string.set_base_cdn)
-                                    message(R.string.set_base_cdn_prompt)
-                                    input(
-                                        hint = baseCDN,
-                                        prefill = baseCDN,
-                                        waitForPositiveButton = false
-                                    ) { dialog, text ->
-                                        val inputField = dialog.getInputField()
-                                        val isValid = text.startsWith("https://", true)
-                                        inputField.error = if (isValid) null else "必须以https://开始"
-                                        dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
-                                    }
-                                    positiveButton(R.string.submit) {
-                                        baseCDN = getInputField().text.toString()
-                                        summary.text = baseCDN
-                                        applicationDataStore.setBaseCDN(baseCDN)
-                                        toast(R.string.restart_to_apply_setting)
-                                    }
-                                    negativeButton(R.string.cancel)
-                                }
-                            }
-                        }
-                    }
-                    positiveButton(R.string.submit)
-                    negativeButton(R.string.cancel)
-                }
-            }
-        }
-
-        binding?.setRefCdn?.apply {
-            key.setText(R.string.set_ref_cdn)
-            var refCDN = applicationDataStore.getRefCDN()
-            summary.text = if (refCDN == "auto") "自动" else refCDN
-            root.setOnClickListener {
-                if (activity == null || !isAdded) return@setOnClickListener
-                MaterialDialog(requireActivity()).show {
-                    title(R.string.set_ref_cdn)
-                    lifecycleOwner(this@CustomSettingFragment)
-                    listItemsSingleChoice(R.array.ref_cdn_options, waitForPositiveButton = true) { _, index, text ->
-                        when (index) {
-                            0, 1, 2 -> {
-                                refCDN = if (index == 0) "auto" else text.toString()
-                                summary.text = if (index == 0) "自动" else refCDN
-                                applicationDataStore.setRefCDN(refCDN)
-                                toast(R.string.restart_to_apply_setting)
-                            }
-                            3 -> {
-                                MaterialDialog(requireActivity()).show {
-                                    lifecycleOwner(this@CustomSettingFragment)
-                                    title(R.string.set_ref_cdn)
-                                    message(R.string.set_ref_cdn_prompt)
-                                    input(
-                                        hint = refCDN,
-                                        prefill = refCDN,
-                                        waitForPositiveButton = false
-                                    ) { dialog, text ->
-                                        val inputField = dialog.getInputField()
-                                        val isValid = text.startsWith(
-                                            "https://",
-                                            true
-                                        ) && !text.endsWith(DawnConstants.fastMirrorHost, true)
-                                        inputField.error =
-                                            if (isValid) null else "必须以https://开始且不能使用https://nmb.fastmirror.org"
-                                        dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
-                                    }
-                                    positiveButton(R.string.submit) {
-                                        refCDN = getInputField().text.toString()
-                                        summary.text = refCDN
-                                        applicationDataStore.setRefCDN(refCDN)
-                                        toast(R.string.restart_to_apply_setting)
-                                    }
-                                    negativeButton(R.string.cancel)
-                                }
-                            }
-                        }
-                    }
-                    positiveButton(R.string.submit)
-                    negativeButton(R.string.cancel)
-                }
-            }
-        }
+//        binding?.setBaseCdn?.apply {
+//            key.setText(R.string.set_base_cdn)
+//            var baseCDN = applicationDataStore.getBaseCDN()
+//            summary.text = if (baseCDN == "auto") "自动" else baseCDN
+//            root.setOnClickListener {
+//                if (activity == null || !isAdded) return@setOnClickListener
+//                MaterialDialog(requireActivity()).show {
+//                    lifecycleOwner(this@CustomSettingFragment)
+//                    title(R.string.set_base_cdn)
+//                    listItemsSingleChoice(R.array.base_cdn_options, waitForPositiveButton = true) { _, index, text ->
+//                        when (index) {
+//                            0, 1, 2, 3 -> {
+//                                baseCDN = if (index == 0) "auto" else text.toString()
+//                                applicationDataStore.setBaseCDN(baseCDN)
+//                                summary.text = if (index == 0) "自动" else baseCDN
+//                                toast(R.string.restart_to_apply_setting)
+//                            }
+//                            4 -> {
+//                                MaterialDialog(requireActivity()).show {
+//                                    lifecycleOwner(this@CustomSettingFragment)
+//                                    title(R.string.set_base_cdn)
+//                                    message(R.string.set_base_cdn_prompt)
+//                                    input(
+//                                        hint = baseCDN,
+//                                        prefill = baseCDN,
+//                                        waitForPositiveButton = false
+//                                    ) { dialog, text ->
+//                                        val inputField = dialog.getInputField()
+//                                        val isValid = text.startsWith("https://", true)
+//                                        inputField.error = if (isValid) null else "必须以https://开始"
+//                                        dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
+//                                    }
+//                                    positiveButton(R.string.submit) {
+//                                        baseCDN = getInputField().text.toString()
+//                                        summary.text = baseCDN
+//                                        applicationDataStore.setBaseCDN(baseCDN)
+//                                        toast(R.string.restart_to_apply_setting)
+//                                    }
+//                                    negativeButton(R.string.cancel)
+//                                }
+//                            }
+//                        }
+//                    }
+//                    positiveButton(R.string.submit)
+//                    negativeButton(R.string.cancel)
+//                }
+//            }
+//        }
+//
+//        binding?.setRefCdn?.apply {
+//            key.setText(R.string.set_ref_cdn)
+//            var refCDN = applicationDataStore.getRefCDN()
+//            summary.text = if (refCDN == "auto") "自动" else refCDN
+//            root.setOnClickListener {
+//                if (activity == null || !isAdded) return@setOnClickListener
+//                MaterialDialog(requireActivity()).show {
+//                    title(R.string.set_ref_cdn)
+//                    lifecycleOwner(this@CustomSettingFragment)
+//                    listItemsSingleChoice(R.array.ref_cdn_options, waitForPositiveButton = true) { _, index, text ->
+//                        when (index) {
+//                            0, 1, 2 -> {
+//                                refCDN = if (index == 0) "auto" else text.toString()
+//                                summary.text = if (index == 0) "自动" else refCDN
+//                                applicationDataStore.setRefCDN(refCDN)
+//                                toast(R.string.restart_to_apply_setting)
+//                            }
+//                            3 -> {
+//                                MaterialDialog(requireActivity()).show {
+//                                    lifecycleOwner(this@CustomSettingFragment)
+//                                    title(R.string.set_ref_cdn)
+//                                    message(R.string.set_ref_cdn_prompt)
+//                                    input(
+//                                        hint = refCDN,
+//                                        prefill = refCDN,
+//                                        waitForPositiveButton = false
+//                                    ) { dialog, text ->
+//                                        val inputField = dialog.getInputField()
+//                                        val isValid = text.startsWith(
+//                                            "https://",
+//                                            true
+//                                        ) && !text.endsWith(DawnConstants.fastMirrorHost, true)
+//                                        inputField.error =
+//                                            if (isValid) null else "必须以https://开始且不能使用https://nmb.fastmirror.org"
+//                                        dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
+//                                    }
+//                                    positiveButton(R.string.submit) {
+//                                        refCDN = getInputField().text.toString()
+//                                        summary.text = refCDN
+//                                        applicationDataStore.setRefCDN(refCDN)
+//                                        toast(R.string.restart_to_apply_setting)
+//                                    }
+//                                    negativeButton(R.string.cancel)
+//                                }
+//                            }
+//                        }
+//                    }
+//                    positiveButton(R.string.submit)
+//                    negativeButton(R.string.cancel)
+//                }
+//            }
+//        }
 
         viewModel.timelineBlockedForumIds.observe(viewLifecycleOwner) {
             blockedForumIds = it

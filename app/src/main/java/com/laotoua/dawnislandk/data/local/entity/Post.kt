@@ -31,14 +31,14 @@ import kotlin.math.ceil
 data class Post(
     @PrimaryKey val id: String, //	该串的id
     var fid: String = "", //	该串的fid, 非时间线的串会被设置
-    val img: String,//	该串的图片相对地址
-    val ext: String, // 	该串图片的后缀
+    val img: String?,//	该串的图片相对地址
+    val ext: String?, // 	该串图片的后缀
     val now: String,// 	该串的可视化发言时间
     val userid: String, // 	该串的饼干
-    val name: String,
-    val email: String,
-    val title: String,
-    val content: String,
+    val name: String?,
+    val email: String?,
+    val title: String?,
+    val content: String?,
     val sage: String = "",
     val admin: String = "0",//admin 	是否是酷炫红名，如果是酷炫红名则userid为红名id
     val status: String = "",
@@ -51,14 +51,14 @@ data class Post(
     constructor(
         id: String,
         fid: String,
-        img: String,
-        ext: String,
+        img: String?,
+        ext: String?,
         now: String,
         userid: String,
-        name: String,
-        email: String,
-        title: String,
-        content: String,
+        name: String?,
+        email: String?,
+        title: String?,
+        content: String?,
         sage: String,
         admin: String,
         status: String,
@@ -107,9 +107,9 @@ data class Post(
     // special handler for sticky top banner
     fun isStickyTopBanner(): Boolean = id == "14500641" || id == "31163008"
 
-    fun getImgUrl() = (img + ext)
-    fun getSimplifiedTitle(): String = if (title.isNotBlank() && title != "无标题") "标题：$title" else ""
-    fun getSimplifiedName(): String = if (name.isNotBlank() && name != "无名氏") "名称：$name" else ""
+    fun getImgUrl() = img?.let { (img + ext) }?:""
+    fun getSimplifiedTitle(): String = if (title != null && title != "无标题") "标题：$title" else ""
+    fun getSimplifiedName(): String = if (name != null && name != "无名氏") "名称：$name" else ""
     fun getMaxPage() = if (replyCount.isBlank()) 1 else 1.coerceAtLeast(ceil(replyCount.toDouble() / 19).toInt())
 
     // only compares by server fields

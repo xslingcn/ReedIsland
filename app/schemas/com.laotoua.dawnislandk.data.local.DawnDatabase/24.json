@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 24,
-    "identityHash": "482f29dd7b4306068a37ef171b09d40a",
+    "identityHash": "2879fe8a0b750d5175568c869b41d48e",
     "entities": [
       {
         "tableName": "Community",
@@ -144,7 +144,7 @@
       },
       {
         "tableName": "Comment",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `userid` TEXT NOT NULL, `name` TEXT NOT NULL, `sage` TEXT NOT NULL, `admin` TEXT NOT NULL, `status` TEXT NOT NULL, `title` TEXT NOT NULL, `email` TEXT NOT NULL, `now` TEXT NOT NULL, `content` TEXT NOT NULL, `img` TEXT NOT NULL, `ext` TEXT NOT NULL, `page` INTEGER NOT NULL, `parentId` TEXT NOT NULL, `domain` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `userid` TEXT NOT NULL, `name` TEXT, `sage` TEXT NOT NULL, `admin` TEXT NOT NULL, `status` TEXT NOT NULL, `title` TEXT, `email` TEXT, `now` TEXT NOT NULL, `content` TEXT, `img` TEXT, `ext` TEXT, `page` INTEGER NOT NULL, `parentId` TEXT NOT NULL, `domain` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -162,7 +162,7 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "sage",
@@ -186,13 +186,13 @@
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "email",
             "columnName": "email",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "now",
@@ -204,19 +204,19 @@
             "fieldPath": "content",
             "columnName": "content",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "img",
             "columnName": "img",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "ext",
             "columnName": "ext",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "page",
@@ -254,7 +254,7 @@
       },
       {
         "tableName": "Post",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fid` TEXT NOT NULL, `img` TEXT NOT NULL, `ext` TEXT NOT NULL, `now` TEXT NOT NULL, `userid` TEXT NOT NULL, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `sage` TEXT NOT NULL, `admin` TEXT NOT NULL, `status` TEXT NOT NULL, `replyCount` TEXT NOT NULL, `domain` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `fid` TEXT NOT NULL, `img` TEXT, `ext` TEXT, `now` TEXT NOT NULL, `userid` TEXT NOT NULL, `name` TEXT, `email` TEXT, `title` TEXT, `content` TEXT, `sage` TEXT NOT NULL, `admin` TEXT NOT NULL, `status` TEXT NOT NULL, `replyCount` TEXT NOT NULL, `domain` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -272,13 +272,13 @@
             "fieldPath": "img",
             "columnName": "img",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "ext",
             "columnName": "ext",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "now",
@@ -296,25 +296,25 @@
             "fieldPath": "name",
             "columnName": "name",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "email",
             "columnName": "email",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "title",
             "columnName": "title",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "content",
             "columnName": "content",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "sage",
@@ -408,7 +408,7 @@
       },
       {
         "tableName": "NMBNotice",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `content` TEXT NOT NULL, `date` INTEGER NOT NULL, `enable` INTEGER NOT NULL, `read` INTEGER NOT NULL, `lastUpdatedAt` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `content` TEXT NOT NULL, `enable` INTEGER NOT NULL, `read` INTEGER NOT NULL, `lastUpdatedAt` TEXT NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
@@ -420,12 +420,6 @@
             "fieldPath": "content",
             "columnName": "content",
             "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "date",
-            "columnName": "date",
-            "affinity": "INTEGER",
             "notNull": true
           },
           {
@@ -601,6 +595,38 @@
         "foreignKeys": []
       },
       {
+        "tableName": "ReedSession",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`cookie` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, `domain` TEXT NOT NULL, PRIMARY KEY(`cookie`))",
+        "fields": [
+          {
+            "fieldPath": "cookie",
+            "columnName": "cookie",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastUpdatedAt",
+            "columnName": "lastUpdatedAt",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "domain",
+            "columnName": "domain",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "cookie"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
         "tableName": "BrowsingHistory",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`browsedDateTime` TEXT NOT NULL, `postId` TEXT NOT NULL, `postFid` TEXT NOT NULL, `pages` TEXT NOT NULL, `domain` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
         "fields": [
@@ -652,7 +678,7 @@
       },
       {
         "tableName": "PostHistory",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `newPost` INTEGER NOT NULL, `postTargetId` TEXT NOT NULL, `postTargetFid` TEXT NOT NULL, `postTargetPage` INTEGER NOT NULL, `cookieName` TEXT NOT NULL, `content` TEXT NOT NULL, `img` TEXT NOT NULL, `ext` TEXT NOT NULL, `domain` TEXT NOT NULL, `postDateTime` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `newPost` INTEGER NOT NULL, `postTargetId` TEXT NOT NULL, `postTargetFid` TEXT NOT NULL, `postTargetPage` INTEGER NOT NULL, `cookieName` TEXT NOT NULL, `content` TEXT, `img` TEXT, `ext` TEXT, `domain` TEXT NOT NULL, `postDateTime` TEXT NOT NULL, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -694,19 +720,19 @@
             "fieldPath": "content",
             "columnName": "content",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "img",
             "columnName": "img",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "ext",
             "columnName": "ext",
             "affinity": "TEXT",
-            "notNull": true
+            "notNull": false
           },
           {
             "fieldPath": "domain",
@@ -732,7 +758,7 @@
       },
       {
         "tableName": "Feed",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `page` INTEGER NOT NULL, `postId` TEXT NOT NULL, `category` TEXT NOT NULL, `domain` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, PRIMARY KEY(`postId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `page` INTEGER NOT NULL, `postId` TEXT NOT NULL, `domain` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, PRIMARY KEY(`postId`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -749,12 +775,6 @@
           {
             "fieldPath": "postId",
             "columnName": "postId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "category",
-            "columnName": "category",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -916,7 +936,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '482f29dd7b4306068a37ef171b09d40a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2879fe8a0b750d5175568c869b41d48e')"
     ]
   }
 }

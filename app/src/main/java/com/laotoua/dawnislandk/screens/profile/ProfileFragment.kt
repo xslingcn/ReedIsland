@@ -39,7 +39,6 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItems
 import com.google.android.material.textfield.TextInputLayout
 import com.king.zxing.util.CodeUtils
-import com.laotoua.dawnislandk.BuildConfig
 import com.laotoua.dawnislandk.R
 import com.laotoua.dawnislandk.data.local.entity.Cookie
 import com.laotoua.dawnislandk.databinding.FragmentProfileBinding
@@ -213,13 +212,13 @@ class ProfileFragment : DaggerFragment() {
                                     !text.isNullOrBlank() && !cookieName.text.isNullOrBlank()
                                 neuralButton.isEnabled = !text.isNullOrBlank()
                             }
-                            @Suppress("DEPRECATION")
-                            neutralButton(R.string.default_cookie_name) {
-                                val cookieHashText = cookieHash.text.toString()
-                                if (cookieHashText.isNotBlank()) {
-                                    viewModel.addNewCookie(cookieHashText)
-                                }
-                            }
+//                            @Suppress("DEPRECATION")
+//                            neutralButton(R.string.default_cookie_name) {
+//                                val cookieHashText = cookieHash.text.toString()
+//                                if (cookieHashText.isNotBlank()) {
+//                                    viewModel.addNewCookie(cookieHashText)
+//                                }
+//                            }
                         }
                     }
                 }
@@ -234,9 +233,9 @@ class ProfileFragment : DaggerFragment() {
                 positiveButton(R.string.acknowledge)
             }
         }
-        binding!!.credit.apply {
-            text = getString(R.string.credit, BuildConfig.VERSION_NAME)
-        }
+//        binding!!.credit.apply {
+//            text = getString(R.string.credit, BuildConfig.VERSION_NAME)
+//        }
 
 //        hideProgressBarAndShowSettings()
         return binding!!.root
@@ -331,13 +330,13 @@ class ProfileFragment : DaggerFragment() {
                 lifecycleOwner(this@ProfileFragment)
                 title(R.string.edit_cookie_remark)
                 cancelable(false)
-                input(hint = cookieHash) { _, text ->
+                input(hint = JSONObject(cookieJson).getString("name")) { _, text ->
                     viewModel.addNewCookie(cookieHash, text.toString())
                 }
                 positiveButton(R.string.submit)
                 @Suppress("DEPRECATION")
                 neutralButton(R.string.default_cookie_name) {
-                    viewModel.addNewCookie(cookieHash)
+                    viewModel.addNewCookie(cookieHash, JSONObject(cookieJson).getString("name"))
                 }
 
                 negativeButton(R.string.cancel) {

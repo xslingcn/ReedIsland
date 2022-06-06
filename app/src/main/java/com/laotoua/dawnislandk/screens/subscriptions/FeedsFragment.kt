@@ -55,7 +55,6 @@ import com.lxj.xpopup.XPopup
 import me.dkzwm.widget.srl.RefreshingListenerAdapter
 import me.dkzwm.widget.srl.config.Constants
 import timber.log.Timber
-import java.util.*
 import kotlin.collections.ArrayList
 
 
@@ -305,7 +304,7 @@ class FeedsFragment : BaseNavFragment() {
 
     private class FeedAndPostDiffer : DiffUtil.ItemCallback<FeedAndPost>() {
         override fun areItemsTheSame(oldItem: FeedAndPost, newItem: FeedAndPost): Boolean {
-            return oldItem.feed.postId == newItem.feed.postId && oldItem.feed.category == newItem.feed.category
+            return oldItem.feed.postId == newItem.feed.postId
         }
 
         override fun areContentsTheSame(oldItem: FeedAndPost, newItem: FeedAndPost): Boolean {

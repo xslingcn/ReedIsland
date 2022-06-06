@@ -29,16 +29,16 @@ import java.time.LocalDateTime
 data class Comment(
     @PrimaryKey val id: String,
     val userid: String,
-    val name: String = "",
+    val name: String?,
     val sage: String = "0",
     val admin: String = "0",
     val status: String = "n",
-    val title: String,
-    val email: String,
+    val title: String?,
+    val email: String?,
     val now: String,
-    val content: String,
-    val img: String,
-    val ext: String,
+    val content: String?,
+    val img: String?,
+    val ext: String?,
     var page: Int = 1,
     var parentId: String = "",
     val domain: String = DawnApp.currentDomain,
@@ -51,12 +51,12 @@ data class Comment(
 
     fun getSimplifiedTitle(): String =
         if (isAd()) "广告"
-        else if (title.isNotBlank() && title != "无标题") "标题：$title"
+        else if (title !=null && title != "无标题") "标题：$title"
         else ""
 
-    fun getSimplifiedName(): String = if (name.isNotBlank() && name != "无名氏") "作者：$name" else ""
+    fun getSimplifiedName(): String = if (name!=null && name != "无名氏") "作者：$name" else ""
 
-    fun getImgUrl(): String = (img + ext)
+    fun getImgUrl(): String = img?.let { img + ext }?:""
     fun isNotAd(): Boolean = (id != "9999999")
     fun isAd(): Boolean = !isNotAd()
 

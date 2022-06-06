@@ -17,6 +17,8 @@
 
 package com.laotoua.dawnislandk.util
 
+import com.laotoua.dawnislandk.BuildConfig
+
 object DawnConstants {
     const val MAIN_TEXT_SIZE = "main_text_size"
     const val CARD_RADIUS = "card_radius"
@@ -56,9 +58,9 @@ object DawnConstants {
     const val DEFAULT_TOOLBAR_IMAGE_NAME = "toolbar_bg.jpeg"
     const val DEFAULT_CDN = "default_cdn"
     const val REF_CDN = "ref_cdn"
-    const val ADNMBHost = "https://adnmb2.com"
-    const val fastMirrorHost = "nmb.fastmirror.org"
-    const val ADNMB_IMG_CDN = "https://nmbimg.fastmirror.org/"
+    const val ADNMBHost = "https://aweidao1.com"
+    const val fastMirrorHost = "aweidao1.com"
+    const val ADNMB_IMG_CDN = "https://aweidao1.com/image/"
     const val TNMB_IMG_CDN = "https://www.tnmb.org/Public/Upload/"
 
     const val ADNMBDomain = "adnmb"
@@ -73,4 +75,6 @@ object DawnConstants {
     const val DOWNLOAD_ADNMB = "https://app.adnmb.com"
     const val DOWNLOAD_GITHUB = "https://github.com/fishballzzz/DawnIslandK/releases/latest"
     const val DOWNLOAD_GOOGLE_PLAY = "https://play.google.com/store/apps/details?id=com.laotoua.dawnislandk"
+
+    const val USER_AGENT = "User-Agent: REED-DAWN-${BuildConfig.VERSION_NAME}"
 }

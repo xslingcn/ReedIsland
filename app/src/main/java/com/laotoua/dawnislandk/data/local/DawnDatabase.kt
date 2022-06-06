@@ -42,6 +42,7 @@ import com.laotoua.dawnislandk.data.local.entity.*
         LuweiNotice::class,
         Release::class,
         ReadingPage::class,
+        ReedSession::class,
         BrowsingHistory::class,
         PostHistory::class,
         Feed::class,
@@ -62,6 +63,7 @@ abstract class DawnDatabase : RoomDatabase() {
     abstract fun luweiNoticeDao(): LuweiNoticeDao
     abstract fun releaseDao(): ReleaseDao
     abstract fun readingPageDao(): ReadingPageDao
+    abstract fun reedSessionDao(): ReedSessionDao
     abstract fun browsingHistoryDao(): BrowsingHistoryDao
     abstract fun postHistoryDao(): PostHistoryDao
     abstract fun feedDao(): FeedDao
@@ -365,6 +367,7 @@ abstract class DawnDatabase : RoomDatabase() {
                     database.execSQL("ALTER TABLE `Comment` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
                     database.execSQL("ALTER TABLE `Community` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
                     database.execSQL("ALTER TABLE `Cookie` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
+                    database.execSQL("ALTER TABLE `ReedSession` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
                     database.execSQL("ALTER TABLE `Feed` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
                     database.execSQL("ALTER TABLE `Notification` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
                     database.execSQL("ALTER TABLE `Post` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")

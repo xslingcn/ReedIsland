@@ -95,6 +95,12 @@ object DatabaseModule {
 
     @Provides
     @Singleton
+    fun provideReedSessionDao(dawnDatabase: DawnDatabase): ReedSessionDao {
+        return dawnDatabase.reedSessionDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideBrowsingHistoryDao(dawnDatabase: DawnDatabase): BrowsingHistoryDao {
         return dawnDatabase.browsingHistoryDao()
     }

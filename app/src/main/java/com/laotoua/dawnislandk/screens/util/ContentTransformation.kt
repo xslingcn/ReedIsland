@@ -48,7 +48,7 @@ object ContentTransformation {
         Pattern.compile("$CUSTOM_HIDE_PATTERN_OPEN(.+?)$CUSTOM_HIDE_PATTERN_CLOSE")
 
     @Suppress("DEPRECATION")
-    fun htmlToSpanned(string: String): Spanned {
+    fun htmlToSpanned(string: String?): Spanned {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
             Html.fromHtml(string)
         } else {

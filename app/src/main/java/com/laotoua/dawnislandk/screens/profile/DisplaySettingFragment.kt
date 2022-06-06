@@ -17,7 +17,6 @@
 
 package com.laotoua.dawnislandk.screens.profile
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +31,6 @@ import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.laotoua.dawnislandk.DawnApp.Companion.applicationDataStore
 import com.laotoua.dawnislandk.R
 import com.laotoua.dawnislandk.databinding.FragmentDisplaySettingBinding
-import com.laotoua.dawnislandk.screens.MainActivity
 import com.laotoua.dawnislandk.screens.util.Layout.toast
 import com.laotoua.dawnislandk.screens.util.Layout.updateSwitchSummary
 
@@ -127,39 +125,39 @@ class DisplaySettingFragment : Fragment() {
             }
         }
 
-        binding?.toolbarCustomization?.apply {
-            key.setText(R.string.toolbar_customization)
-            preferenceSwitch.visibility = View.VISIBLE
-            preferenceSwitch.isClickable = true
-            preferenceSwitch.isChecked = applicationDataStore.getCustomToolbarImageStatus()
-            updateSwitchSummary(
-                R.string.toolbar_customization_on,
-                R.string.toolbar_customization_off
-            )
-            preferenceSwitch.setOnCheckedChangeListener { _, isChecked ->
-                applicationDataStore.setCustomToolbarImageStatus(isChecked)
-                updateSwitchSummary(
-                    R.string.toolbar_customization_on,
-                    R.string.toolbar_customization_off
-                )
-                toast(R.string.restart_to_apply_setting)
-            }
-            root.setOnClickListener {
-                if (activity == null || !isAdded) return@setOnClickListener
-                val caller = requireActivity() as MainActivity
-                if (!caller.intentsHelper.checkAndRequestAllPermissions(
-                        caller,
-                        arrayOf(
-                            Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        )
-                    )
-                ) {
-                    return@setOnClickListener
-                }
-                caller.intentsHelper.setToolbarBackgroundImage(caller)
-            }
-        }
+//        binding?.toolbarCustomization?.apply {
+//            key.setText(R.string.toolbar_customization)
+//            preferenceSwitch.visibility = View.VISIBLE
+//            preferenceSwitch.isClickable = true
+//            preferenceSwitch.isChecked = applicationDataStore.getCustomToolbarImageStatus()
+//            updateSwitchSummary(
+//                R.string.toolbar_customization_on,
+//                R.string.toolbar_customization_off
+//            )
+//            preferenceSwitch.setOnCheckedChangeListener { _, isChecked ->
+//                applicationDataStore.setCustomToolbarImageStatus(isChecked)
+//                updateSwitchSummary(
+//                    R.string.toolbar_customization_on,
+//                    R.string.toolbar_customization_off
+//                )
+//                toast(R.string.restart_to_apply_setting)
+//            }
+//            root.setOnClickListener {
+//                if (activity == null || !isAdded) return@setOnClickListener
+//                val caller = requireActivity() as MainActivity
+//                if (!caller.intentsHelper.checkAndRequestAllPermissions(
+//                        caller,
+//                        arrayOf(
+//                            Manifest.permission.READ_EXTERNAL_STORAGE,
+//                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+//                        )
+//                    )
+//                ) {
+//                    return@setOnClickListener
+//                }
+//                caller.intentsHelper.setToolbarBackgroundImage(caller)
+//            }
+//        }
 
         return binding!!.root
     }

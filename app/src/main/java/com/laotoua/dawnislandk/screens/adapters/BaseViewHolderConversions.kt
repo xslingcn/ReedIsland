@@ -132,13 +132,13 @@ fun BaseViewHolder.convertImage(imgUrl: String, visible: Boolean = true): BaseVi
 
 fun BaseViewHolder.convertContent(
     context: Context,
-    content: String,
+    content: String?,
     referenceClickListener: ReferenceSpan.ReferenceClickHandler? = null,
     visible: Boolean = true
 ): BaseViewHolder {
     val res = ContentTransformation.transformContent(
         context = context,
-        content = content,
+        content = content?: "",
         referenceClickListener = referenceClickListener
     )
     if (res.isNotBlank()) setText(R.id.content, res)

@@ -33,6 +33,7 @@ import com.laotoua.dawnislandk.util.LoadingStatus
 import com.laotoua.dawnislandk.util.getLocalListDataResource
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import org.json.JSONObject
 import timber.log.Timber
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -81,10 +82,19 @@ class FeedRepository @Inject constructor(
         return liveData {
             Timber.d("Querying remote Feed on $page")
             val response =
-                DataResource.create(webService.getFeeds(DawnApp.applicationDataStore.getFeedId(), page))
+                DataResource.create(webService.getFeeds(page))
             if (response.status == LoadingStatus.SUCCESS) {
                 emit(DataResource.create<List<FeedAndPost>>(convertFeedData(response.data!!, page), emptyList()))
-            } else {
+            } else if(JSONObject(response.message).optInt("errcode")==1012){
+                emit(
+                    DataResource.create<List<FeedAndPost>>(
+                        LoadingStatus.ERROR,
+                        emptyList(),
+                        "没有饼干，无法读取订阅..."
+                    )
+                )
+            }
+            else {
                 emit(
                     DataResource.create<List<FeedAndPost>>(
                         response.status,
@@ -106,7 +116,7 @@ class FeedRepository @Inject constructor(
         val baseIndex = (page - 1) * 10 + 1
         val timestamp = LocalDateTime.now()
         data.mapIndexed { index, serverFeed ->
-            feeds.add(Feed(baseIndex + index, page, serverFeed.id, serverFeed.category, DawnApp.currentDomain, timestamp))
+            feeds.add(Feed(baseIndex + index, page, serverFeed.id, DawnApp.currentDomain, timestamp))
             posts.add(serverFeed.toPost())
         }
 

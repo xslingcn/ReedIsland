@@ -37,12 +37,11 @@ interface NMBNoticeDao {
         insertNMBNotice(notice)
     }
 
-    @Query("UPDATE NMBNotice SET content=:content, enable=:enable, read=:read,lastUpdatedAt=:lastUpdatedAt WHERE date=:date")
+    @Query("UPDATE NMBNotice SET enable=:enable, read=:read,lastUpdatedAt=:lastUpdatedAt WHERE content=:content")
     suspend fun updateNMBNotice(
         content: String,
         enable: Boolean,
         read: Boolean,
-        date: Long,
         lastUpdatedAt: LocalDateTime
     )
 
@@ -50,10 +49,9 @@ interface NMBNoticeDao {
         content: String,
         enable: Boolean,
         read: Boolean,
-        date: Long,
         lastUpdatedAt: LocalDateTime = LocalDateTime.now()
     ) {
-        updateNMBNotice(content, enable, read, date, lastUpdatedAt)
+        updateNMBNotice(content, enable, read, lastUpdatedAt)
     }
 
     @Query("DELETE FROM NMBNotice")

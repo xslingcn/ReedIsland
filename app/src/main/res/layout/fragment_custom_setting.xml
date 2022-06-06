@@ -74,14 +74,14 @@
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@id/timelineFilter" />
 
-    <include
-        android:id="@+id/defaultSubscriptionPage"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/defaultForum" />
+<!--    <include-->
+<!--        android:id="@+id/defaultSubscriptionPage"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/defaultForum" />-->
 
     <include
         android:id="@+id/defaultHistoryPage"
@@ -90,7 +90,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/defaultSubscriptionPage" />
+        app:layout_constraintTop_toBottomOf="@id/defaultForum" />
+<!--        app:layout_constraintTop_toBottomOf="@id/defaultSubscriptionPage" />-->
 
     <include
         android:id="@+id/emojiSetting"
@@ -102,22 +103,22 @@
         app:layout_constraintTop_toBottomOf="@id/defaultHistoryPage" />
 
 
-    <include
-        android:id="@+id/set_base_cdn"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/emojiSetting" />
+<!--    <include-->
+<!--        android:id="@+id/set_base_cdn"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/emojiSetting" />-->
 
-    <include
-        android:id="@+id/set_ref_cdn"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/set_base_cdn" />
+<!--    <include-->
+<!--        android:id="@+id/set_ref_cdn"-->
+<!--        layout="@layout/list_item_preference"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/set_base_cdn" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

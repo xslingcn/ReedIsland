@@ -35,7 +35,6 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
 
 class SharedViewModel @Inject constructor(
@@ -229,11 +228,11 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    private fun getForumDisplayName(fid: String): String = if (fid.isBlank()) "" else forumNameMapping[fid] ?: "A岛"
+    private fun getForumDisplayName(fid: String): String = if (fid.isBlank()) "" else forumNameMapping[fid] ?: "芦苇岛"
 
     private fun getTimelineDisplayName(fid: String): String {
         val id = fid.substringAfter("-")
-        return if (id.isBlank()) "" else timelineNameMapping[id] ?: "A岛"
+        return if (id.isBlank()) "" else timelineNameMapping[id] ?: "芦苇岛"
     }
 
     fun getSelectedPostForumName(fid: String): String = getForumOrTimelineDisplayName(fid)
@@ -382,7 +381,7 @@ class SharedViewModel @Inject constructor(
     suspend fun getLatestPostId(): Pair<String, LocalDateTime> {
         var id = "0"
         var time = ""
-        webNMBServiceClient.getPosts("-1", 1).run {
+        webNMBServiceClient.getPosts("4", 1).run {
             if (this is APIDataResponse.Success) {
                 data?.map { post ->
                     if (post.id > id) {

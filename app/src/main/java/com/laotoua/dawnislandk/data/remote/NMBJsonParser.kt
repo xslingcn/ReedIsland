@@ -22,6 +22,7 @@ import com.laotoua.dawnislandk.util.ReadableTime
 import com.squareup.moshi.*
 import org.json.JSONObject
 import org.jsoup.Jsoup
+import timber.log.Timber
 import java.time.LocalDateTime
 
 
@@ -40,9 +41,16 @@ abstract class NMBJsonParser<T> {
         }
     }
 
+    class ConfigParser : NMBJsonParser<Config>() {
+        override fun parse(response: String): Config {
+            return moshi.adapter(Config::class.java).fromJson(response)!!
+        }
+    }
+
     class NMBNoticeParser : NMBJsonParser<NMBNotice>() {
         override fun parse(response: String): NMBNotice {
-            return moshi.adapter(NMBNotice::class.java).fromJson(response)!!
+            val notice: String = JSONObject(response).optString("siteNotify")
+            return moshi.adapter(NMBNotice::class.java).fromJson(JSONObject().put("content",notice).toString())!!
         }
     }
 
@@ -54,17 +62,22 @@ abstract class NMBJsonParser<T> {
 
     class CommunityParser : NMBJsonParser<List<Community>>() {
         override fun parse(response: String): List<Community> {
+            val forumList = JSONObject(response).run { optJSONArray("forumListV1") }
+            forumList?.remove(0)!!
             return moshi.adapter<List<Community>>(
                 Types.newParameterizedType(List::class.java, Community::class.java)
-            ).fromJson(response)!!
+            ).fromJson(forumList.toString())!!
         }
     }
 
     class TimelinesParser : NMBJsonParser<List<Timeline>>() {
         override fun parse(response: String): List<Timeline> {
+            val forumList = JSONObject(response).run { optJSONArray("forumListV1") }?.get(0)
+            val timelineList = JSONObject(forumList.toString()).run { optJSONArray("forums") }!!
+//            Timber.d(timelineList.toString())
             return moshi.adapter<List<Timeline>>(
                 Types.newParameterizedType(List::class.java, Timeline::class.java)
-            ).fromJson(response)!!
+            ).fromJson(timelineList.toString())!!
         }
     }
 
@@ -78,9 +91,11 @@ abstract class NMBJsonParser<T> {
 
     class FeedParser : NMBJsonParser<List<Feed.ServerFeed>>() {
         override fun parse(response: String): List<Feed.ServerFeed> {
+            Timber.d(response)
+            val feedList = JSONObject(response).run { optJSONArray("list") }!!
             return moshi.adapter<List<Feed.ServerFeed>>(
                 Types.newParameterizedType(List::class.java, Feed.ServerFeed::class.java)
-            ).fromJson(response)!!
+            ).fromJson(feedList.toString())!!
         }
     }
 

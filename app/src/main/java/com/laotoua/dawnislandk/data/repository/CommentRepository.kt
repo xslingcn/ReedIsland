@@ -265,7 +265,7 @@ class CommentRepository @Inject constructor(
             if (this is APIMessageResponse.Success && messageType == APIMessageResponse.MessageType.String) {
                 coroutineScope {
                     launch {
-                        val newFeed = Feed(1, 1, id, "", DawnApp.currentDomain, LocalDateTime.now())
+                        val newFeed = Feed(1, 1, id, DawnApp.currentDomain, LocalDateTime.now())
                         feedDao.addFeedToTopAndIncrementFeedIds(newFeed)
                     }
                 }

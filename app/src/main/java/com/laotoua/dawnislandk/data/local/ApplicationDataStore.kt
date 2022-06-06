@@ -19,10 +19,7 @@ package com.laotoua.dawnislandk.data.local
 
 import com.laotoua.dawnislandk.BuildConfig
 import com.laotoua.dawnislandk.data.local.dao.*
-import com.laotoua.dawnislandk.data.local.entity.Cookie
-import com.laotoua.dawnislandk.data.local.entity.LuweiNotice
-import com.laotoua.dawnislandk.data.local.entity.NMBNotice
-import com.laotoua.dawnislandk.data.local.entity.Release
+import com.laotoua.dawnislandk.data.local.entity.*
 import com.laotoua.dawnislandk.data.remote.APIDataResponse
 import com.laotoua.dawnislandk.data.remote.NMBServiceClient
 import com.laotoua.dawnislandk.util.DawnConstants
@@ -33,6 +30,7 @@ import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import timber.log.Timber
+import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -40,6 +38,7 @@ import javax.inject.Singleton
 @Singleton
 class ApplicationDataStore @Inject constructor(
     private val cookieDao: CookieDao,
+    private val reedSessionDao: ReedSessionDao,
     private val commentDao: CommentDao,
     private val trendDao: DailyTrendDao,
     private val feedDao: FeedDao,
@@ -53,6 +52,7 @@ class ApplicationDataStore @Inject constructor(
     private var mCookies = mutableListOf<Cookie>()
     val cookies: List<Cookie> get() = mCookies
     val firstCookieHash get() = cookies.firstOrNull()?.getApiHeaderCookieHash()
+    var reedSession: String = ""
 
     fun setLastUsedCookie(cookie: Cookie) {
         if (cookie != cookies.firstOrNull()) {
@@ -131,7 +131,7 @@ class ApplicationDataStore @Inject constructor(
 
     fun getDefaultForumId(): String {
         if (defaultForumId == null) {
-            defaultForumId = mmkv.getString(DawnConstants.DEFAULT_FORUM_ID, "-1")
+            defaultForumId = mmkv.getString(DawnConstants.DEFAULT_FORUM_ID, "4")
         }
         return defaultForumId!!
     }
@@ -192,7 +192,7 @@ class ApplicationDataStore @Inject constructor(
     private var customToolbarImageStatus: Boolean? = null
     fun getCustomToolbarImageStatus(): Boolean {
         if (customToolbarImageStatus == null) {
-            customToolbarImageStatus = mmkv.getBoolean(DawnConstants.CUSTOM_TOOLBAR_STATUS, false)
+            customToolbarImageStatus = mmkv.getBoolean(DawnConstants.CUSTOM_TOOLBAR_STATUS, true)
         }
         return customToolbarImageStatus!!
     }
@@ -336,7 +336,7 @@ class ApplicationDataStore @Inject constructor(
         nmbNotice = NMBNoticeDao.getLatestNMBNotice()
         webService.getNMBNotice().run {
             if (this is APIDataResponse.Success) {
-                if (nmbNotice == null || data!!.date > nmbNotice!!.date) {
+                if (nmbNotice == null || data!!.content != nmbNotice!!.content) {
                     coroutineScope { launch { NMBNoticeDao.insertNMBNoticeWithTimestamp(data!!) } }
                     nmbNotice = data
                 }
@@ -354,9 +354,16 @@ class ApplicationDataStore @Inject constructor(
         NMBNoticeDao.updateNMBNoticeWithTimestamp(
             notice.content,
             notice.enable,
-            notice.read,
-            notice.date
+            notice.read
         )
+    }
+
+    suspend fun getReedSession(){
+        if(reedSessionDao.get()==null)
+            reedSessionDao.insert(ReedSession(webService.getReedSession()))
+        else if(java.time.Duration.between(reedSessionDao.get()!!.lastUpdatedAt,LocalDateTime.now()).toDays()>365)
+                reedSessionDao.insert(ReedSession(webService.getReedSession()))
+        reedSession = reedSessionDao.get()!!.cookie
     }
 
     suspend fun getLatestLuweiNotice(): LuweiNotice? {
@@ -407,7 +414,7 @@ class ApplicationDataStore @Inject constructor(
     private var subscriptionPagerFeedIndex: Int? = null
     fun getSubscriptionPagerFeedIndex(): Int {
         if (subscriptionPagerFeedIndex == null) {
-            subscriptionPagerFeedIndex = mmkv.getInt(DawnConstants.SUBSCRIPTION_PAGER_FEED_INDEX, 1)
+            subscriptionPagerFeedIndex = mmkv.getInt(DawnConstants.SUBSCRIPTION_PAGER_FEED_INDEX, 0)
         }
         return subscriptionPagerFeedIndex!!
     }

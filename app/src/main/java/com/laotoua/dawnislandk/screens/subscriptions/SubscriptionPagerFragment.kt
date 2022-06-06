@@ -25,12 +25,12 @@ import com.laotoua.dawnislandk.screens.widgets.BasePagerFragment
 class SubscriptionPagerFragment : BasePagerFragment() {
     private val feedIndex = DawnApp.applicationDataStore.getSubscriptionPagerFeedIndex()
     override val pageTitleResIds = mutableMapOf<Int, Int>().apply {
-        put(1 - feedIndex, R.string.trend)
+//        put(1 - feedIndex, R.string.trend)
         put(feedIndex, R.string.my_feed)
     }
 
     override val pageFragmentClass = mutableMapOf<Int, Class<out BaseNavFragment>>().apply {
-        put(1 - feedIndex, TrendsFragment::class.java)
+//        put(1 - feedIndex, TrendsFragment::class.java)
         put(feedIndex, FeedsFragment::class.java)
     }
 
