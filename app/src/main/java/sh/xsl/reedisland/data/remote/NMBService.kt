@@ -90,7 +90,7 @@ interface NMBService {
     ): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
-    @GET("api/v1/Home/Forum/ref")
+    @GET("api/v1/ref")
     fun getNMBQuote(@Query("id") id: String, @Header("Cookie") cookie: String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)

@@ -25,6 +25,9 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.CenterPopupView
+import com.lxj.xpopup.util.XPopupUtils
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Comment
@@ -35,9 +38,6 @@ import sh.xsl.reedisland.screens.widgets.popups.ImageViewerPopup
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
 import sh.xsl.reedisland.util.DataResource
 import sh.xsl.reedisland.util.LoadingStatus
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.CenterPopupView
-import com.lxj.xpopup.util.XPopupUtils
 
 @SuppressLint("ViewConstructor")
 // uses caller fragment's context, should not live without fragment
@@ -159,11 +159,12 @@ class QuotePopup(
             letterSpacing = DawnApp.applicationDataStore.letterSpace
         }
 
+
         findViewById<Button>(R.id.jumpToQuotedPost).run {
-            visibility = if (quote.parentId != currentPostId) View.VISIBLE else View.GONE
+            visibility = if (quote.parentId.equals("0")) View.VISIBLE else View.GONE
             setOnClickListener {
                 if (isShow) {
-                    mCaller?.jumpToNewPost(quote.parentId)
+                    mCaller?.jumpToNewPost(quote.id)
                 }
             }
         }

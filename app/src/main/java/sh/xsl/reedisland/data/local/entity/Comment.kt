@@ -20,6 +20,7 @@ package sh.xsl.reedisland.data.local.entity
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.squareup.moshi.Json
 import sh.xsl.reedisland.DawnApp
 import com.squareup.moshi.JsonClass
 import java.time.LocalDateTime
@@ -40,6 +41,7 @@ data class Comment(
     val img: String?,
     val ext: String?,
     var page: Int = 1,
+    @Json(name = "parent")
     var parentId: String = "",
     val domain: String = DawnApp.currentDomain,
     var lastUpdatedAt: LocalDateTime = LocalDateTime.now()
