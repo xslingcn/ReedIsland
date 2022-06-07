@@ -61,7 +61,7 @@ object DawnConstants {
     const val ADNMB_IMG_CDN = "https://aweidao1.com/image/"
     const val TNMB_IMG_CDN = "https://www.tnmb.org/Public/Upload/"
 
-    const val ADNMBDomain = "adnmb"
+    const val ADNMBDomain = "aweidao"
     const val TNMBDomain = "tnmb"
     const val TNMBHost = "https://tnmb.org"
 
