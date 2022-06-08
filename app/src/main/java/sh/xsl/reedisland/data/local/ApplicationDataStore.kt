@@ -358,11 +358,16 @@ class ApplicationDataStore @Inject constructor(
     }
 
     suspend fun getReedSession(){
-        if(reedSessionDao.get()==null)
+       reedSession = reedSessionDao.get()?.let {
+            if(it.cookie.substringAfter("=").length==160
+                && java.time.Duration.between(reedSessionDao.get()!!.lastUpdatedAt,LocalDateTime.now()).toDays()<365)
+                it.cookie
+           else ""
+        } ?: ""
+        reedSession = reedSession.isBlank().let {
             reedSessionDao.insert(ReedSession(webService.getReedSession()))
-        else if(java.time.Duration.between(reedSessionDao.get()!!.lastUpdatedAt,LocalDateTime.now()).toDays()>365)
-                reedSessionDao.insert(ReedSession(webService.getReedSession()))
-        reedSession = reedSessionDao.get()!!.cookie
+            reedSessionDao.get()!!.cookie
+        }
     }
 
     suspend fun getLatestLuweiNotice(): LuweiNotice? {
