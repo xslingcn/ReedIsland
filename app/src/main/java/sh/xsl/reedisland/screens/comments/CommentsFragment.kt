@@ -371,7 +371,7 @@ class CommentsFragment : DaggerFragment() {
                             }
                             1 -> copyText(
                                 "串地址",
-                                "https://${DawnApp.currentDomain}.com/t/${viewModel.currentPostId}"
+                                "${DawnConstants.ADNMBHost}/t/${viewModel.currentPostId}"
                             )
                             2 -> copyText("串号", ">>No.${viewModel.currentPostId}")
                             else -> {
