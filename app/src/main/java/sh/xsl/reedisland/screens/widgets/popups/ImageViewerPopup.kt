@@ -441,9 +441,6 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
             is Comment -> {
                 urlObj.getImgUrl()
             }
-            is SearchResult.Hit -> {
-                urlObj.getImgUrl()
-            }
             is PostHistory -> {
                 urlObj.getImgUrl()
             }

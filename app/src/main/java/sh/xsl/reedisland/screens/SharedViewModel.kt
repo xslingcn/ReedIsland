@@ -100,7 +100,7 @@ class SharedViewModel @Inject constructor(
     }
 
     init {
-        getRandomReedPicture()
+//        getRandomReedPicture()
         if (DawnApp.applicationDataStore.getAutoUpdateFeed()) autoUpdateFeeds()
     }
 

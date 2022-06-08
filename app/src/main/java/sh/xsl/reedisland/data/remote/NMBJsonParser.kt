@@ -114,37 +114,16 @@ abstract class NMBJsonParser<T> {
     class SearchResultParser(val query: String, val page: Int) : NMBJsonParser<SearchResult>() {
         override fun parse(response: String): SearchResult {
             return JSONObject(response).run {
-                getJSONObject("hits").run {
-                    val count = optInt("total")
-                    val hitsList = mutableListOf<SearchResult.Hit>()
-                    optJSONArray("hits")?.run {
-                        for (i in 0 until length()) {
-                            val hitObject = getJSONObject(i)
-                            val sourceObject = hitObject.getJSONObject("_source")
-                            val hit = SearchResult.Hit(
-                                hitObject.optString("_id"),
-                                sourceObject.optString("now"),
-                                sourceObject.optString("time"),
-                                sourceObject.optString("sage", "0"),
-                                sourceObject.optString("img"),
-                                sourceObject.optString("ext"),
-                                sourceObject.optString("title"),
-                                sourceObject.optString("resto"),
-                                sourceObject.optString("userid"),
-                                sourceObject.optString("email"),
-                                sourceObject.optString("content")
-                            )
-                            hit.page = page
-                            hitsList.add(hit)
-                        }
+                val count = optInt("total")
+                val hitsList = mutableListOf<Comment>()
+                optJSONArray("threads")?.run {
+                    for (i in 0 until length()) {
+                        val hitObject = getJSONObject(i)
+                        val hit = moshi.adapter(Comment::class.java).fromJson(hitObject.toString())!!
+                        hitsList.add(hit)
                     }
-                    SearchResult(
-                        query,
-                        count,
-                        page,
-                        hitsList
-                    )
                 }
+                SearchResult(query, count, page, hitsList)
             }
         }
     }

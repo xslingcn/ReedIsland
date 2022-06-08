@@ -19,7 +19,6 @@ package sh.xsl.reedisland.data.remote
 
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.entity.*
-import sh.xsl.reedisland.util.DawnConstants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -48,11 +47,15 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun getNMBSearch(
         query: String,
         page: Int = 1,
-        userhash: String
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<SearchResult> {
         Timber.d("Getting search result for $query on Page $page...")
         return APIDataResponse.create(
-            service.getNMBSearch(query, page, userhash, DawnConstants.fastMirrorHost),
+            service.postNMBSearch(
+                query.toRequestBody(),
+                page.toString().toRequestBody(),
+                if (userhash!=null) reedSession.plus(";$userhash") else reedSession),
             NMBJsonParser.SearchResultParser(query, page)
         )
     }
@@ -103,7 +106,6 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     ): APIDataResponse<List<Post>> {
 //        throw RuntimeException("Oh")
         Timber.i("Downloading Posts on Forum $fid...")
-        Timber.d(if (userhash!=null) reedSession.plus(";$userhash") else reedSession)
         val call = service.getNMBPosts(
             if(fid.startsWith("-")) fid.substringAfter("-")
             else fid, page,

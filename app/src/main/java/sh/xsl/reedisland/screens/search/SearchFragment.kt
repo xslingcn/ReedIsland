@@ -43,10 +43,13 @@ import com.chad.library.adapter.base.binder.QuickItemBinder
 import com.chad.library.adapter.base.util.getItemView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.card.MaterialCardView
+import com.lxj.xpopup.XPopup
+import me.dkzwm.widget.srl.RefreshingListenerAdapter
+import me.dkzwm.widget.srl.config.Constants
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
-import sh.xsl.reedisland.data.remote.SearchResult
+import sh.xsl.reedisland.data.local.entity.Comment
 import sh.xsl.reedisland.databinding.FragmentSearchBinding
 import sh.xsl.reedisland.screens.adapters.*
 import sh.xsl.reedisland.screens.posts.PostCardFactory
@@ -55,11 +58,7 @@ import sh.xsl.reedisland.screens.util.Layout.toast
 import sh.xsl.reedisland.screens.util.Layout.updateHeaderAndFooter
 import sh.xsl.reedisland.screens.widgets.BaseNavFragment
 import sh.xsl.reedisland.screens.widgets.popups.ImageViewerPopup
-import com.lxj.xpopup.XPopup
-import me.dkzwm.widget.srl.RefreshingListenerAdapter
-import me.dkzwm.widget.srl.config.Constants
 import timber.log.Timber
-import java.util.*
 
 
 class SearchFragment : BaseNavFragment() {
@@ -175,8 +174,8 @@ class SearchFragment : BaseNavFragment() {
 
                         val firstVisiblePos = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                         if (firstVisiblePos > 0 && firstVisiblePos < mAdapter!!.data.lastIndex) {
-                            if (mAdapter!!.getItem(firstVisiblePos) is SearchResult.Hit) {
-                                updateCurrentPage((mAdapter!!.getItem(firstVisiblePos) as SearchResult.Hit).page)
+                            if (mAdapter!!.getItem(firstVisiblePos) is Comment) {
+                                updateCurrentPage((mAdapter!!.getItem(firstVisiblePos) as Comment).page)
                             }
                         }
                         if (dy > 0) {
@@ -303,8 +302,8 @@ class SearchFragment : BaseNavFragment() {
         override fun getLayoutId(): Int = R.layout.list_item_simple_text
     }
 
-    inner class HitBinder : QuickItemBinder<SearchResult.Hit>() {
-        override fun convert(holder: BaseViewHolder, data: SearchResult.Hit) {
+    inner class HitBinder : QuickItemBinder<Comment>() {
+        override fun convert(holder: BaseViewHolder, data: Comment) {
             holder.convertUserId(data.userid, "0")
                 .convertRefId(context, data.id)
                 .convertTimeStamp(data.now)
@@ -323,7 +322,7 @@ class SearchFragment : BaseNavFragment() {
         override fun onClick(
             holder: BaseViewHolder,
             view: View,
-            data: SearchResult.Hit,
+            data: Comment,
             position: Int
         ) {
             viewCaching = DawnApp.applicationDataStore.getViewCaching()
@@ -334,7 +333,7 @@ class SearchFragment : BaseNavFragment() {
         override fun onChildClick(
             holder: BaseViewHolder,
             view: View,
-            data: SearchResult.Hit,
+            data: Comment,
             position: Int
         ) {
             if (view.id == R.id.attachedImage) {
@@ -358,17 +357,17 @@ class SearchFragment : BaseNavFragment() {
         }
     }
 
-    private class HitDiffer : DiffUtil.ItemCallback<SearchResult.Hit>() {
+    private class HitDiffer : DiffUtil.ItemCallback<Comment>() {
         override fun areItemsTheSame(
-            oldItem: SearchResult.Hit,
-            newItem: SearchResult.Hit
+            oldItem: Comment,
+            newItem: Comment
         ): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(
-            oldItem: SearchResult.Hit,
-            newItem: SearchResult.Hit
+            oldItem: Comment,
+            newItem: Comment
         ): Boolean {
             return true
         }

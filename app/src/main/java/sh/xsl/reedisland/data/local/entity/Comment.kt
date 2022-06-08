@@ -74,4 +74,6 @@ data class Comment(
     fun setUpdatedTimestamp(time: LocalDateTime = LocalDateTime.now()) {
         lastUpdatedAt = time
     }
+
+    fun getPostId(): String = if (parentId == "0") id else parentId
 }

@@ -51,16 +51,6 @@ interface NMBService {
     @GET("api/v2/system/getVersion")
     fun getVersion(): Call<ResponseBody>
 
-    // uses Host
-    @Headers(DawnConstants.USER_AGENT)
-    @GET("Api/search")
-    fun getNMBSearch(
-        @Query("q") query: String,
-        @Query("pageNo") page: Int,
-        @Header("Cookie") cookie: String,
-        @Header("Host") host: String
-    ): Call<ResponseBody>
-
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/showf")
     fun getNMBPosts(@Query("id") fid: String, @Query("page") page: Int, @Header("Cookie") cookie: String): Call<ResponseBody>
@@ -76,10 +66,6 @@ interface NMBService {
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/delFeed")
     fun delNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie:String): Call<ResponseBody>
-
-//    @Headers("Domain-Name: nmb")
-//    @GET("api/v1/showf")
-//    fun getNMBTimeLine(@Query("id") id: String = "129", @Query("page") page: Int, @Header("Cookie") hash: String?): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/thread")
@@ -119,6 +105,14 @@ interface NMBService {
     fun postReport(
         @Part("threadId") tid: RequestBody, @Part("reason") reason: RequestBody,
         @Header("Cookie") hash: String
+    ): Call<ResponseBody>
+
+    @Headers(DawnConstants.USER_AGENT)
+    @Multipart
+    @POST("api/v1/search")
+    fun postNMBSearch(
+        @Part("keyword") query: RequestBody, @Part("page") page: RequestBody,
+        @Header("Cookie") cookie: String
     ): Call<ResponseBody>
 }
 

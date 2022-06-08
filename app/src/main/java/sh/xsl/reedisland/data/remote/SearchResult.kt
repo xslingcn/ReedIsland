@@ -17,11 +17,13 @@
 
 package sh.xsl.reedisland.data.remote
 
+import sh.xsl.reedisland.data.local.entity.Comment
+
 data class SearchResult(
     val query: String = "", // to be set in VM
     val queryHits: Int, // # of return result matching the query
     val page: Int = 1, // current page of the result, to be set in VM
-    val hits: List<Hit> = emptyList()
+    val hits: List<Comment> = emptyList()
 ) {
     data class Hit(
         val id: String,

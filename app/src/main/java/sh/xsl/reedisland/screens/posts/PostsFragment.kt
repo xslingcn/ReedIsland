@@ -424,7 +424,7 @@ class PostsFragment : BaseNavFragment() {
         val rotateBackward = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_backward)
         binding?.fabMenu?.startAnimation(rotateBackward)
         binding?.announcement?.hide()
-//        binding?.search?.hide()
+        binding?.search?.hide()
         binding?.post?.hide()
         isFabOpen = false
     }
@@ -433,7 +433,7 @@ class PostsFragment : BaseNavFragment() {
         val rotateForward = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_forward)
         binding?.fabMenu?.startAnimation(rotateForward)
         binding?.announcement?.show()
-//        binding?.search?.show()
+        binding?.search?.show()
         binding?.post?.show()
         isFabOpen = true
     }
