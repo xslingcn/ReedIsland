@@ -57,6 +57,7 @@ object DawnConstants {
     const val DEFAULT_CDN = "default_cdn"
     const val REF_CDN = "ref_cdn"
     const val ADNMBHost = "https://aweidao1.com"
+    const val APIHost = "https://aweidao1.com"
     const val fastMirrorHost = "aweidao1.com"
     const val ADNMB_IMG_CDN = "https://aweidao1.com/image/"
     const val TNMB_IMG_CDN = "https://www.tnmb.org/Public/Upload/"
