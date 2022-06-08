@@ -24,6 +24,13 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "ReedIsland-${defaultConfig.versionName}-${variant.buildType.name}.apk"
+        }
+    }
+
     signingConfigs {
         release {
             if (project.rootProject.file("local.properties").exists()) {
