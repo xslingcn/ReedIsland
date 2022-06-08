@@ -41,12 +41,6 @@ android {
                 v1SigningEnabled true
                 v2SigningEnabled true
             }
-            else {
-                storeFile rootProject.file("app/xsling_keystore.jks")
-                storePassword System.getProperty("APPCENTER_KEYSTORE_PASSWORD")
-                keyAlias System.getProperty("APPCENTER_KEY_ALIAS")
-                keyPassword System.getProperty("APPCENTER_KEY_PASSWORD")
-            }
         }
     }
 
