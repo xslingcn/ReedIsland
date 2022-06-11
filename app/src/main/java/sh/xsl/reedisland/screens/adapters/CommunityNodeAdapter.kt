@@ -97,6 +97,11 @@ class CommunityNodeAdapter(
                 nodes.add(CommunityNode(noDuplicateCommunity))
             }
         }
+
+        ((nodes.first { it is CommunityNode && it.community.isCommonForums() }) as BaseExpandNode).isExpanded =
+            true
+        ((nodes.first { it is CommunityNode && it.community.id == "6" }) as BaseExpandNode).isExpanded =
+            true
         if (nodes.size == 1 && nodes.first() is BaseExpandNode) (nodes.first() as BaseExpandNode).isExpanded =
             true
         setList(nodes)
