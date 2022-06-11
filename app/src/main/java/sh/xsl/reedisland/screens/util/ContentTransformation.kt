@@ -41,6 +41,7 @@ object ContentTransformation {
     private val URL_PATTERN =
         Pattern.compile("(http|https)://[a-z0-9A-Z%-]+(\\.[a-z0-9A-Z%-]+)+(:\\d{1,5})?(/[a-zA-Z0-9-_~:#@!&',;=%/*.?+$\\[\\]()]+)?/?")
     private val AC_PATTERN = Pattern.compile("ac\\d+")
+    private val BV_PATTERN = Pattern.compile("BV\\d+")
     private val HIDE_PATTERN = Pattern.compile("\\[h](.+?)\\[/h]")
     private const val CUSTOM_HIDE_PATTERN_OPEN = "`-hide-`"
     private const val CUSTOM_HIDE_PATTERN_CLOSE = "`/-hide-`"
@@ -94,6 +95,7 @@ object ContentTransformation {
             .handleTextUrl()
             .handleReference(context, referenceClickListener)
             .handleAcUrl()
+            .handleBvUrl()
             .handleHideTag()
             .handleLineHeightAndSegGap(lineHeight, segGap)
     }
@@ -199,6 +201,21 @@ object ContentTransformation {
                 continue
             }
             val urlSpan = URLSpan("http://www.acfun.cn/v/" + m.group(0))
+            this.setSpan(urlSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        }
+    }
+
+    private fun SpannableStringBuilder.handleBvUrl() = apply {
+        val m: Matcher = BV_PATTERN.matcher(this)
+        while (m.find()) {
+            val start = m.start()
+            val end = m.end()
+            val links = this.getSpans(start, end, URLSpan::class.java)
+            if (links.isNotEmpty()) {
+                // There has been URLSpan already, leave it alone
+                continue
+            }
+            val urlSpan = URLSpan("https://www.bilibili.com/video/" + m.group(0))
             this.setSpan(urlSpan, start, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         }
     }
