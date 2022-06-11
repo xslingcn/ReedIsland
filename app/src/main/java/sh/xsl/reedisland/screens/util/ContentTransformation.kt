@@ -43,6 +43,9 @@ object ContentTransformation {
     private val AC_PATTERN = Pattern.compile("ac\\d+")
     private val BV_PATTERN = Pattern.compile("BV\\d+")
     private val HIDE_PATTERN = Pattern.compile("\\[h](.+?)\\[/h]")
+    private const val RGB_PATTERN = "(rgb\\(\\d{1,3}, \\d{1,3}, \\d{1,3}\\))"
+    private val RGB_SPAN_PATTERN =
+        Pattern.compile("color: $RGB_PATTERN;")
     private const val CUSTOM_HIDE_PATTERN_OPEN = "`-hide-`"
     private const val CUSTOM_HIDE_PATTERN_CLOSE = "`/-hide-`"
     private val CUSTOM_HIDE_PATTERN =
@@ -51,10 +54,30 @@ object ContentTransformation {
     @Suppress("DEPRECATION")
     fun htmlToSpanned(string: String?): Spanned {
         return if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-            Html.fromHtml(string)
+            Html.fromHtml(handleRGBSpan(string))
         } else {
-            Html.fromHtml(string, Html.FROM_HTML_MODE_COMPACT)
+            Html.fromHtml(handleRGBSpan(string), Html.FROM_HTML_MODE_COMPACT)
         }
+    }
+
+    private fun handleRGBSpan(string: String?): String? {
+        var result = string
+        string?.let {
+            val m: Matcher = RGB_SPAN_PATTERN.matcher(string)
+            while (m.find()) {
+                val mr = Pattern.compile(RGB_PATTERN).matcher(m.group())
+                mr.find()
+                val color = mr.group().substringAfter("rgb(").substringBefore(")").split(',')
+                val hexColor = String.format(
+                    "#%02x%02x%02x",
+                    color[0].trim().toInt(),
+                    color[1].trim().toInt(),
+                    color[2].trim().toInt()
+                )
+                result = string.replace(mr.group(), hexColor)
+            }
+        }
+        return result
     }
 
     fun transformForumName(forumName: String) = htmlToSpanned(forumName)
