@@ -368,7 +368,7 @@ class CommentsFragment : DaggerFragment() {
                                     type = "text/html"
                                     putExtra(
                                         Intent.EXTRA_TITLE,
-                                        "芦苇岛 · ${sharedVM.getForumOrTimelineDisplayName(viewModel.currentPostFid)} · ${viewModel.currentPostId}"
+                                        "阿苇岛 · ${sharedVM.getForumOrTimelineDisplayName(viewModel.currentPostFid)} · ${viewModel.currentPostId}"
                                     )
                                 }
                                 val shareIntent = Intent.createChooser(sendIntent, null)

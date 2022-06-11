@@ -117,7 +117,7 @@ class TrendRepository @Inject constructor(
                 }
             } else {
                 Timber.e(message)
-                DataResource.create(LoadingStatus.ERROR, null, "无法读取芦苇岛热榜...\n$message")
+                DataResource.create(LoadingStatus.ERROR, null, "无法读取阿苇岛热榜...\n$message")
             }
         }
     }

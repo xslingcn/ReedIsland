@@ -84,11 +84,11 @@ class SharedViewModel @Inject constructor(
         currentDomain.value = DawnConstants.ADNMBDomain
         communityList.value?.data?.filterNot { it.isCommonForums() || it.isCommonPosts() }
             ?.map { it.forums }?.flatten()?.let { flatten ->
-            forumNameMapping =
-                flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
-            forumMsgMapping =
-                flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
-        }
+                forumNameMapping =
+                    flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
+                forumMsgMapping =
+                    flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
+            }
 
     }
 
@@ -249,11 +249,11 @@ class SharedViewModel @Inject constructor(
     }
 
     private fun getForumDisplayName(fid: String): String =
-        if (fid.isBlank()) "" else forumNameMapping[fid] ?: "芦苇岛"
+        if (fid.isBlank()) "" else forumNameMapping[fid] ?: "阿苇岛"
 
     private fun getTimelineDisplayName(fid: String): String {
         val id = fid.substringAfter("-")
-        return if (id.isBlank()) "" else timelineNameMapping[id] ?: "芦苇岛"
+        return if (id.isBlank()) "" else timelineNameMapping[id] ?: "阿苇岛"
     }
 
     fun getSelectedPostForumName(fid: String): String = getForumOrTimelineDisplayName(fid)
