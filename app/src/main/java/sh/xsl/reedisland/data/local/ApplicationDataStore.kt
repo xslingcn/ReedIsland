@@ -130,7 +130,7 @@ class ApplicationDataStore @Inject constructor(
 
     fun getDefaultForumId(): String {
         if (defaultForumId == null) {
-            defaultForumId = mmkv.getString(DawnConstants.DEFAULT_FORUM_ID, "4")
+            defaultForumId = mmkv.getString(DawnConstants.DEFAULT_FORUM_ID, "134")
         }
         return defaultForumId!!
     }
