@@ -744,7 +744,7 @@ class CommentsFragment : DaggerFragment() {
     }
 
     private fun updateCurrentlyAvailableImages(newList: MutableList<Comment>) {
-        imagesList = newList.filter { it.getImgUrl() != null }
+        imagesList = newList.filter { it.getImgUrl().isNotBlank() }
         getImageViewerPopup().setImageUrls(imagesList.toMutableList())
     }
 }
