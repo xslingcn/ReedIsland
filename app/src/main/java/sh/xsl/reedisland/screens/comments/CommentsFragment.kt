@@ -56,6 +56,12 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.animation.AnimationUtils
 import com.google.android.material.textfield.TextInputLayout
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
+import dagger.android.support.DaggerFragment
+import me.dkzwm.widget.srl.RefreshingListenerAdapter
+import me.dkzwm.widget.srl.config.Constants
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
@@ -73,12 +79,6 @@ import sh.xsl.reedisland.screens.widgets.popups.PostPopup
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.lazyOnMainOnly
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.BasePopupView
-import com.lxj.xpopup.interfaces.SimpleCallback
-import dagger.android.support.DaggerFragment
-import me.dkzwm.widget.srl.RefreshingListenerAdapter
-import me.dkzwm.widget.srl.config.Constants
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -110,7 +110,12 @@ class CommentsFragment : DaggerFragment() {
     // need to dismiss all before jumping to new post, by lifo
     private val quotePopups: MutableList<QuotePopup> = mutableListOf()
 
-    private val postPopup: PostPopup by lazyOnMainOnly { PostPopup(requireActivity() as MainActivity, sharedVM) }
+    private val postPopup: PostPopup by lazyOnMainOnly {
+        PostPopup(
+            requireActivity() as MainActivity,
+            sharedVM
+        )
+    }
     private var imageViewerPopup: ImageViewerPopup? = null
 
     enum class RVScrollState {
@@ -508,12 +513,15 @@ class CommentsFragment : DaggerFragment() {
                 pageInput.editText!!.doOnTextChanged { text, _, _, _ ->
                     try {
                         submitButton.isEnabled =
-                            !(text.isNullOrBlank() || text.length > maxPage.toString().length || text.toString().toInt() > maxPage)
+                            !(text.isNullOrBlank() || text.length > maxPage.toString().length || text.toString()
+                                .toInt() > maxPage)
                         if (submitButton.isEnabled) {
                             targetPage = pageInput.editText!!.text.toString().toInt()
                         }
-                        canJump = DawnApp.applicationDataStore.firstCookieHash != null || targetPage < 100
-                        pageInput.error = if (!canJump) context.resources.getString(R.string.need_cookie_to_read) else null
+                        canJump =
+                            DawnApp.applicationDataStore.firstCookieHash != null || targetPage < 100
+                        pageInput.error =
+                            if (!canJump) context.resources.getString(R.string.need_cookie_to_read) else null
                         submitButton.isEnabled = canJump
                     } catch (e: Exception) {
                         submitButton.isEnabled = false
@@ -521,7 +529,8 @@ class CommentsFragment : DaggerFragment() {
                     }
                 }
                 pageInput.editText!!.setText(targetPage.toString())
-                pageInput.error = if (!canJump) context.resources.getString(R.string.need_cookie_to_read) else null
+                pageInput.error =
+                    if (!canJump) context.resources.getString(R.string.need_cookie_to_read) else null
 
                 findViewById<TextView>(R.id.currentPage).text = currentPage.toString()
                 findViewById<TextView>(R.id.maxPage).text = maxPage.toString()
@@ -735,7 +744,7 @@ class CommentsFragment : DaggerFragment() {
     }
 
     private fun updateCurrentlyAvailableImages(newList: MutableList<Comment>) {
-        imagesList = newList.filter { it.getImgUrl()!=null }
+        imagesList = newList.filter { it.getImgUrl() != null }
         getImageViewerPopup().setImageUrls(imagesList.toMutableList())
     }
 }

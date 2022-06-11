@@ -19,9 +19,6 @@ package sh.xsl.reedisland
 
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import sh.xsl.reedisland.data.local.ApplicationDataStore
-import sh.xsl.reedisland.util.DawnConstants
-import sh.xsl.reedisland.util.ReadableTime
 import com.tencent.mmkv.MMKV
 import com.tencent.mmkv.MMKVHandler
 import com.tencent.mmkv.MMKVLogLevel
@@ -29,6 +26,9 @@ import com.tencent.mmkv.MMKVRecoverStrategic
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
+import sh.xsl.reedisland.data.local.ApplicationDataStore
+import sh.xsl.reedisland.util.DawnConstants
+import sh.xsl.reedisland.util.ReadableTime
 import timber.log.Timber
 import javax.inject.Inject
 

@@ -41,6 +41,12 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputLayout
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.core.BottomPopupView
+import com.lxj.xpopup.interfaces.SimpleCallback
+import com.lxj.xpopup.util.KeyboardUtils
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.DawnApp.Companion.applicationDataStore
 import sh.xsl.reedisland.R
@@ -54,12 +60,6 @@ import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.ImageUtil
 import sh.xsl.reedisland.util.ReadableTime
 import sh.xsl.reedisland.util.openLinksWithOtherApps
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.BasePopupView
-import com.lxj.xpopup.core.BottomPopupView
-import com.lxj.xpopup.interfaces.SimpleCallback
-import com.lxj.xpopup.util.KeyboardUtils
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.time.Duration
@@ -114,16 +114,24 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                 try {
                     if (latestPost != null) {
                         summary?.visibility = View.VISIBLE
-                        val seconds = Duration.between(latestPost!!.second, LocalDateTime.now()).seconds
+                        val seconds =
+                            Duration.between(latestPost!!.second, LocalDateTime.now()).seconds
                         if (seconds <= 120) {
                             summary?.setTypeface(summary!!.typeface, Typeface.BOLD)
-                            summary?.text = context.getString(R.string.latest_id_posted_at_time, " $seconds 秒前", latestPost!!.first)
+                            summary?.text = context.getString(
+                                R.string.latest_id_posted_at_time,
+                                " $seconds 秒前",
+                                latestPost!!.first
+                            )
                             mHandler?.postDelayed(this, 1000)
                         } else {
                             summary?.setTypeface(summary!!.typeface, Typeface.ITALIC)
                             summary?.text = context.getString(
                                 R.string.latest_id_posted_at_time,
-                                ReadableTime.getDisplayTime(latestPost!!.second, ReadableTime.TIME_ONLY_FORMAT),
+                                ReadableTime.getDisplayTime(
+                                    latestPost!!.second,
+                                    ReadableTime.TIME_ONLY_FORMAT
+                                ),
                                 latestPost!!.first
                             )
                         }
@@ -136,7 +144,6 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         mHandler = Handler(Looper.getMainLooper())
         counterUpdateCallback?.let { mHandler?.post(it) }
     }
-
 
     private fun updateTitle(targetId: String?, newPost: Boolean) {
         findViewById<TextView>(R.id.postTitle).text =
@@ -179,34 +186,18 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         updateCookies()
         updateForumButton(targetId, newPost)
         quote?.run { postContent?.editText?.text?.insert(0, quote) }
-        updateReportButtons()
+        if (report == true) setReportButtons()
     }
 
-    fun updateReportButtons(){
-        findViewById<Button>(R.id.forumRule).apply {
-            if(report == true) visibility = View.INVISIBLE
-        }
-        findViewById<Button>(R.id.postForum).apply {
-            if(report == true) visibility = View.GONE
-        }
-        findViewById<Button>(R.id.postExpand).apply {
-            if(report == true) visibility = View.GONE
-        }
-        findViewById<Button>(R.id.postLuwei).apply {
-            if(report == true) visibility = View.INVISIBLE
-        }
-        findViewById<Button>(R.id.postCamera).apply {
-            if(report == true) visibility = View.INVISIBLE
-        }
-        findViewById<Button>(R.id.postImage).apply {
-            if(report == true) visibility = View.INVISIBLE
-        }
-        findViewById<Button>(R.id.postDoodle).apply {
-            if(report == true) visibility = View.INVISIBLE
-        }
-        findViewById<Button>(R.id.postSave).apply {
-            if(report == true) visibility = View.INVISIBLE
-        }
+    private fun setReportButtons() {
+        findViewById<Button>(R.id.forumRule).visibility = View.INVISIBLE
+        findViewById<Button>(R.id.postForum).visibility = View.GONE
+        findViewById<Button>(R.id.postExpand).visibility = View.GONE
+        findViewById<Button>(R.id.postLuwei).visibility = View.INVISIBLE
+        findViewById<Button>(R.id.postCamera).visibility = View.INVISIBLE
+        findViewById<Button>(R.id.postImage).visibility = View.INVISIBLE
+        findViewById<Button>(R.id.postDoodle).visibility = View.INVISIBLE
+        findViewById<Button>(R.id.postSave).visibility = View.INVISIBLE
     }
 
     fun setupAndShow(
@@ -365,7 +356,9 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                     }.onDismiss {
                         if (targetId == null) return@onDismiss
                         if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
-                            postContent?.editText?.hint = applicationDataStore.luweiNotice?.nmbForums?.firstOrNull { f -> f.id == targetId }?.getPostRule()
+                            postContent?.editText?.hint =
+                                applicationDataStore.luweiNotice?.nmbForums?.firstOrNull { f -> f.id == targetId }
+                                    ?.getPostRule()
                         }
                         updateTitle(targetId, newPost)
                         if (postForum!!.text == "值班室") {
@@ -516,13 +509,15 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         }
 
         findViewById<Button>(R.id.forumRule).setOnClickListener {
-            val fid = if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) if (newPost && targetId != null) targetId!! else targetFid else (sharedVM.selectedForumId.value!!)
+            val fid =
+                if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) if (newPost && targetId != null) targetId!! else targetFid else (sharedVM.selectedForumId.value!!)
             try {
                 val biId = if (fid.toInt() > 0) fid.toInt() else 1
                 MaterialDialog(context).show {
                     lifecycleOwner(caller)
 
-                    val resourceId: Int = context.resources.getIdentifier("bi_$biId", "drawable", context.packageName)
+                    val resourceId: Int =
+                        context.resources.getIdentifier("bi_$biId", "drawable", context.packageName)
                     ContextCompat.getDrawable(context, resourceId)?.let {
                         it.setTint(Layout.getThemeInverseColor(context))
                         icon(drawable = it)

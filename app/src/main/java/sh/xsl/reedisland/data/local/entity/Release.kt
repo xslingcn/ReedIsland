@@ -28,6 +28,6 @@ data class Release(
     val downloadUrl: String,
     val message: String,
     val lastUpdatedAt: LocalDateTime = LocalDateTime.now()
-){
+) {
     val versionCode get() = version.filter { it.isDigit() }.toInt()
 }

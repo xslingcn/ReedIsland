@@ -20,6 +20,8 @@ package sh.xsl.reedisland.data.repository
 import android.util.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.data.local.dao.CommentDao
 import sh.xsl.reedisland.data.local.entity.Comment
 import sh.xsl.reedisland.data.remote.NMBServiceClient
@@ -27,8 +29,6 @@ import sh.xsl.reedisland.util.DataResource
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.getLocalDataResource
 import sh.xsl.reedisland.util.getLocalLiveDataAndRemoteResponse
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 

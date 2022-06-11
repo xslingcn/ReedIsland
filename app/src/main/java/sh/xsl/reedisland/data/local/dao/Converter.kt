@@ -18,12 +18,12 @@
 package sh.xsl.reedisland.data.local.dao
 
 import androidx.room.TypeConverter
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import sh.xsl.reedisland.data.local.entity.Forum
 import sh.xsl.reedisland.data.local.entity.LuweiNotice
 import sh.xsl.reedisland.data.local.entity.NoticeForum
 import sh.xsl.reedisland.data.local.entity.Trend
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -168,7 +168,7 @@ class Converter {
 
     @TypeConverter
     fun integerSetToString(set: MutableSet<Int>): String {
-        return set.toString().removeSurrounding("[","]")
+        return set.toString().removeSurrounding("[", "]")
     }
 
     @TypeConverter

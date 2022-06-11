@@ -30,7 +30,7 @@ interface ConfigDao {
     suspend fun insert(config: Config)
 
     @Delete
-    suspend fun delete(config:Config)
+    suspend fun delete(config: Config)
 
     @Query("DELETE FROM Config")
     suspend fun nukeTable()

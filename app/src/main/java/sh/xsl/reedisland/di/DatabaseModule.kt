@@ -18,10 +18,10 @@
 package sh.xsl.reedisland.di
 
 import android.content.Context
-import sh.xsl.reedisland.data.local.DawnDatabase
-import sh.xsl.reedisland.data.local.dao.*
 import dagger.Module
 import dagger.Provides
+import sh.xsl.reedisland.data.local.DawnDatabase
+import sh.xsl.reedisland.data.local.dao.*
 import javax.inject.Singleton
 
 @Module

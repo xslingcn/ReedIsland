@@ -137,7 +137,7 @@ fun BaseViewHolder.convertContent(
 ): BaseViewHolder {
     val res = ContentTransformation.transformContent(
         context = context,
-        content = content?: "",
+        content = content ?: "",
         referenceClickListener = referenceClickListener
     )
     if (res.isNotBlank()) setText(R.id.content, res)

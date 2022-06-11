@@ -20,9 +20,9 @@ package sh.xsl.reedisland.data.local.entity
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
-import sh.xsl.reedisland.DawnApp
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import sh.xsl.reedisland.DawnApp
 import java.time.LocalDateTime
 import kotlin.math.ceil
 
@@ -107,10 +107,11 @@ data class Post(
     // special handler for sticky top banner
     fun isStickyTopBanner(): Boolean = id == "14500641" || id == "31163008"
 
-    fun getImgUrl() = img?.let { (img + ext) }?:""
+    fun getImgUrl() = img?.let { (img + ext) } ?: ""
     fun getSimplifiedTitle(): String = if (title != null && title != "无标题") "标题：$title" else ""
     fun getSimplifiedName(): String = if (name != null && name != "无名氏") "名称：$name" else ""
-    fun getMaxPage() = if (replyCount.isBlank()) 1 else 1.coerceAtLeast(ceil(replyCount.toDouble() / 19).toInt())
+    fun getMaxPage() =
+        if (replyCount.isBlank()) 1 else 1.coerceAtLeast(ceil(replyCount.toDouble() / 19).toInt())
 
     // only compares by server fields
     override fun equals(other: Any?) =

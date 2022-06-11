@@ -21,8 +21,8 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
-import sh.xsl.reedisland.DawnApp
 import com.squareup.moshi.JsonClass
+import sh.xsl.reedisland.DawnApp
 import java.time.LocalDateTime
 
 @JsonClass(generateAdapter = true)
@@ -53,12 +53,12 @@ data class Comment(
 
     fun getSimplifiedTitle(): String =
         if (isAd()) "广告"
-        else if (title !=null && title != "无标题") "标题：$title"
+        else if (title != null && title != "无标题") "标题：$title"
         else ""
 
-    fun getSimplifiedName(): String = if (name!=null && name != "无名氏") "作者：$name" else ""
+    fun getSimplifiedName(): String = if (name != null && name != "无名氏") "作者：$name" else ""
 
-    fun getImgUrl(): String = img?.let { img + ext }?:""
+    fun getImgUrl(): String = img?.let { img + ext } ?: ""
     fun isNotAd(): Boolean = (id != "9999999")
     fun isAd(): Boolean = !isNotAd()
 

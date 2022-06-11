@@ -32,7 +32,7 @@ data class NMBNotice(
     val enable: Boolean = true,
     var read: Boolean = false,
     var lastUpdatedAt: LocalDateTime = LocalDateTime.now()
-){
+) {
     override fun equals(other: Any?) =
         if (other is NMBNotice) {
             content == other.content

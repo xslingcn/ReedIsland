@@ -39,6 +39,7 @@ import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.textfield.TextInputLayout
+import dagger.android.support.DaggerFragment
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Community
@@ -49,19 +50,18 @@ import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.screens.util.Layout
 import sh.xsl.reedisland.screens.util.Layout.toast
 import sh.xsl.reedisland.util.LoadingStatus
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CommonPostsFragment : DaggerFragment() {
 
-    private var binding:FragmentCommonPostsBinding? = null
+    private var binding: FragmentCommonPostsBinding? = null
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val sharedVM: SharedViewModel by activityViewModels { viewModelFactory }
 
-    private var commonPostsAdapter : CommonPostsAdapter? = null
+    private var commonPostsAdapter: CommonPostsAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +119,10 @@ class CommonPostsFragment : DaggerFragment() {
                             val remarkText = remark.text.toString()
                             val contentText = content.text.toString()
                             if (remarkText.isNotBlank() && contentText.isNotBlank()) {
-                                commonPostsAdapter?.setData(position, Forum.makeFakeForum(contentText, remarkText))
+                                commonPostsAdapter?.setData(
+                                    position,
+                                    Forum.makeFakeForum(contentText, remarkText)
+                                )
                             }
                         }
                         negativeButton(R.string.cancel)
@@ -197,7 +200,10 @@ class CommonPostsFragment : DaggerFragment() {
     }
 
     override fun onDestroyView() {
-        val common = Community.makeCommonPosts(commonPostsAdapter?.data ?: emptyList(), DawnApp.currentDomain)
+        val common = Community.makeCommonPosts(
+            commonPostsAdapter?.data ?: emptyList(),
+            DawnApp.currentDomain
+        )
         sharedVM.saveCommonCommunity(common)
         toast(R.string.might_need_to_restart_to_apply_setting)
         super.onDestroyView()

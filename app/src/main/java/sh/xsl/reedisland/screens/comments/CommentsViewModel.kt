@@ -19,12 +19,12 @@ package sh.xsl.reedisland.screens.comments
 
 import android.util.SparseArray
 import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.data.local.entity.Comment
 import sh.xsl.reedisland.data.repository.CommentRepository
 import sh.xsl.reedisland.data.repository.QuoteRepository
 import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.util.*
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -59,7 +59,8 @@ class CommentsViewModel @Inject constructor(
 
     fun getQuote(id: String): LiveData<DataResource<Comment>> = liveData {
         // try to find quote in current post, if not then in local cache or remote data
-        val result = if (id == currentPostId) commentRepo.getHeaderPost(id) else commentList.find { it.id == id }
+        val result =
+            if (id == currentPostId) commentRepo.getHeaderPost(id) else commentList.find { it.id == id }
         if (result != null) emit(DataResource.create(LoadingStatus.SUCCESS, result))
         else emitSource(quoteRepo.getQuote(id))
     }
@@ -94,7 +95,11 @@ class CommentsViewModel @Inject constructor(
         viewModelScope.launch { commentRepo.saveReadingProgress(currentPostId, page) }
     }
 
-    fun getNextPage(incrementPage: Boolean = true, readingProgress: Int? = null, forceUpdate: Boolean = true) {
+    fun getNextPage(
+        incrementPage: Boolean = true,
+        readingProgress: Int? = null,
+        forceUpdate: Boolean = true
+    ) {
         var nextPage = readingProgress ?: (commentList.lastOrNull()?.page ?: 1)
         if (incrementPage && commentRepo.checkFullPage(currentPostId, nextPage)) nextPage += 1
         listenToNewPage(nextPage, forceUpdate)

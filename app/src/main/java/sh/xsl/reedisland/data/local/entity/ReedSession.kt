@@ -10,4 +10,4 @@ data class ReedSession(
     @PrimaryKey val cookie: String,
     var lastUpdatedAt: LocalDateTime = LocalDateTime.now(),
     val domain: String = DawnApp.currentDomain
-){}
+)

@@ -46,6 +46,9 @@ class BrowsingHistoryViewModel @Inject constructor(private val browsingHistoryDa
         }
     }
 
-    private fun getLiveHistoryInRange(startDate: LocalDateTime, endDate: LocalDateTime): LiveData<List<BrowsingHistoryAndPost>> =
+    private fun getLiveHistoryInRange(
+        startDate: LocalDateTime,
+        endDate: LocalDateTime
+    ): LiveData<List<BrowsingHistoryAndPost>> =
         browsingHistoryDao.getAllBrowsingHistoryAndPostInDateRange(startDate, endDate)
 }

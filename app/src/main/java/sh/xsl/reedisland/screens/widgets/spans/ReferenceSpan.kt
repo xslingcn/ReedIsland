@@ -29,7 +29,7 @@ class ReferenceSpan(val id: String, private val clickListener: ReferenceClickHan
 
     override fun updateDrawState(ds: TextPaint) {}
 
-    interface ReferenceClickHandler{
-        fun handleReference(id:String)
+    interface ReferenceClickHandler {
+        fun handleReference(id: String)
     }
 }

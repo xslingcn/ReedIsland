@@ -30,10 +30,17 @@ interface PostHistoryDao {
 
     @Transaction
     @Query("SELECT * From PostHistory WHERE postDateTime>=:startDate AND postDateTime<=:endDate AND domain=:domain ORDER BY postDateTime DESC ")
-    fun getAllPostHistoryInDateRange(startDate: LocalDateTime, endDate: LocalDateTime, domain: String = DawnApp.currentDomain): LiveData<List<PostHistory>>
+    fun getAllPostHistoryInDateRange(
+        startDate: LocalDateTime,
+        endDate: LocalDateTime,
+        domain: String = DawnApp.currentDomain
+    ): LiveData<List<PostHistory>>
 
     @Query("SELECT * From PostHistory WHERE postDateTime=:date AND domain=:domain")
-    fun getPostHistoryByDate(date: LocalDateTime, domain: String = DawnApp.currentDomain): LiveData<List<PostHistory>>
+    fun getPostHistoryByDate(
+        date: LocalDateTime,
+        domain: String = DawnApp.currentDomain
+    ): LiveData<List<PostHistory>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPostHistory(browsingHistory: PostHistory)

@@ -21,7 +21,9 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Environment
-import android.view.*
+import android.view.Gravity
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.*
 import androidx.fragment.app.FragmentActivity
@@ -32,22 +34,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.transition.*
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import sh.xsl.reedisland.DawnApp
-import sh.xsl.reedisland.R
-import sh.xsl.reedisland.data.local.entity.Comment
-import sh.xsl.reedisland.data.local.entity.Post
-import sh.xsl.reedisland.data.local.entity.PostHistory
-import sh.xsl.reedisland.data.remote.SearchResult
-import sh.xsl.reedisland.screens.MainActivity
-import sh.xsl.reedisland.util.ImageUtil
-import sh.xsl.reedisland.util.ReadableTime
-import sh.xsl.reedisland.util.SingleLiveEvent
 import com.lxj.xpopup.core.ImageViewerPopupView
 import com.lxj.xpopup.photoview.PhotoView
 import com.lxj.xpopup.util.SmartGlideImageLoader
 import com.lxj.xpopup.util.XPopupUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import sh.xsl.reedisland.DawnApp
+import sh.xsl.reedisland.R
+import sh.xsl.reedisland.data.local.entity.Comment
+import sh.xsl.reedisland.data.local.entity.Post
+import sh.xsl.reedisland.data.local.entity.PostHistory
+import sh.xsl.reedisland.screens.MainActivity
+import sh.xsl.reedisland.util.ImageUtil
+import sh.xsl.reedisland.util.ReadableTime
+import sh.xsl.reedisland.util.SingleLiveEvent
 import timber.log.Timber
 import java.io.File
 
@@ -73,20 +74,21 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
         }
     }
 
-    private var onPageChangeListener: SimpleOnPageChangeListener = object : SimpleOnPageChangeListener() {
-        override fun onPageSelected(i: Int) {
-            position = i
-            showPageIndicator()
-            preloadImages(i)
-            //更新srcView
-            //一定要post，因为setCurrentItem内部实现是RecyclerView.scrollTo()，这个是异步的
-            pager?.post { //由于ViewPager2内部是包裹了一个RecyclerView，而RecyclerView始终维护一个子View
-                val fl = pager.getChildAt(0) as FrameLayout
-                this@ImageViewerPopup.updateSrcView(fl.getChildAt(0) as ImageView)
-            }
+    private var onPageChangeListener: SimpleOnPageChangeListener =
+        object : SimpleOnPageChangeListener() {
+            override fun onPageSelected(i: Int) {
+                position = i
+                showPageIndicator()
+                preloadImages(i)
+                //更新srcView
+                //一定要post，因为setCurrentItem内部实现是RecyclerView.scrollTo()，这个是异步的
+                pager?.post { //由于ViewPager2内部是包裹了一个RecyclerView，而RecyclerView始终维护一个子View
+                    val fl = pager.getChildAt(0) as FrameLayout
+                    this@ImageViewerPopup.updateSrcView(fl.getChildAt(0) as ImageView)
+                }
 
+            }
         }
-    }
 
     override fun getImplLayoutId(): Int {
         return R.layout.popup_image_viewer
@@ -250,7 +252,11 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
             snapshotView.translationY = 0f
             snapshotView.translationX = 0f
             snapshotView.scaleType = ImageView.ScaleType.FIT_CENTER
-            XPopupUtils.setWidthHeight(snapshotView, photoViewContainer.width, photoViewContainer.height)
+            XPopupUtils.setWidthHeight(
+                snapshotView,
+                photoViewContainer.width,
+                photoViewContainer.height
+            )
 
             // do shadow anim.
             animateShadowBg(bgColor)
@@ -363,7 +369,13 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
             val progressBar = buildProgressBar(container.context)
 
             //2. add ImageView，maybe PhotoView or SubsamplingScaleImageView
-            val view = imageLoader.loadImage(realPosition, getImageUrl(urls[realPosition]), this@ImageViewerPopup, snapshotView, progressBar)
+            val view = imageLoader.loadImage(
+                realPosition,
+                getImageUrl(urls[realPosition]),
+                this@ImageViewerPopup,
+                snapshotView,
+                progressBar
+            )
             view.setOnClickListener {
                 if (!isShow) return@setOnClickListener
                 if (uiShown) {
@@ -374,7 +386,13 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
 
             }
             //3. add View
-            fl.addView(view, LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+            fl.addView(
+                view,
+                LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+            )
 
             //4. add ProgressBar
             fl.addView(progressBar)
@@ -385,7 +403,10 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
 
         private fun buildContainer(context: Context): FrameLayout {
             val fl = FrameLayout(context)
-            fl.layoutParams = LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+            fl.layoutParams = LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
             return fl
         }
 
@@ -403,7 +424,12 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
 
     private fun addPicToGallery(caller: MainActivity, urlObj: Any) {
         val imgUrl: String = getImageUrl(urlObj)
-        if (!caller.intentsHelper.checkAndRequestSinglePermission(caller, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, true)) return
+        if (!caller.intentsHelper.checkAndRequestSinglePermission(
+                caller,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                true
+            )
+        ) return
 
         caller.lifecycleScope.launch(Dispatchers.IO) {
             Timber.i("Saving image $imgUrl to Gallery... ")

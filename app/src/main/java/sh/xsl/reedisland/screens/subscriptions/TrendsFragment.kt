@@ -31,20 +31,22 @@ import com.chad.library.adapter.base.binder.QuickItemBinder
 import com.chad.library.adapter.base.util.getItemView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.card.MaterialCardView
+import me.dkzwm.widget.srl.RefreshingListenerAdapter
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.DailyTrend
 import sh.xsl.reedisland.data.local.entity.Trend
 import sh.xsl.reedisland.databinding.FragmentSubscriptionTrendBinding
-import sh.xsl.reedisland.screens.adapters.*
+import sh.xsl.reedisland.screens.adapters.QuickMultiBinder
+import sh.xsl.reedisland.screens.adapters.applyTextSizeAndLetterSpacing
+import sh.xsl.reedisland.screens.adapters.convertContent
+import sh.xsl.reedisland.screens.adapters.convertRefId
 import sh.xsl.reedisland.screens.posts.PostCardFactory
 import sh.xsl.reedisland.screens.util.Layout.updateHeaderAndFooter
 import sh.xsl.reedisland.screens.widgets.BaseNavFragment
 import sh.xsl.reedisland.util.*
-import me.dkzwm.widget.srl.RefreshingListenerAdapter
 import timber.log.Timber
-import java.util.*
 
 class TrendsFragment : BaseNavFragment() {
 
@@ -147,7 +149,13 @@ class TrendsFragment : BaseNavFragment() {
             if (it == DawnConstants.TNMBDomain) {
                 mAdapter?.showNoData()
                 mAdapter?.setDiffNewData(ArrayList())
-                if (binding != null) mAdapter?.setFooterView(layoutInflater.inflate(R.layout.view_no_more_data, binding!!.srlAndRv.recyclerView, false))
+                if (binding != null) mAdapter?.setFooterView(
+                    layoutInflater.inflate(
+                        R.layout.view_no_more_data,
+                        binding!!.srlAndRv.recyclerView,
+                        false
+                    )
+                )
 
             }
         }

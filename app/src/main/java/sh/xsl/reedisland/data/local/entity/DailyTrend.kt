@@ -37,7 +37,8 @@ data class DailyTrend(
 
     override fun equals(other: Any?): Boolean =
         if (other is DailyTrend) {
-            po == other.po && date.toLocalDate().isEqual(other.date.toLocalDate()) && postId == other.postId
+            po == other.po && date.toLocalDate()
+                .isEqual(other.date.toLocalDate()) && postId == other.postId
                     && trends == other.trends && lastReplyCount == other.lastReplyCount
         } else false
 

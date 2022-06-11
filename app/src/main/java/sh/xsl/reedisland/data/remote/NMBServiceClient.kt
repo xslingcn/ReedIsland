@@ -17,21 +17,21 @@
 
 package sh.xsl.reedisland.data.remote
 
-import sh.xsl.reedisland.DawnApp
-import sh.xsl.reedisland.data.local.entity.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
+import sh.xsl.reedisland.DawnApp
+import sh.xsl.reedisland.data.local.entity.*
 import timber.log.Timber
 import java.io.File
 import javax.inject.Inject
 
 class NMBServiceClient @Inject constructor(private val service: NMBService) {
 
-    suspend fun getReedSession(): String{
+    suspend fun getReedSession(): String {
         return withContext(Dispatchers.IO) {
             val response = service.getVersion().execute()
             if (response.isSuccessful) {
@@ -55,7 +55,8 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
             service.postNMBSearch(
                 query.toRequestBody(),
                 page.toString().toRequestBody(),
-                if (userhash!=null) reedSession.plus(";$userhash") else reedSession),
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession
+            ),
             NMBJsonParser.SearchResultParser(query, page)
         )
     }
@@ -70,7 +71,10 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
 
     suspend fun getRandomReedPicture(): APIDataResponse<String> {
         Timber.d("Getting Random Reed Picture...")
-        return APIDataResponse.create(service.getRandomReedPicture(), NMBJsonParser.ReedRandomPictureParser())
+        return APIDataResponse.create(
+            service.getRandomReedPicture(),
+            NMBJsonParser.ReedRandomPictureParser()
+        )
     }
 
     suspend fun getLatestRelease(): APIDataResponse<Release> {
@@ -107,10 +111,11 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
 //        throw RuntimeException("Oh")
         Timber.i("Downloading Posts on Forum $fid...")
         val call = service.getNMBPosts(
-            if(fid.startsWith("-")) fid.substringAfter("-")
+            if (fid.startsWith("-")) fid.substringAfter("-")
             else fid, page,
-            if (userhash!=null) reedSession.plus(";$userhash")
-            else reedSession)
+            if (userhash != null) reedSession.plus(";$userhash")
+            else reedSession
+        )
         return APIDataResponse.create(call, NMBJsonParser.PostParser())
     }
 
@@ -123,8 +128,9 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         Timber.i("Downloading Comments on Post $id on Page $page...")
         return APIDataResponse.create(
             service.getNMBComments(
-                if (userhash!=null) reedSession.plus(";$userhash")
-                else reedSession, id, page),
+                if (userhash != null) reedSession.plus(";$userhash")
+                else reedSession, id, page
+            ),
             NMBJsonParser.CommentParser()
         )
     }
@@ -135,7 +141,12 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<List<Feed.ServerFeed>> {
         Timber.i("Downloading Feeds on Page $page...")
-        return APIDataResponse.create(service.getNMBFeeds(page, if (userhash!=null) reedSession.plus(";$userhash") else reedSession), NMBJsonParser.FeedParser())
+        return APIDataResponse.create(
+            service.getNMBFeeds(
+                page,
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession
+            ), NMBJsonParser.FeedParser()
+        )
     }
 
 
@@ -146,7 +157,12 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<Comment> {
         Timber.i("Downloading Quote $id...")
-        return APIDataResponse.create(service.getNMBQuote(id, if (userhash!=null) reedSession.plus(";$userhash") else reedSession), NMBJsonParser.QuoteParser())
+        return APIDataResponse.create(
+            service.getNMBQuote(
+                id,
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession
+            ), NMBJsonParser.QuoteParser()
+        )
     }
 
     suspend fun addFeed(
@@ -155,7 +171,12 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIMessageResponse {
         Timber.i("Adding Feed $tid...")
-        return APIMessageResponse.create(service.addNMBFeed(tid, if (userhash!=null) reedSession.plus(";$userhash") else reedSession))
+        return APIMessageResponse.create(
+            service.addNMBFeed(
+                tid,
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession
+            )
+        )
     }
 
     suspend fun delFeed(
@@ -164,7 +185,12 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIMessageResponse {
         Timber.i("Deleting Feed $tid...")
-        return APIMessageResponse.create(service.delNMBFeed(tid, if (userhash!=null) reedSession.plus(";$userhash") else reedSession))
+        return APIMessageResponse.create(
+            service.delNMBFeed(
+                tid,
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession
+            )
+        )
     }
 
     // Note: userhash should be already converted to header style beforehand
@@ -186,14 +212,13 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
                     imagePart = MultipartBody.Part.createFormData("image", image.name, this)
                 }
             }
-            val call = if(report == true){
+            val call = if (report == true) {
                 service.postReport(
                     targetId.toRequestBody(),
                     content!!.toRequestBody(),
                     reedSession.plus(";$userhash")
                 )
-            }
-            else if (newPost) {
+            } else if (newPost) {
                 service.postNewPost(
                     targetId.toRequestBody(), name?.toRequestBody(),
                     email?.toRequestBody(), title?.toRequestBody(),

@@ -79,7 +79,7 @@ class GeneralSettingFragment : Fragment() {
                 preferenceSwitch.toggle()
             }
         }
-
+        
         binding?.autoUpdateFeed?.apply {
             key.setText(R.string.auto_update_feed)
             preferenceSwitch.visibility = View.VISIBLE

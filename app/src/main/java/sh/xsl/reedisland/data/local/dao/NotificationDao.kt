@@ -37,7 +37,10 @@ interface NotificationDao {
     fun getLiveAllNotificationsAndPosts(domain: String = DawnApp.currentDomain): LiveData<List<NotificationAndPost>>
 
     @Query("SELECT * FROM Notification WHERE id=:id AND domain=:domain LIMIT 1")
-    suspend fun getNotificationByIdSync(id: String, domain: String = DawnApp.currentDomain): Notification?
+    suspend fun getNotificationByIdSync(
+        id: String,
+        domain: String = DawnApp.currentDomain
+    ): Notification?
 
     @Query("UPDATE Notification SET read=1, newReplyCount=0 WHERE id=:id AND domain=:domain")
     suspend fun readNotificationByIdSync(id: String, domain: String = DawnApp.currentDomain)

@@ -21,6 +21,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.*
 import sh.xsl.reedisland.data.local.entity.*
@@ -30,8 +32,6 @@ import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.data.repository.CommunityRepository
 import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.util.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.time.LocalDateTime
@@ -82,9 +82,12 @@ class SharedViewModel @Inject constructor(
     fun onADNMB() {
         DawnApp.onDomain(DawnConstants.ADNMBDomain)
         currentDomain.value = DawnConstants.ADNMBDomain
-        communityList.value?.data?.filterNot { it.isCommonForums() || it.isCommonPosts() }?.map { it.forums }?.flatten()?.let { flatten ->
-            forumNameMapping = flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
-            forumMsgMapping = flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
+        communityList.value?.data?.filterNot { it.isCommonForums() || it.isCommonPosts() }
+            ?.map { it.forums }?.flatten()?.let { flatten ->
+            forumNameMapping =
+                flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
+            forumMsgMapping =
+                flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
         }
 
     }
@@ -128,7 +131,8 @@ class SharedViewModel @Inject constructor(
         viewModelScope.launch {
             while (true) {
                 Timber.d("Auto Update Feed is on. Looping...")
-                val outDatedFeedAndPost = feedDao.findMostOutdatedFeedAndPost(LocalDateTime.now()) ?: break
+                val outDatedFeedAndPost =
+                    feedDao.findMostOutdatedFeedAndPost(LocalDateTime.now()) ?: break
                 Timber.d("Found outdated Feed ${outDatedFeedAndPost.feed.postId}. Updating...")
                 updateOutdatedFeedAndPost(outDatedFeedAndPost)
                 delay(300000L)
@@ -176,13 +180,24 @@ class SharedViewModel @Inject constructor(
     }
 
     fun setForumMappings(list: List<Community>) {
-        val flatten = list.filterNot { it.isCommonForums() || it.isCommonPosts() }.map { it.forums }.flatten()
-        forumNameMapping = flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
+        val flatten =
+            list.filterNot { it.isCommonForums() || it.isCommonPosts() }.map { it.forums }.flatten()
+        forumNameMapping =
+            flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
         forumMsgMapping = flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
     }
 
     fun setBeiTaiForums(list: List<NoticeForum>) {
-        beitaiForums = listOf(Community(id = "beitai", sort = "", name = "备胎", status = "", forums = list.map { it.toForum() }, domain = DawnConstants.TNMBDomain))
+        beitaiForums = listOf(
+            Community(
+                id = "beitai",
+                sort = "",
+                name = "备胎",
+                status = "",
+                forums = list.map { it.toForum() },
+                domain = DawnConstants.TNMBDomain
+            )
+        )
     }
 
     fun setTimelineMappings(list: List<Timeline>) {
@@ -211,10 +226,15 @@ class SharedViewModel @Inject constructor(
         loadingBible = bible
     }
 
-    fun getRandomLoadingBible(): String = if (this::loadingBible.isInitialized) loadingBible.random() else "正在加载中..."
+    fun getRandomLoadingBible(): String =
+        if (this::loadingBible.isInitialized) loadingBible.random() else "正在加载中..."
 
-    fun getForumOrTimelineMsg(id: String): String = if (id.startsWith("-")) getTimelineMsg(id) else getForumMsg(id)
-    private fun getForumMsg(id: String): String = if (id.isBlank()) "" else forumMsgMapping[id] ?: ""
+    fun getForumOrTimelineMsg(id: String): String =
+        if (id.startsWith("-")) getTimelineMsg(id) else getForumMsg(id)
+
+    private fun getForumMsg(id: String): String =
+        if (id.isBlank()) "" else forumMsgMapping[id] ?: ""
+
     private fun getTimelineMsg(id: String): String {
         val mid = id.substringAfter("-")
         return if (mid.isBlank()) "" else timelineMsgMapping[mid] ?: ""
@@ -228,7 +248,8 @@ class SharedViewModel @Inject constructor(
         }
     }
 
-    private fun getForumDisplayName(fid: String): String = if (fid.isBlank()) "" else forumNameMapping[fid] ?: "芦苇岛"
+    private fun getForumDisplayName(fid: String): String =
+        if (fid.isBlank()) "" else forumNameMapping[fid] ?: "芦苇岛"
 
     private fun getTimelineDisplayName(fid: String): String {
         val id = fid.substringAfter("-")
@@ -237,7 +258,8 @@ class SharedViewModel @Inject constructor(
 
     fun getSelectedPostForumName(fid: String): String = getForumOrTimelineDisplayName(fid)
 
-    fun getForumIdByName(name: String): String = forumNameMapping.filterValues { it == name }.keys.firstOrNull() ?: ""
+    fun getForumIdByName(name: String): String =
+        forumNameMapping.filterValues { it == name }.keys.firstOrNull() ?: ""
 
     suspend fun sendPost(
         newPost: Boolean,
@@ -267,7 +289,8 @@ class SharedViewModel @Inject constructor(
                 if (messageType == APIMessageResponse.MessageType.String) {
                     message
                 } else {
-                    dom!!.getElementsByClass("system-message").first().children().not(".jump").text()
+                    dom!!.getElementsByClass("system-message").first().children().not(".jump")
+                        .text()
                 }
             } else {
                 Timber.e(message)
@@ -291,7 +314,14 @@ class SharedViewModel @Inject constructor(
         }
         viewModelScope.launch {
             delay(3000L) // give some time the server to refresh
-            val draft = PostHistory.Draft(newPost, postTargetId, postTargetFid, cookieName, content, LocalDateTime.now())
+            val draft = PostHistory.Draft(
+                newPost,
+                postTargetId,
+                postTargetFid,
+                cookieName,
+                content,
+                LocalDateTime.now()
+            )
             if (!newPost) searchCommentInPost(draft, postTargetPage, false)
             else searchPostInForum(draft, postTargetFid)
         }
@@ -308,7 +338,16 @@ class SharedViewModel @Inject constructor(
                     if (post.userid == draft.cookieName && striped == draft.content) {
                         // store server's copy
                         draft.content = post.content
-                        postHistoryDao.insertPostHistory(PostHistory(post.id, 1, post.img, post.ext, DawnApp.currentDomain, draft))
+                        postHistoryDao.insertPostHistory(
+                            PostHistory(
+                                post.id,
+                                1,
+                                post.img,
+                                post.ext,
+                                DawnApp.currentDomain,
+                                draft
+                            )
+                        )
                         saved = true
                         _savePostStatus.postValue(SingleLiveEvent.create(true))
                         Timber.d("Saved new post with id ${post.id}")
@@ -365,7 +404,16 @@ class SharedViewModel @Inject constructor(
             if (reply.userid == draft.cookieName && striped == draft.content) {
                 // store server's copy
                 draft.content = reply.content
-                postHistoryDao.insertPostHistory(PostHistory(reply.id, targetPage, reply.img, reply.ext, DawnApp.currentDomain, draft))
+                postHistoryDao.insertPostHistory(
+                    PostHistory(
+                        reply.id,
+                        targetPage,
+                        reply.img,
+                        reply.ext,
+                        DawnApp.currentDomain,
+                        draft
+                    )
+                )
                 _savePostStatus.postValue(SingleLiveEvent.create(true))
                 Timber.d("Saved posted comment with id ${reply.id}")
                 return

@@ -22,15 +22,15 @@ import android.util.SparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.*
 import sh.xsl.reedisland.data.local.entity.*
 import sh.xsl.reedisland.data.remote.APIMessageResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.util.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -53,7 +53,8 @@ class CommentRepository @Inject constructor(
      */
     private val cacheCap = 10
     private val postMap = ArrayMap<String, Post>(cacheCap)
-    private val commentsMap = ArrayMap<String, SparseArray<LiveData<DataResource<List<Comment>>>>>(cacheCap)
+    private val commentsMap =
+        ArrayMap<String, SparseArray<LiveData<DataResource<List<Comment>>>>>(cacheCap)
     private val readingPageMap = ArrayMap<String, ReadingPage>(cacheCap)
     private val browsingHistoryMap = ArrayMap<String, BrowsingHistory>(cacheCap)
     private val fifoPostList = mutableListOf<String>()
@@ -121,7 +122,12 @@ class CommentRepository @Inject constructor(
     fun checkFullPage(id: String, page: Int): Boolean =
         (commentsMap[id]?.get(page)?.value?.data?.filter { it.isNotAd() }?.size ?: 0) == 19
 
-    fun getCommentsOnPage(id: String, page: Int, remoteDataOnly: Boolean, localDataOnly: Boolean): LiveData<DataResource<List<Comment>>> {
+    fun getCommentsOnPage(
+        id: String,
+        page: Int,
+        remoteDataOnly: Boolean,
+        localDataOnly: Boolean
+    ): LiveData<DataResource<List<Comment>>> {
         if (commentsMap[id] == null) {
             commentsMap[id] = SparseArray()
         }
@@ -133,7 +139,12 @@ class CommentRepository @Inject constructor(
         }
     }
 
-    private fun getLivePage(id: String, page: Int, remoteDataOnly: Boolean, localDataOnly: Boolean): LiveData<DataResource<List<Comment>>> {
+    private fun getLivePage(
+        id: String,
+        page: Int,
+        remoteDataOnly: Boolean,
+        localDataOnly: Boolean
+    ): LiveData<DataResource<List<Comment>>> {
         return when {
             localDataOnly -> {
                 getLocalData(id, page, localDataOnly)
@@ -163,7 +174,8 @@ class CommentRepository @Inject constructor(
         result.addSource(remote) {
             // probably post is deleted on server but I have cache, so show message but keep data
             if (cache.value?.status == LoadingStatus.SUCCESS && it.status == LoadingStatus.NO_DATA) {
-                result.value = DataResource.create(cache.value!!.status, cache.value!!.data, it.message)
+                result.value =
+                    DataResource.create(cache.value!!.status, cache.value!!.data, it.message)
             } else {
                 hasRemote = true
                 result.value = it
@@ -178,7 +190,11 @@ class CommentRepository @Inject constructor(
      *  Note: local data does not guarantee having all pages in db,
      *  hence when trying to load a page without actual cache, error is shown
      */
-    private fun getLocalData(id: String, page: Int, localDataOnly: Boolean = false): LiveData<DataResource<List<Comment>>> {
+    private fun getLocalData(
+        id: String,
+        page: Int,
+        localDataOnly: Boolean = false
+    ): LiveData<DataResource<List<Comment>>> {
         Timber.d("Querying local data for Post $id on $page")
         if (localDataOnly) {
             browsingHistoryMap[id]?.let {
@@ -196,12 +212,22 @@ class CommentRepository @Inject constructor(
             if (response.status == LoadingStatus.SUCCESS) {
                 emit(convertServerData(id, response.data!!, page))
             } else {
-                emit(DataResource.create<List<Comment>>(response.status, emptyList(), response.message))
+                emit(
+                    DataResource.create<List<Comment>>(
+                        response.status,
+                        emptyList(),
+                        response.message
+                    )
+                )
             }
         }
     }
 
-    private suspend fun convertServerData(id: String, data: Post, page: Int): DataResource<List<Comment>> {
+    private suspend fun convertServerData(
+        id: String,
+        data: Post,
+        page: Int
+    ): DataResource<List<Comment>> {
         // update current thread with latest info
         if (data.fid.isBlank() && postMap[id]?.fid?.isNotBlank() == true) {
             data.fid = postMap[id]?.fid.toString()

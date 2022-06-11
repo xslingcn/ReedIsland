@@ -37,7 +37,14 @@ class PostHistory(
     val domain: String = DawnApp.currentDomain,
     val postDateTime: LocalDateTime = LocalDateTime.now()
 ) {
-    constructor(id: String, targetPage: Int, img: String?, ext: String?, domain: String, draft: Draft) : this(
+    constructor(
+        id: String,
+        targetPage: Int,
+        img: String?,
+        ext: String?,
+        domain: String,
+        draft: Draft
+    ) : this(
         id,
         draft.newPost,
         draft.postTargetId,

@@ -19,11 +19,11 @@ package sh.xsl.reedisland.screens.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.EmojiDao
 import sh.xsl.reedisland.data.local.entity.Emoji
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EmojiSettingViewModel @Inject constructor(private val emojiDao: EmojiDao) : ViewModel() {

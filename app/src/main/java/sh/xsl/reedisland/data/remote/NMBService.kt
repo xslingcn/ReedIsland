@@ -17,12 +17,12 @@
 
 package sh.xsl.reedisland.data.remote
 
-import sh.xsl.reedisland.util.DawnConstants
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import sh.xsl.reedisland.util.DawnConstants
 
 interface NMBService {
     @GET("https://raw.githubusercontent.com/fishballzzz/DawnIslandK/master/CHANGELOG.md")
@@ -53,19 +53,23 @@ interface NMBService {
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/showf")
-    fun getNMBPosts(@Query("id") fid: String, @Query("page") page: Int, @Header("Cookie") cookie: String): Call<ResponseBody>
+    fun getNMBPosts(
+        @Query("id") fid: String,
+        @Query("page") page: Int,
+        @Header("Cookie") cookie: String
+    ): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/feed")
-    fun getNMBFeeds(@Query("page") page: Int, @Header("Cookie") cookie:String): Call<ResponseBody>
+    fun getNMBFeeds(@Query("page") page: Int, @Header("Cookie") cookie: String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/addFeed")
-    fun addNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie:String): Call<ResponseBody>
+    fun addNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie: String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/delFeed")
-    fun delNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie:String): Call<ResponseBody>
+    fun delNMBFeed(@Query("tid") tid: String, @Header("Cookie") cookie: String): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/thread")

@@ -17,11 +17,10 @@
 
 package sh.xsl.reedisland.data.remote
 
-import sh.xsl.reedisland.data.local.entity.*
-import sh.xsl.reedisland.util.ReadableTime
 import com.squareup.moshi.*
 import org.json.JSONObject
-import org.jsoup.Jsoup
+import sh.xsl.reedisland.data.local.entity.*
+import sh.xsl.reedisland.util.ReadableTime
 import timber.log.Timber
 import java.time.LocalDateTime
 
@@ -50,7 +49,8 @@ abstract class NMBJsonParser<T> {
     class NMBNoticeParser : NMBJsonParser<NMBNotice>() {
         override fun parse(response: String): NMBNotice {
             val notice: String = JSONObject(response).optString("siteNotify")
-            return moshi.adapter(NMBNotice::class.java).fromJson(JSONObject().put("content",notice).toString())!!
+            return moshi.adapter(NMBNotice::class.java)
+                .fromJson(JSONObject().put("content", notice).toString())!!
         }
     }
 
@@ -119,7 +119,8 @@ abstract class NMBJsonParser<T> {
                 optJSONArray("threads")?.run {
                     for (i in 0 until length()) {
                         val hitObject = getJSONObject(i)
-                        val hit = moshi.adapter(Comment::class.java).fromJson(hitObject.toString())!!
+                        val hit =
+                            moshi.adapter(Comment::class.java).fromJson(hitObject.toString())!!
                         hitsList.add(hit)
                     }
                 }

@@ -34,6 +34,7 @@ import com.chad.library.adapter.base.binder.QuickItemBinder
 import com.chad.library.adapter.base.util.getItemView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.card.MaterialCardView
+import com.lxj.xpopup.XPopup
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
@@ -48,7 +49,6 @@ import sh.xsl.reedisland.screens.widgets.SectionHeader
 import sh.xsl.reedisland.screens.widgets.popups.ImageViewerPopup
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.ReadableTime
-import com.lxj.xpopup.XPopup
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -260,7 +260,8 @@ class PostHistoryFragment : BaseNavFragment() {
             if (activity == null || !isAdded) return
             viewCaching = DawnApp.applicationDataStore.getViewCaching()
             if (data.newPost) {
-                val navAction = MainNavDirections.actionGlobalCommentsFragment(data.id, data.postTargetFid)
+                val navAction =
+                    MainNavDirections.actionGlobalCommentsFragment(data.id, data.postTargetFid)
                 findNavController().navigate(navAction)
             } else {
                 val navAction =
@@ -284,7 +285,12 @@ class PostHistoryFragment : BaseNavFragment() {
             }
         }
 
-        override fun onClick(holder: BaseViewHolder, view: View, data: SectionHeader, position: Int) {
+        override fun onClick(
+            holder: BaseViewHolder,
+            view: View,
+            data: SectionHeader,
+            position: Int
+        ) {
             if (activity == null || !isAdded) return
             if (data.clickListener == null) return
             data.clickListener.onClick(view)

@@ -157,7 +157,8 @@ class SearchFragment : BaseNavFragment() {
         } else {
             Timber.d("Fragment View Created")
             binding = FragmentSearchBinding.inflate(inflater, container, false)
-            binding?.srlAndRv?.refreshLayout?.setOnRefreshListener(object : RefreshingListenerAdapter() {
+            binding?.srlAndRv?.refreshLayout?.setOnRefreshListener(object :
+                RefreshingListenerAdapter() {
                 override fun onRefreshing() {
                     binding?.srlAndRv?.refreshLayout?.refreshComplete(true)
                 }
@@ -172,7 +173,8 @@ class SearchFragment : BaseNavFragment() {
                     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                         if (activity == null || !isAdded || binding == null || mAdapter == null) return
 
-                        val firstVisiblePos = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                        val firstVisiblePos =
+                            (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
                         if (firstVisiblePos > 0 && firstVisiblePos < mAdapter!!.data.lastIndex) {
                             if (mAdapter!!.getItem(firstVisiblePos) is Comment) {
                                 updateCurrentPage((mAdapter!!.getItem(firstVisiblePos) as Comment).page)
@@ -209,15 +211,18 @@ class SearchFragment : BaseNavFragment() {
                         hintRes = R.string.please_input_page_number
                     ) { dialog, text ->
                         val inputField = getInputField()
-                        val isValid = (text.isBlank() || text.length > viewModel.maxPage.toString().length
-                                || !text.toString().isDigitsOnly() || text.toString().toInt() > viewModel.maxPage).not()
+                        val isValid =
+                            (text.isBlank() || text.length > viewModel.maxPage.toString().length
+                                    || !text.toString().isDigitsOnly() || text.toString()
+                                .toInt() > viewModel.maxPage).not()
                         page = if (isValid) {
                             text.toString().toInt()
                         } else {
                             1
                         }
                         submitButton.isEnabled = isValid
-                        inputField.error = if (isValid) null else context.resources.getString(R.string.please_input_page_number)
+                        inputField.error =
+                            if (isValid) null else context.resources.getString(R.string.please_input_page_number)
                         dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
                     }
                     positiveButton(R.string.submit) {

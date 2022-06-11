@@ -21,17 +21,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
+import dagger.android.support.DaggerFragment
 import sh.xsl.reedisland.R
-import sh.xsl.reedisland.data.remote.APIMessageResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.databinding.FragmentAboutBinding
-import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 class AboutFragment : DaggerFragment() {

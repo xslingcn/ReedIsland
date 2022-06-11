@@ -21,6 +21,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.remote.APIDataResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
@@ -28,7 +29,6 @@ import sh.xsl.reedisland.data.remote.SearchResult
 import sh.xsl.reedisland.util.EventPayload
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.SingleLiveEvent
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.ceil

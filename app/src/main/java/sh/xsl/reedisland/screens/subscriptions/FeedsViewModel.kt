@@ -19,6 +19,7 @@ package sh.xsl.reedisland.screens.subscriptions
 
 import android.util.ArrayMap
 import androidx.lifecycle.*
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.data.local.entity.Feed
 import sh.xsl.reedisland.data.local.entity.FeedAndPost
 import sh.xsl.reedisland.data.repository.FeedRepository
@@ -26,7 +27,6 @@ import sh.xsl.reedisland.util.DataResource
 import sh.xsl.reedisland.util.EventPayload
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.SingleLiveEvent
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 

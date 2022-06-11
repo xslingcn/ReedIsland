@@ -376,7 +376,11 @@ abstract class DawnDatabase : RoomDatabase() {
             }
 
             synchronized(this) {
-                val instance = Room.databaseBuilder(context.applicationContext, DawnDatabase::class.java, "dawnDB")
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    DawnDatabase::class.java,
+                    "dawnDB"
+                )
                     .addMigrations(
                         migrate1To2,
                         migrate2To3,

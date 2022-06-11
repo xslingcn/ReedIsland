@@ -33,6 +33,7 @@ import com.chad.library.adapter.base.listener.OnItemDragListener
 import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import dagger.android.support.DaggerFragment
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Community
@@ -44,7 +45,6 @@ import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.screens.util.Layout
 import sh.xsl.reedisland.screens.util.Layout.toast
 import sh.xsl.reedisland.util.LoadingStatus
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CommonForumsFragment : DaggerFragment() {
@@ -99,14 +99,15 @@ class CommonForumsFragment : DaggerFragment() {
             setHasFixedSize(true)
         }
 
-        val allForumAdapter = CommunityNodeAdapter(object : CommunityNodeAdapter.ForumClickListener {
-            override fun onForumClick(forum: Forum) {
-                if (commonForumAdapter?.data?.contains(forum) == false) {
-                    commonForumAdapter?.addData(forum)
-                    updateTitle()
+        val allForumAdapter =
+            CommunityNodeAdapter(object : CommunityNodeAdapter.ForumClickListener {
+                override fun onForumClick(forum: Forum) {
+                    if (commonForumAdapter?.data?.contains(forum) == false) {
+                        commonForumAdapter?.addData(forum)
+                        updateTitle()
+                    }
                 }
-            }
-        })
+            })
 
         binding?.allForums?.apply {
             layoutManager = LinearLayoutManager(context)
@@ -140,7 +141,10 @@ class CommonForumsFragment : DaggerFragment() {
     }
 
     override fun onDestroyView() {
-        val common = Community.makeCommonForums(commonForumAdapter?.data ?: emptyList(), DawnApp.currentDomain)
+        val common = Community.makeCommonForums(
+            commonForumAdapter?.data ?: emptyList(),
+            DawnApp.currentDomain
+        )
         sharedVM.saveCommonCommunity(common)
         toast(R.string.might_need_to_restart_to_apply_setting)
         super.onDestroyView()

@@ -18,11 +18,11 @@
 package sh.xsl.reedisland.di
 
 import android.content.Context
-import sh.xsl.reedisland.DawnApp
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
 import dagger.android.support.AndroidSupportInjectionModule
+import sh.xsl.reedisland.DawnApp
 import javax.inject.Singleton
 
 @Singleton

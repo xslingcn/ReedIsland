@@ -35,7 +35,8 @@ interface PostDao {
     @Query("SELECT * FROM Post WHERE id=:id AND domain=:domain LIMIT 1")
     suspend fun findPostByIdSync(id: String, domain: String = DawnApp.currentDomain): Post?
 
-    fun findDistinctPostById(id: String, domain: String = DawnApp.currentDomain): LiveData<Post> = findPostById(id, domain).distinctUntilChanged()
+    fun findDistinctPostById(id: String, domain: String = DawnApp.currentDomain): LiveData<Post> =
+        findPostById(id, domain).distinctUntilChanged()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(post: Post)

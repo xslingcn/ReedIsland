@@ -35,8 +35,12 @@ data class BlockedId(
     fun isTimelineBlockedForum(): Boolean = type == 0
 
     companion object {
-        fun makeBlockedPost(id: String, domain: String = DawnApp.currentDomain): BlockedId = BlockedId(id, 1, domain)
+        fun makeBlockedPost(id: String, domain: String = DawnApp.currentDomain): BlockedId =
+            BlockedId(id, 1, domain)
 
-        fun makeTimelineBlockedForum(id: String, domain: String = DawnApp.currentDomain): BlockedId = BlockedId(id, 0, domain)
+        fun makeTimelineBlockedForum(
+            id: String,
+            domain: String = DawnApp.currentDomain
+        ): BlockedId = BlockedId(id, 0, domain)
     }
 }

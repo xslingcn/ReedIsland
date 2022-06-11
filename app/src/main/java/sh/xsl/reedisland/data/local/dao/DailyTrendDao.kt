@@ -33,7 +33,8 @@ interface DailyTrendDao {
     @Query("SELECT * FROM DailyTrend ORDER BY date DESC LIMIT 7")
     fun findLatestDailyTrends(): LiveData<List<DailyTrend>>
 
-    fun findDistinctLatestDailyTrends(): LiveData<List<DailyTrend>> = findLatestDailyTrends().distinctUntilChanged()
+    fun findDistinctLatestDailyTrends(): LiveData<List<DailyTrend>> =
+        findLatestDailyTrends().distinctUntilChanged()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(dailyTrend: DailyTrend)

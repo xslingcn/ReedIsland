@@ -25,7 +25,8 @@ import sh.xsl.reedisland.data.local.entity.PostHistory
 import java.time.LocalDateTime
 import javax.inject.Inject
 
-class PostHistoryViewModel @Inject constructor(private val postHistoryDao: PostHistoryDao) : ViewModel() {
+class PostHistoryViewModel @Inject constructor(private val postHistoryDao: PostHistoryDao) :
+    ViewModel() {
     var endDate: LocalDateTime = LocalDateTime.now()
     var startDate: LocalDateTime = endDate.minusWeeks(1)
     private var currentList: LiveData<List<PostHistory>>? = null

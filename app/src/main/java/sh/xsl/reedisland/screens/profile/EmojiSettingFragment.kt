@@ -42,12 +42,12 @@ import com.chad.library.adapter.base.listener.OnItemSwipeListener
 import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.textfield.TextInputLayout
+import dagger.android.support.DaggerFragment
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Emoji
 import sh.xsl.reedisland.databinding.FragmentEmojiSettingBinding
 import sh.xsl.reedisland.screens.util.Layout
-import dagger.android.support.DaggerFragment
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EmojiSettingFragment : DaggerFragment() {

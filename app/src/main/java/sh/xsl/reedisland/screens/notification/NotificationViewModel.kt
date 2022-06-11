@@ -19,12 +19,13 @@ package sh.xsl.reedisland.screens.notification
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.data.local.dao.NotificationDao
 import sh.xsl.reedisland.data.local.entity.Notification
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class NotificationViewModel @Inject constructor(private val notificationDao: NotificationDao):ViewModel() {
+class NotificationViewModel @Inject constructor(private val notificationDao: NotificationDao) :
+    ViewModel() {
     var notificationAndPost = notificationDao.getLiveAllNotificationsAndPosts()
         private set
 

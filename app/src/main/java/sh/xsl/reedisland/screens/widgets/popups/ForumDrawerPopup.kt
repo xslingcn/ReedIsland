@@ -27,6 +27,8 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.DrawerPopupView
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Community
@@ -35,8 +37,6 @@ import sh.xsl.reedisland.data.local.entity.Timeline
 import sh.xsl.reedisland.screens.MainActivity
 import sh.xsl.reedisland.screens.SharedViewModel
 import sh.xsl.reedisland.screens.adapters.CommunityNodeAdapter
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.DrawerPopupView
 import timber.log.Timber
 
 @SuppressLint("ViewConstructor")
@@ -53,7 +53,8 @@ class ForumDrawerPopup(
                 dismissWith {
                     if (forum.isFakeForum()) {
                         val action = MainNavDirections.actionGlobalCommentsFragment(forum.id, "")
-                        (context as MainActivity).findNavController(R.id.navHostFragment).navigate(action)
+                        (context as MainActivity).findNavController(R.id.navHostFragment)
+                            .navigate(action)
                     } else {
                         sharedVM.setForumId(forum.id)
                     }

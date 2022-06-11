@@ -37,14 +37,14 @@ data class Forum(
     val updateAt: String = "",
     val status: String = ""
 ) {
-    fun getDisplayName(): String =  if (showName.isNotBlank()) showName else name
+    fun getDisplayName(): String = if (showName.isNotBlank()) showName else name
 
-    fun isFakeForum():Boolean = fgroup == "42" && sort == "42" && name == "42"  && msg == "42"
+    fun isFakeForum(): Boolean = fgroup == "42" && sort == "42" && name == "42" && msg == "42"
 
-    fun isValidForum():Boolean = !isFakeForum()
+    fun isValidForum(): Boolean = !isFakeForum()
 
-    companion object{
-        fun makeFakeForum(id: String, showName: String):Forum{
+    companion object {
+        fun makeFakeForum(id: String, showName: String): Forum {
             return Forum(id, "42", "42", "42", showName, "42")
         }
     }

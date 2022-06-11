@@ -51,6 +51,17 @@ import com.afollestad.materialdialogs.checkbox.isCheckPromptChecked
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.animation.AnimationUtils
+import com.lxj.xpopup.XPopup
+import com.lxj.xpopup.core.BasePopupView
+import com.lxj.xpopup.enums.PopupPosition
+import com.lxj.xpopup.interfaces.SimpleCallback
+import com.microsoft.appcenter.AppCenter
+import com.microsoft.appcenter.analytics.Analytics
+import com.microsoft.appcenter.crashes.Crashes
+import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.DawnApp.Companion.applicationDataStore
 import sh.xsl.reedisland.MainNavDirections
@@ -64,24 +75,12 @@ import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.IntentsHelper
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.SingleLiveEvent
-import com.lxj.xpopup.XPopup
-import com.lxj.xpopup.core.BasePopupView
-import com.lxj.xpopup.enums.PopupPosition
-import com.lxj.xpopup.interfaces.SimpleCallback
-import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import timber.log.Timber
 import java.net.URL
 import java.net.URLDecoder
 import javax.inject.Inject
 import javax.net.ssl.HttpsURLConnection
 import kotlin.math.max
-import com.microsoft.appcenter.crashes.Crashes
-import com.microsoft.appcenter.analytics.Analytics
-import com.microsoft.appcenter.AppCenter
-
 
 class MainActivity : DaggerAppCompatActivity() {
 
@@ -220,13 +219,15 @@ class MainActivity : DaggerAppCompatActivity() {
                 // TODO tnmb
                 if ((count == 1 && data.host == "t") || (count == 2 && path[1] == 't')) {
                     val navAction = MainNavDirections.actionGlobalCommentsFragment(id, "")
-                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment)
+                    val navHostFragment =
+                        supportFragmentManager.findFragmentById(R.id.navHostFragment)
                     if (navHostFragment is NavHostFragment) {
                         navHostFragment.navController.navigate(navAction)
                     }
 
                 } else if ((count == 2 && path[1] == 'f')) {
-                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment)
+                    val navHostFragment =
+                        supportFragmentManager.findFragmentById(R.id.navHostFragment)
                     if (navHostFragment is NavHostFragment) {
                         if (navHostFragment.navController.currentDestination?.id != R.id.postsFragment) {
                             navHostFragment.navController.popBackStack(R.id.postsFragment, false)
@@ -235,7 +236,8 @@ class MainActivity : DaggerAppCompatActivity() {
                     val fid = sharedVM.getForumIdByName(URLDecoder.decode(id, "UTF-8"))
                     sharedVM.setForumId(fid)
                 } else if (count == 1 && data.host == "f") {
-                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment)
+                    val navHostFragment =
+                        supportFragmentManager.findFragmentById(R.id.navHostFragment)
                     if (navHostFragment is NavHostFragment) {
                         if (navHostFragment.navController.currentDestination?.id != R.id.postsFragment) {
                             navHostFragment.navController.popBackStack(R.id.postsFragment, false)
@@ -485,7 +487,11 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private class ToolbarTitleEvaluator(private val animCharCount: Int) :
         TypeEvaluator<StringBuilder> {
-        override fun evaluate(fraction: Float, startValue: StringBuilder, endValue: StringBuilder): StringBuilder {
+        override fun evaluate(
+            fraction: Float,
+            startValue: StringBuilder,
+            endValue: StringBuilder
+        ): StringBuilder {
             val ind = (fraction * animCharCount).toInt()
             for (i in 0..ind) {
                 val newChar = if (i >= endValue.length) ' ' else endValue[i]
@@ -593,7 +599,12 @@ class MainActivity : DaggerAppCompatActivity() {
         RetrofitUrlManager.getInstance().putDomain("nmb", DawnConstants.TNMBHost)
         RetrofitUrlManager.getInstance().putDomain("nmb-ref", DawnConstants.TNMBHost)
 
-        sharedVM.beitaiForums.firstOrNull()?.forums?.firstOrNull()?.id?.let { sharedVM.setForumId(it, true) }
+        sharedVM.beitaiForums.firstOrNull()?.forums?.firstOrNull()?.id?.let {
+            sharedVM.setForumId(
+                it,
+                true
+            )
+        }
 
         binding.toolbar.setSubtitle(R.string.toolbar_subtitle_tnmb)
     }
@@ -604,8 +615,10 @@ class MainActivity : DaggerAppCompatActivity() {
         val currentTime = System.currentTimeMillis()
         if (currentTime - 20000 <= lastNetworkTestTime) {
             Timber.d("CDN was set less than 20 seconds ago, skipping...")
-            if (lastSuccessfulBaseCDN.isNotBlank()) RetrofitUrlManager.getInstance().putDomain("nmb", lastSuccessfulBaseCDN)
-            if (lastSuccessfulRefCDN.isNotBlank()) RetrofitUrlManager.getInstance().putDomain("nmb-ref", lastSuccessfulRefCDN)
+            if (lastSuccessfulBaseCDN.isNotBlank()) RetrofitUrlManager.getInstance()
+                .putDomain("nmb", lastSuccessfulBaseCDN)
+            if (lastSuccessfulRefCDN.isNotBlank()) RetrofitUrlManager.getInstance()
+                .putDomain("nmb-ref", lastSuccessfulRefCDN)
             return
         }
         lastNetworkTestTime = currentTime
@@ -650,15 +663,18 @@ class MainActivity : DaggerAppCompatActivity() {
                             if (base == "auto" && availableConnections.firstKey() == timeElapsed) {
                                 Timber.d("Using $url for Base")
                                 lastSuccessfulBaseCDN = url
-                                RetrofitUrlManager.getInstance().putDomain("nmb", lastSuccessfulBaseCDN)
+                                RetrofitUrlManager.getInstance()
+                                    .putDomain("nmb", lastSuccessfulBaseCDN)
                             }
                             // Ref
                             if (ref == "auto") {
-                                availableConnections.values.toList().firstOrNull { it in refCDNs }?.let {
-                                    Timber.d("Using $it for Ref")
-                                    lastSuccessfulRefCDN = url
-                                    RetrofitUrlManager.getInstance().putDomain("nmb-ref", lastSuccessfulRefCDN)
-                                }
+                                availableConnections.values.toList().firstOrNull { it in refCDNs }
+                                    ?.let {
+                                        Timber.d("Using $it for Ref")
+                                        lastSuccessfulRefCDN = url
+                                        RetrofitUrlManager.getInstance()
+                                            .putDomain("nmb-ref", lastSuccessfulRefCDN)
+                                    }
                             }
                             sharedVM.hostChange.postValue(SingleLiveEvent.create(true))
                         }

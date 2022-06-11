@@ -213,8 +213,7 @@ class QuickAdapter<T>(
                 (oldItem is Comment && newItem is Comment) -> {
                     if (oldItem.isAd() && newItem.isAd()) {
                         oldItem.page == newItem.page && oldItem.content == newItem.content
-                    }
-                    else{
+                    } else {
                         oldItem.id == newItem.id && oldItem.content == newItem.content
                                 && oldItem.visible == newItem.visible
                     }
@@ -299,7 +298,8 @@ class QuickAdapter<T>(
         )
     }
 
-    internal class DawnLoadMoreView(private val sharedViewModel: SharedViewModel) : BaseLoadMoreView() {
+    internal class DawnLoadMoreView(private val sharedViewModel: SharedViewModel) :
+        BaseLoadMoreView() {
         override fun getLoadComplete(holder: BaseViewHolder): View {
             return holder.getView(R.id.load_more_load_complete_view)
         }

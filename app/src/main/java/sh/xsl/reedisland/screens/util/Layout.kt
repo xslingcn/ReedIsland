@@ -25,12 +25,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import me.dkzwm.widget.srl.SmoothRefreshLayout
+import me.dkzwm.widget.srl.config.Constants
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.databinding.ListItemPreferenceBinding
 import sh.xsl.reedisland.util.EventPayload
 import sh.xsl.reedisland.util.LoadingStatus
-import me.dkzwm.widget.srl.SmoothRefreshLayout
-import me.dkzwm.widget.srl.config.Constants
 
 object Layout {
     fun dip2px(context: Context, dipValue: Float): Int {
@@ -50,12 +50,16 @@ object Layout {
         return pix / context.resources.displayMetrics.density
     }
 
-    fun getThemeInverseColor(context: Context) = when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-        Configuration.UI_MODE_NIGHT_YES -> {
-            context.resources.getColor(R.color.pure_light, null)
+    fun getThemeInverseColor(context: Context) =
+        when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+            Configuration.UI_MODE_NIGHT_YES -> {
+                context.resources.getColor(R.color.pure_light, null)
+            }
+            else -> {
+                context.resources.getColor(R.color.pure_dark, null)
+            }
         }
-        else -> {context.resources.getColor(R.color.pure_dark, null)}
-    }
+
     fun <AdapterType, PayloadType> Fragment.updateHeaderAndFooter(
         refreshLayout: SmoothRefreshLayout,
         mAdapter: BaseQuickAdapter<AdapterType, BaseViewHolder>,
@@ -102,11 +106,11 @@ object Layout {
         }
     }
 
-    fun Fragment.toast(resId:Int, length:Int = Toast.LENGTH_SHORT){
+    fun Fragment.toast(resId: Int, length: Int = Toast.LENGTH_SHORT) {
         Toast.makeText(context, resId, length).show()
     }
 
-    fun Fragment.toast(string: String, length:Int = Toast.LENGTH_SHORT){
+    fun Fragment.toast(string: String, length: Int = Toast.LENGTH_SHORT) {
         Toast.makeText(context, string, length).show()
     }
 

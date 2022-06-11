@@ -22,10 +22,10 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
+import dagger.android.support.DaggerFragment
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.screens.MainActivity
 import sh.xsl.reedisland.screens.SharedViewModel
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 open class BaseNavFragment : DaggerFragment() {

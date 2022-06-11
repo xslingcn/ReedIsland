@@ -70,6 +70,4 @@ class SegmentSpacingSpan(private var mHeight: Int, private var segmentGap: Int) 
             }
         }
     }
-
-
 }

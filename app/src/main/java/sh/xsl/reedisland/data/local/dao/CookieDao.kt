@@ -43,10 +43,11 @@ interface CookieDao {
         insertAll(cookieList)
     }
 
-    suspend fun setLastUsedCookie(cookie: Cookie){
+    suspend fun setLastUsedCookie(cookie: Cookie) {
         cookie.lastUsedAt = LocalDateTime.now()
         updateCookie(cookie)
     }
+
     @Update
     suspend fun updateCookie(cookie: Cookie)
 

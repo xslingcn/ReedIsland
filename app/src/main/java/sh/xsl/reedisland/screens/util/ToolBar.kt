@@ -45,7 +45,7 @@ object ToolBar {
         try {
             topMargin = getStatusBarHeight()
             setMarginTop(topMargin)
-        } catch (e:Exception){
+        } catch (e: Exception) {
             Timber.e("Cannot get status bar height from system. use insets")
             if (topMargin == 0) {
                 setOnApplyWindowInsetsListener { _, insets ->
@@ -63,9 +63,10 @@ object ToolBar {
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
     }
 
-   private fun View.setMarginTop(value: Int = topMargin) = updateLayoutParams<ViewGroup.MarginLayoutParams> {
-       // shift by magic value 5, because bang screens does not have the accurate status bar height
-       // which may results in weird gap
-       topMargin = value - 5
-    }
+    private fun View.setMarginTop(value: Int = topMargin) =
+        updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            // shift by magic value 5, because bang screens does not have the accurate status bar height
+            // which may results in weird gap
+            topMargin = value - 5
+        }
 }

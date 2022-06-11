@@ -17,7 +17,6 @@
 
 package sh.xsl.reedisland.util
 
-
 class SingleLiveEvent<out T> private constructor(private val content: T) {
     var hasBeenHandled = false
         private set // Allow external read but not write

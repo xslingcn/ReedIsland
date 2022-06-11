@@ -47,7 +47,10 @@ import sh.xsl.reedisland.screens.widgets.popups.PostPopup
 import timber.log.Timber
 import java.io.File
 
-class IntentsHelper(private val registry: ActivityResultRegistry, private val mainActivity: MainActivity) :
+class IntentsHelper(
+    private val registry: ActivityResultRegistry,
+    private val mainActivity: MainActivity
+) :
     DefaultLifecycleObserver {
     lateinit var requestSinglePermission: ActivityResultLauncher<String>
     lateinit var requestMultiplePermissions: ActivityResultLauncher<Array<String>>
@@ -73,7 +76,11 @@ class IntentsHelper(private val registry: ActivityResultRegistry, private val ma
 
     override fun onCreate(owner: LifecycleOwner) {
         requestSinglePermission =
-            registry.register("request_single_perm", owner, ActivityResultContracts.RequestPermission()) {
+            registry.register(
+                "request_single_perm",
+                owner,
+                ActivityResultContracts.RequestPermission()
+            ) {
                 if (it) {
                     toast(R.string.please_try_again)
                 } else {
@@ -94,21 +101,31 @@ class IntentsHelper(private val registry: ActivityResultRegistry, private val ma
         }
 
         getImageFromGallery =
-            registry.register("get_image_from_gallery", owner, ActivityResultContracts.GetContent()) { uri ->
+            registry.register(
+                "get_image_from_gallery",
+                owner,
+                ActivityResultContracts.GetContent()
+            ) { uri ->
                 // Handle the returned Uri
                 postPopup?.compressAndPreviewImage(uri)
                 postPopup = null
             }
 
-        takePicture = registry.register("take_picture", owner, ActivityResultContracts.TakePicture()) {
-            if (it == true) {
-                // Handle the returned Uri
-                postPopup?.compressAndPreviewImage(placeHolderUri)
-                postPopup = null
-            } else {
-                placeHolderUri?.let { uri -> ImageUtil.removePlaceholderImageInGallery(mainActivity, uri) }
+        takePicture =
+            registry.register("take_picture", owner, ActivityResultContracts.TakePicture()) {
+                if (it == true) {
+                    // Handle the returned Uri
+                    postPopup?.compressAndPreviewImage(placeHolderUri)
+                    postPopup = null
+                } else {
+                    placeHolderUri?.let { uri ->
+                        ImageUtil.removePlaceholderImageInGallery(
+                            mainActivity,
+                            uri
+                        )
+                    }
+                }
             }
-        }
 
         drawNewDoodle = registry.register("make_doodle", owner, MakeDoodle()) { uri ->
             Timber.d("Made a doodle. Prepare to upload...")
@@ -116,21 +133,23 @@ class IntentsHelper(private val registry: ActivityResultRegistry, private val ma
             postPopup = null
         }
 
-        getCookieFromQRCode = registry.register("get_cookie_from_qr_code", owner, ScanQRCode()) { cookie ->
-            cookie?.run {
-                profileFragment?.saveCookieWithInputName(this)
+        getCookieFromQRCode =
+            registry.register("get_cookie_from_qr_code", owner, ScanQRCode()) { cookie ->
+                cookie?.run {
+                    profileFragment?.saveCookieWithInputName(this)
+                }
+                profileFragment = null
             }
-            profileFragment = null
-        }
 
-        cropToolbarImage = registry.register("crop_toolbar_image", owner, CropToolbarImage()) { uri ->
-            if (uri != null) {
-                DawnApp.applicationDataStore.setCustomToolbarImagePath(uri.toString())
-                toast(R.string.restart_to_apply_setting)
-            } else {
-                toast(R.string.cannot_load_image_file)
+        cropToolbarImage =
+            registry.register("crop_toolbar_image", owner, CropToolbarImage()) { uri ->
+                if (uri != null) {
+                    DawnApp.applicationDataStore.setCustomToolbarImagePath(uri.toString())
+                    toast(R.string.restart_to_apply_setting)
+                } else {
+                    toast(R.string.cannot_load_image_file)
+                }
             }
-        }
 
     }
 
@@ -172,7 +191,8 @@ class IntentsHelper(private val registry: ActivityResultRegistry, private val ma
         val relativeLocation = Environment.DIRECTORY_PICTURES + File.separator + "Dawn"
         val fileName = "DawnIsland_$timeStamp.jpg"
         try {
-            placeHolderUri = ImageUtil.addPlaceholderImageToGallery(caller, fileName, relativeLocation)
+            placeHolderUri =
+                ImageUtil.addPlaceholderImageToGallery(caller, fileName, relativeLocation)
             postPopup = popup
             takePicture.launch(placeHolderUri)
         } catch (e: Exception) {

@@ -29,6 +29,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import dagger.android.support.DaggerFragment
 import sh.xsl.reedisland.DawnApp.Companion.applicationDataStore
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.BlockedId
@@ -38,7 +39,6 @@ import sh.xsl.reedisland.screens.SharedViewModel
 import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.screens.util.Layout.toast
 import sh.xsl.reedisland.screens.util.Layout.updateSwitchSummary
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class CustomSettingFragment : DaggerFragment() {

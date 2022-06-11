@@ -21,6 +21,8 @@ import android.util.SparseArray
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.FeedDao
 import sh.xsl.reedisland.data.local.entity.Feed
@@ -31,9 +33,6 @@ import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.util.DataResource
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.getLocalListDataResource
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import org.json.JSONObject
 import timber.log.Timber
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -84,7 +83,12 @@ class FeedRepository @Inject constructor(
             val response =
                 DataResource.create(webService.getFeeds(page))
             if (response.status == LoadingStatus.SUCCESS) {
-                emit(DataResource.create<List<FeedAndPost>>(convertFeedData(response.data!!, page), emptyList()))
+                emit(
+                    DataResource.create<List<FeedAndPost>>(
+                        convertFeedData(response.data!!, page),
+                        emptyList()
+                    )
+                )
             } else {
                 emit(
                     DataResource.create<List<FeedAndPost>>(
@@ -107,7 +111,15 @@ class FeedRepository @Inject constructor(
         val baseIndex = (page - 1) * 10 + 1
         val timestamp = LocalDateTime.now()
         data.mapIndexed { index, serverFeed ->
-            feeds.add(Feed(baseIndex + index, page, serverFeed.id, DawnApp.currentDomain, timestamp))
+            feeds.add(
+                Feed(
+                    baseIndex + index,
+                    page,
+                    serverFeed.id,
+                    DawnApp.currentDomain,
+                    timestamp
+                )
+            )
             posts.add(serverFeed.toPost())
         }
 

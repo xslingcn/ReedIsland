@@ -29,6 +29,6 @@ data class Cookie(
     var cookieDisplayName: String,
     var lastUsedAt: LocalDateTime = LocalDateTime.now(),
     val domain: String = DawnApp.currentDomain
-){
-    fun getApiHeaderCookieHash():String = "userhash=$cookieHash"
+) {
+    fun getApiHeaderCookieHash(): String = "userhash=$cookieHash"
 }

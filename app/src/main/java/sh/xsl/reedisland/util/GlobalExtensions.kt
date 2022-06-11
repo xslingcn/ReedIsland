@@ -54,7 +54,8 @@ fun <T> getLocalDataResource(cache: LiveData<T>): LiveData<DataResource<T>> {
 fun <T> getLocalListDataResource(cache: LiveData<List<T>>): LiveData<DataResource<List<T>>> {
     return Transformations.map(cache) {
         Timber.d("Got ${it.size} rows from database")
-        val status: LoadingStatus = if (it.isNullOrEmpty()) LoadingStatus.NO_DATA else LoadingStatus.SUCCESS
+        val status: LoadingStatus =
+            if (it.isNullOrEmpty()) LoadingStatus.NO_DATA else LoadingStatus.SUCCESS
         DataResource.create(status, it)
     }
 }
@@ -93,7 +94,10 @@ fun openLinksWithOtherApps(uri: String, activity: Activity) {
 
     if (targetIntents.isNotEmpty()) {
         val chooserIntent: Intent = Intent.createChooser(targetIntents.removeAt(0), "请使用以下软件打开链接")
-        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, targetIntents.toArray(arrayOf<Parcelable>()))
+        chooserIntent.putExtra(
+            Intent.EXTRA_INITIAL_INTENTS,
+            targetIntents.toArray(arrayOf<Parcelable>())
+        )
         activity.startActivity(chooserIntent)
     } else {
         Toast.makeText(activity, "没有找到可以打开链接的软件，请和开发者联系", Toast.LENGTH_SHORT).show()

@@ -17,17 +17,17 @@
 
 package sh.xsl.reedisland.data.local
 
+import com.tencent.mmkv.MMKV
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import sh.xsl.reedisland.data.local.dao.*
 import sh.xsl.reedisland.data.local.entity.*
 import sh.xsl.reedisland.data.remote.APIDataResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.lazyOnMainOnly
-import com.tencent.mmkv.MMKV
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import timber.log.Timber
 import java.time.LocalDateTime
 import java.util.*
@@ -357,12 +357,16 @@ class ApplicationDataStore @Inject constructor(
         )
     }
 
-    suspend fun getReedSession(){
-       reedSession = reedSessionDao.get()?.let {
-            if(it.cookie.substringAfter("=").length==160
-                && java.time.Duration.between(reedSessionDao.get()!!.lastUpdatedAt,LocalDateTime.now()).toDays()<365)
+    suspend fun getReedSession() {
+        reedSession = reedSessionDao.get()?.let {
+            if (it.cookie.substringAfter("=").length == 160
+                && java.time.Duration.between(
+                    reedSessionDao.get()!!.lastUpdatedAt,
+                    LocalDateTime.now()
+                ).toDays() < 365
+            )
                 it.cookie
-           else ""
+            else ""
         } ?: ""
         reedSession = reedSession.isBlank().let {
             reedSessionDao.insert(ReedSession(webService.getReedSession()))
@@ -400,7 +404,8 @@ class ApplicationDataStore @Inject constructor(
 //            val currentRelease = Release(1, BuildConfig.VERSION_NAME, "", "default entry",Date().time)
 //            coroutineScope { launch { releaseDao.insertRelease(currentRelease) } }
 //        }
-        val currentVersionCode = sh.xsl.reedisland.BuildConfig.VERSION_NAME.filter { it.isDigit() }.toInt()
+        val currentVersionCode =
+            sh.xsl.reedisland.BuildConfig.VERSION_NAME.filter { it.isDigit() }.toInt()
         val latest = webService.getLatestRelease().run {
             if (this is APIDataResponse.Success) data
             else {

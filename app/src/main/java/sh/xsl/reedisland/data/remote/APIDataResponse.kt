@@ -17,13 +17,13 @@
 
 package sh.xsl.reedisland.data.remote
 
-import sh.xsl.reedisland.util.LoadingStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
 import org.apache.commons.text.StringEscapeUtils
 import org.json.JSONObject
 import retrofit2.Call
+import sh.xsl.reedisland.util.LoadingStatus
 import timber.log.Timber
 
 sealed class APIDataResponse<T>(
@@ -67,7 +67,10 @@ sealed class APIDataResponse<T>(
                             Timber.d("Trying to parse response with supplied parser...")
                             Timber.d(call.request().url.toString())
                             Timber.d("Header: ${call.request().headers}")
-                            Success("Parse success", parser.parse(JSONObject(resBody).optString("result",resBody)))
+                            Success(
+                                "Parse success",
+                                parser.parse(JSONObject(resBody).optString("result", resBody))
+                            )
                         } catch (e: Exception) {
                             // server returns non json string
                             Timber.e("Parse failed: $e")
@@ -81,7 +84,10 @@ sealed class APIDataResponse<T>(
 
                 return withContext(Dispatchers.IO) {
                     val msg = response.errorBody()?.string()
-                    val errorMsg = if(!msg.isNullOrEmpty()) JSONObject(msg).optString("errmsg",msg) else response.message()
+                    val errorMsg = if (!msg.isNullOrEmpty()) JSONObject(msg).optString(
+                        "errmsg",
+                        msg
+                    ) else response.message()
                     Timber.e(errorMsg)
                     Error(errorMsg ?: "unknown error")
                 }

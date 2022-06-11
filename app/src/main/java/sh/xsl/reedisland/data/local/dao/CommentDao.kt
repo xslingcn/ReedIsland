@@ -28,16 +28,31 @@ import java.time.LocalDateTime
 interface CommentDao {
 
     @Query("SELECT * FROM Comment WHERE domain = :domain AND parentId=:parentId")
-    suspend fun findAllByParentId(parentId: String, domain: String = DawnApp.currentDomain): List<Comment>
+    suspend fun findAllByParentId(
+        parentId: String,
+        domain: String = DawnApp.currentDomain
+    ): List<Comment>
 
     @Query("SELECT * FROM Comment WHERE domain = :domain AND parentId=:parentId AND page<=:page ORDER BY id ASC")
-    suspend fun findByParentIdUntilPage(parentId: String, page: Int, domain: String = DawnApp.currentDomain): List<Comment>
+    suspend fun findByParentIdUntilPage(
+        parentId: String,
+        page: Int,
+        domain: String = DawnApp.currentDomain
+    ): List<Comment>
 
     @Query("SELECT * FROM Comment WHERE domain = :domain AND parentId=:parentId AND page=:page ORDER BY id ASC")
-    fun findPageByParentId(parentId: String, page: Int, domain: String = DawnApp.currentDomain): LiveData<List<Comment>>
+    fun findPageByParentId(
+        parentId: String,
+        page: Int,
+        domain: String = DawnApp.currentDomain
+    ): LiveData<List<Comment>>
 
-    fun findDistinctPageByParentId(parentId: String, page: Int, domain: String = DawnApp.currentDomain):
-            LiveData<List<Comment>> = findPageByParentId(parentId, page, domain).distinctUntilChanged()
+    fun findDistinctPageByParentId(
+        parentId: String,
+        page: Int,
+        domain: String = DawnApp.currentDomain
+    ): LiveData<List<Comment>> =
+        findPageByParentId(parentId, page, domain).distinctUntilChanged()
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(comment: Comment)

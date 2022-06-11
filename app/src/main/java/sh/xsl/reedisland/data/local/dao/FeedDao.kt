@@ -38,13 +38,20 @@ interface FeedDao {
 
     @Transaction
     @Query("SELECT * From Feed where date(:targetTime)>date(Feed.lastUpdatedAt) AND domain=:domain ORDER BY Feed.lastUpdatedAt ASC LIMIT 1")
-    suspend fun findMostOutdatedFeedAndPost(targetTime: LocalDateTime, domain: String = DawnApp.currentDomain): FeedAndPost?
+    suspend fun findMostOutdatedFeedAndPost(
+        targetTime: LocalDateTime,
+        domain: String = DawnApp.currentDomain
+    ): FeedAndPost?
 
     @Transaction
     @Query("SELECT * From Feed WHERE page==:page AND domain=:domain ORDER BY id ASC")
-    fun getFeedAndPostOnPage(page: Int, domain: String = DawnApp.currentDomain): LiveData<List<FeedAndPost>>
+    fun getFeedAndPostOnPage(
+        page: Int,
+        domain: String = DawnApp.currentDomain
+    ): LiveData<List<FeedAndPost>>
 
-    fun getDistinctFeedAndPostOnPage(page: Int, domain: String = DawnApp.currentDomain) = getFeedAndPostOnPage(page, domain).distinctUntilChanged()
+    fun getDistinctFeedAndPostOnPage(page: Int, domain: String = DawnApp.currentDomain) =
+        getFeedAndPostOnPage(page, domain).distinctUntilChanged()
 
     @Transaction
     suspend fun addFeedToTopAndIncrementFeedIds(feed: Feed) {
@@ -53,7 +60,7 @@ interface FeedDao {
     }
 
     @Transaction
-    suspend fun deleteFeedAndDecrementFeedIds(feed: Feed){
+    suspend fun deleteFeedAndDecrementFeedIds(feed: Feed) {
         decrementFeedIdsAfter(feed.id, feed.page)
         deleteFeedByPostId(feed.postId)
     }

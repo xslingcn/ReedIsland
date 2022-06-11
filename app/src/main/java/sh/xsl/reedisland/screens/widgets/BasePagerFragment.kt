@@ -25,14 +25,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
-import sh.xsl.reedisland.R
-import sh.xsl.reedisland.databinding.FragmentBasePagerBinding
-import sh.xsl.reedisland.screens.MainActivity
-import sh.xsl.reedisland.screens.util.Layout
 import com.zhpan.indicator.IndicatorView
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 import dagger.android.support.DaggerFragment
+import sh.xsl.reedisland.R
+import sh.xsl.reedisland.databinding.FragmentBasePagerBinding
+import sh.xsl.reedisland.screens.MainActivity
+import sh.xsl.reedisland.screens.util.Layout
 import timber.log.Timber
 
 abstract class BasePagerFragment : DaggerFragment() {
@@ -116,7 +116,8 @@ abstract class BasePagerFragment : DaggerFragment() {
             object : FragmentStateAdapter(childFragmentManager, viewLifecycleOwner.lifecycle) {
                 override fun getItemCount(): Int = pageFragmentClass.size
                 override fun createFragment(position: Int): Fragment {
-                    return pageFragmentClass[position]?.newInstance() ?: error("Missing Fragment Class")
+                    return pageFragmentClass[position]?.newInstance()
+                        ?: error("Missing Fragment Class")
                 }
             }
 

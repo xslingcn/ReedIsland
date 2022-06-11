@@ -21,9 +21,11 @@ import android.graphics.*
 import android.graphics.Paint.FontMetricsInt
 import android.text.style.ReplacementSpan
 
-class RoundBackgroundColorSpan(private val bgColor1Str: String = "#2195da",
-                               private val bgColor2Str: String = "#3ae4cd",
-                               private val textColorStr: String = "#FFFFFF") :
+class RoundBackgroundColorSpan(
+    private val bgColor1Str: String = "#2195da",
+    private val bgColor2Str: String = "#3ae4cd",
+    private val textColorStr: String = "#FFFFFF"
+) :
     ReplacementSpan() {
     private var radius = 20
     var size = 0

@@ -18,7 +18,6 @@
 package sh.xsl.reedisland.screens.profile
 
 import android.Manifest
-import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -39,6 +38,8 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItems
 import com.google.android.material.textfield.TextInputLayout
 import com.king.zxing.util.CodeUtils
+import dagger.android.support.DaggerFragment
+import org.json.JSONObject
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Cookie
 import sh.xsl.reedisland.databinding.FragmentProfileBinding
@@ -48,8 +49,6 @@ import sh.xsl.reedisland.screens.util.Layout.toast
 import sh.xsl.reedisland.util.ImageUtil
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.lazyOnMainOnly
-import dagger.android.support.DaggerFragment
-import org.json.JSONObject
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -95,7 +94,8 @@ class ProfileFragment : DaggerFragment() {
             icon.rotation = -90f
             root.setOnClickListener {
                 if (activity == null || !isAdded) return@setOnClickListener
-                val action = ProfileFragmentDirections.actionProfileFragmentToGeneralSettingFragment()
+                val action =
+                    ProfileFragmentDirections.actionProfileFragmentToGeneralSettingFragment()
                 findNavController().navigate(action)
             }
         }

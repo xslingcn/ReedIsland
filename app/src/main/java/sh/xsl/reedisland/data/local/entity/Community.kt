@@ -19,9 +19,9 @@ package sh.xsl.reedisland.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.util.DawnConstants
-import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 @Entity

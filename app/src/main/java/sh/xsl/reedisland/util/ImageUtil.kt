@@ -248,7 +248,7 @@ object ImageUtil {
             inputStream.close()
             outputStream.close()
             file
-        } catch (e:Exception){
+        } catch (e: Exception) {
             Timber.e(e, "Did not get drawable file $fileName")
             null
         }

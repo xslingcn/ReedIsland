@@ -36,6 +36,7 @@ import com.afollestad.materialdialogs.color.colorChooser
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.slider.Slider
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.databinding.ActivityDoodleBinding
 import sh.xsl.reedisland.screens.util.Layout
@@ -43,7 +44,6 @@ import sh.xsl.reedisland.screens.util.ToolBar.themeStatusBar
 import sh.xsl.reedisland.screens.widgets.DoodleView
 import sh.xsl.reedisland.screens.widgets.ThicknessPreviewView
 import sh.xsl.reedisland.util.lazyOnMainOnly
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.FileDescriptor
 

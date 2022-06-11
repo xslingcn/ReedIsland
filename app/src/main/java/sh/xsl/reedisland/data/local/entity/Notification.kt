@@ -37,7 +37,13 @@ data class Notification(
     fun isValidFeedPushNotification(): Boolean = id.first().isDigit()
 
     companion object {
-        fun makeNotification(targetId: String, fid: String, newReplyCount: Int, message: String = "", domain: String = DawnApp.currentDomain): Notification =
+        fun makeNotification(
+            targetId: String,
+            fid: String,
+            newReplyCount: Int,
+            message: String = "",
+            domain: String = DawnApp.currentDomain
+        ): Notification =
             Notification(targetId, fid, newReplyCount, message, false, domain, LocalDateTime.now())
     }
 }

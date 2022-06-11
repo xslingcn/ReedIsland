@@ -17,14 +17,14 @@
 
 package sh.xsl.reedisland.di
 
-import sh.xsl.reedisland.data.remote.NMBService
-import sh.xsl.reedisland.data.remote.NMBServiceClient
-import sh.xsl.reedisland.util.DawnConstants
 import dagger.Module
 import dagger.Provides
 import me.jessyan.retrofiturlmanager.RetrofitUrlManager
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import sh.xsl.reedisland.data.remote.NMBService
+import sh.xsl.reedisland.data.remote.NMBServiceClient
+import sh.xsl.reedisland.util.DawnConstants
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 

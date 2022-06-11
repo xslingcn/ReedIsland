@@ -42,17 +42,27 @@ interface BrowsingHistoryDao {
     suspend fun getAllBrowsingHistory(domain: String = DawnApp.currentDomain): List<BrowsingHistory>
 
     @Query("SELECT * From BrowsingHistory WHERE domain = :domain AND date(browsedDateTime)=date(:date) ORDER BY browsedDateTime DESC")
-    fun getBrowsingHistoryByDate(date: LocalDateTime, domain: String = DawnApp.currentDomain): LiveData<List<BrowsingHistory>>
+    fun getBrowsingHistoryByDate(
+        date: LocalDateTime,
+        domain: String = DawnApp.currentDomain
+    ): LiveData<List<BrowsingHistory>>
 
     @Query("SELECT * From BrowsingHistory WHERE domain = :domain AND date(browsedDateTime)=date(:today) AND postId=:postId ORDER BY browsedDateTime DESC LIMIT 1")
-    suspend fun getBrowsingHistoryByTodayAndIdSync(today: LocalDateTime, postId: String, domain: String = DawnApp.currentDomain): BrowsingHistory?
+    suspend fun getBrowsingHistoryByTodayAndIdSync(
+        today: LocalDateTime,
+        postId: String,
+        domain: String = DawnApp.currentDomain
+    ): BrowsingHistory?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBrowsingHistory(browsingHistory: BrowsingHistory)
 
     suspend fun insertOrUpdateBrowsingHistory(browsingHistory: BrowsingHistory) {
         browsingHistory.browsedDateTime = LocalDateTime.now()
-        val cache = getBrowsingHistoryByTodayAndIdSync(browsingHistory.browsedDateTime, browsingHistory.postId)
+        val cache = getBrowsingHistoryByTodayAndIdSync(
+            browsingHistory.browsedDateTime,
+            browsingHistory.postId
+        )
         if (cache != null) {
             browsingHistory.pages.apply { addAll(cache.pages) }
             browsingHistory.id = cache.id

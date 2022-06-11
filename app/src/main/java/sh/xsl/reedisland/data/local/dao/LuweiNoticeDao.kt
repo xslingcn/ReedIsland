@@ -31,7 +31,7 @@ interface LuweiNoticeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNotice(luweiNotice: LuweiNotice)
 
-    suspend fun insertNoticeWithTimestamp(luweiNotice: LuweiNotice){
+    suspend fun insertNoticeWithTimestamp(luweiNotice: LuweiNotice) {
         luweiNotice.setUpdatedTimestamp()
         insertNotice(luweiNotice)
     }

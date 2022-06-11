@@ -20,6 +20,8 @@ package sh.xsl.reedisland.data.repository
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.data.local.dao.DailyTrendDao
 import sh.xsl.reedisland.data.local.entity.DailyTrend
 import sh.xsl.reedisland.data.local.entity.Post
@@ -30,8 +32,6 @@ import sh.xsl.reedisland.util.DataResource
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.ReadableTime
 import sh.xsl.reedisland.util.getLocalListDataResource
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDateTime
 import javax.inject.Inject
@@ -51,7 +51,8 @@ class TrendRepository @Inject constructor(
     private val trendLength = 32
 
     val latestTrends = MediatorLiveData<DataResource<List<DailyTrend>>>()
-    private val cache: LiveData<DataResource<List<DailyTrend>>> = getLocalListDataResource(dailyTrendDao.findDistinctLatestDailyTrends())
+    private val cache: LiveData<DataResource<List<DailyTrend>>> =
+        getLocalListDataResource(dailyTrendDao.findDistinctLatestDailyTrends())
     private lateinit var remote: LiveData<DataResource<List<DailyTrend>>>
     private var trendsCount = 0
 
@@ -66,7 +67,7 @@ class TrendRepository @Inject constructor(
 
     private fun subscribeToCache() {
         latestTrends.addSource(cache) {
-            if (it.status == LoadingStatus.SUCCESS && trendsCount > 0 && trendsCount < 7){
+            if (it.status == LoadingStatus.SUCCESS && trendsCount > 0 && trendsCount < 7) {
                 latestTrends.value = DataResource.create(data = it.data)
             } else if (it.status == LoadingStatus.SUCCESS) {
                 latestTrends.value = it
@@ -76,12 +77,13 @@ class TrendRepository @Inject constructor(
         }
     }
 
-
     fun subscribeToRemote() {
         if (this::remote.isInitialized) latestTrends.removeSource(remote)
         remote = liveData<DataResource<List<DailyTrend>>> {
             val lastDate: LocalDateTime? = cache.value?.data?.firstOrNull()?.date
-            if (lastDate != null && ReadableTime.serverDateTimeToUserLocalDateTime(lastDate).plusDays(1).isAfter(LocalDateTime.now())) {
+            if (lastDate != null && ReadableTime.serverDateTimeToUserLocalDateTime(lastDate)
+                    .plusDays(1).isAfter(LocalDateTime.now())
+            ) {
                 Timber.d("It's less than 24 hours since Trend last updated. Reusing...")
                 emit(DataResource.create(LoadingStatus.SUCCESS, cache.value?.data))
             } else {
@@ -111,8 +113,7 @@ class TrendRepository @Inject constructor(
                     if (trendsCount < 7) {
                         Timber.d("Only got $trendsCount/7 Daily Trend from last Page. Need more...")
                         getRemoteTrend(page - 1)
-                    }
-                    else DataResource.create(LoadingStatus.SUCCESS, emptyList())
+                    } else DataResource.create(LoadingStatus.SUCCESS, emptyList())
                 }
             } else {
                 Timber.e(message)
@@ -125,7 +126,8 @@ class TrendRepository @Inject constructor(
         val foundTrends = mutableListOf<DailyTrend>()
         for (reply in data.comments) {
             if (reply.userid == po) {
-                val content = if (reply.content?.startsWith("@") == true) reply.content.substringAfter("<br />\n") else reply.content
+                val content =
+                    if (reply.content?.startsWith("@") == true) reply.content.substringAfter("<br />\n") else reply.content
                 val list = content?.split(trendDelimiter, ignoreCase = true)
                 if (list?.size == trendLength) {
                     try {

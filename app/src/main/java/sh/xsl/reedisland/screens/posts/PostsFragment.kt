@@ -32,6 +32,8 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItems
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
+import com.lxj.xpopup.XPopup
+import me.dkzwm.widget.srl.RefreshingListenerAdapter
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
@@ -48,8 +50,6 @@ import sh.xsl.reedisland.screens.widgets.popups.PostPopup
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.lazyOnMainOnly
 import sh.xsl.reedisland.util.openLinksWithOtherApps
-import com.lxj.xpopup.XPopup
-import me.dkzwm.widget.srl.RefreshingListenerAdapter
 import timber.log.Timber
 
 
@@ -60,7 +60,12 @@ class PostsFragment : BaseNavFragment() {
     private var redCircle: FrameLayout? = null
     private var countTextView: TextView? = null
     private val viewModel: PostsViewModel by viewModels { viewModelFactory }
-    private val postPopup: PostPopup by lazyOnMainOnly { PostPopup(requireActivity() as MainActivity, sharedVM) }
+    private val postPopup: PostPopup by lazyOnMainOnly {
+        PostPopup(
+            requireActivity() as MainActivity,
+            sharedVM
+        )
+    }
     private var isFabOpen = false
     private var viewCaching = false
     private var refreshing = false

@@ -17,15 +17,14 @@
 
 package sh.xsl.reedisland.data.remote
 
-import sh.xsl.reedisland.util.LoadingStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.ResponseBody
-import org.apache.commons.text.StringEscapeUtils
 import org.json.JSONObject
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import retrofit2.Call
+import sh.xsl.reedisland.util.LoadingStatus
 import timber.log.Timber
 
 sealed class APIMessageResponse(
@@ -70,18 +69,17 @@ sealed class APIMessageResponse(
                     }
                     val resBody = withContext(Dispatchers.IO) { body.string() }
                     return withContext(Dispatchers.Default) {
-                        if(JSONObject(resBody).run { getInt("errcode") } == 0){
+                        if (JSONObject(resBody).run { getInt("errcode") } == 0) {
                             Success(
                                 MessageType.String, "Ok"
                             )
-                        }
-                        else if (regex.containsMatchIn(resBody)) {
+                        } else if (regex.containsMatchIn(resBody)) {
                             Error(
                                 resBody, Jsoup.parse(resBody)
                             )
                         } else {
                             Error(
-                                JSONObject(resBody).optString("errmsg",resBody)
+                                JSONObject(resBody).optString("errmsg", resBody)
                             )
                         }
                     }
@@ -90,7 +88,10 @@ sealed class APIMessageResponse(
                 Timber.e("Response is unsuccessful...")
                 return withContext(Dispatchers.IO) {
                     val msg = response.errorBody()?.string()
-                    val errorMsg = if(!msg.isNullOrEmpty()) JSONObject(msg).optString("errmsg",msg) else response.message()
+                    val errorMsg = if (!msg.isNullOrEmpty()) JSONObject(msg).optString(
+                        "errmsg",
+                        msg
+                    ) else response.message()
                     Timber.e(errorMsg)
                     val dom = if (regex.containsMatchIn(errorMsg)) Jsoup.parse(errorMsg) else null
                     Error(errorMsg ?: "unknown error", dom)

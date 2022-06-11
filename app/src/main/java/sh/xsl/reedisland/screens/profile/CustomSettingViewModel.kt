@@ -19,23 +19,22 @@ package sh.xsl.reedisland.screens.profile
 
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import sh.xsl.reedisland.data.local.dao.BlockedIdDao
-import sh.xsl.reedisland.data.local.entity.BlockedId
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import sh.xsl.reedisland.data.local.dao.BlockedIdDao
+import sh.xsl.reedisland.data.local.entity.BlockedId
 import javax.inject.Inject
 
 class CustomSettingViewModel @Inject constructor(
     private val blockedIdDao: BlockedIdDao
-) :
-    ViewModel() {
+) : ViewModel() {
 
     val timelineBlockedForumIds =
         Transformations.map(blockedIdDao.getLiveAllBlockedIds()) { list ->
             list.filter { it.isTimelineBlockedForum() }.map { it.id }
         }
 
-    fun blockForums(forumIds: List<BlockedId>){
+    fun blockForums(forumIds: List<BlockedId>) {
         GlobalScope.launch {
             blockedIdDao.updateBlockedForumIds(forumIds)
         }

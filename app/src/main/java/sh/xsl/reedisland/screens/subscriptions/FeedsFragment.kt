@@ -39,6 +39,9 @@ import com.chad.library.adapter.base.binder.QuickItemBinder
 import com.chad.library.adapter.base.util.getItemView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.card.MaterialCardView
+import com.lxj.xpopup.XPopup
+import me.dkzwm.widget.srl.RefreshingListenerAdapter
+import me.dkzwm.widget.srl.config.Constants
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
@@ -51,11 +54,7 @@ import sh.xsl.reedisland.screens.util.Layout.updateHeaderAndFooter
 import sh.xsl.reedisland.screens.widgets.BaseNavFragment
 import sh.xsl.reedisland.screens.widgets.popups.ImageViewerPopup
 import sh.xsl.reedisland.util.DawnConstants
-import com.lxj.xpopup.XPopup
-import me.dkzwm.widget.srl.RefreshingListenerAdapter
-import me.dkzwm.widget.srl.config.Constants
 import timber.log.Timber
-import kotlin.collections.ArrayList
 
 
 class FeedsFragment : BaseNavFragment() {
@@ -149,7 +148,8 @@ class FeedsFragment : BaseNavFragment() {
                             0
                         }
                         val isValid = page > 0
-                        inputField.error = if (isValid) null else context.resources.getString(R.string.please_input_page_number)
+                        inputField.error =
+                            if (isValid) null else context.resources.getString(R.string.please_input_page_number)
                         dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
                     }
                     positiveButton(R.string.submit) {

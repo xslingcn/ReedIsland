@@ -35,22 +35,28 @@ object ReadableTime {
     val serverZoneID: ZoneId get() = ZoneId.of("Asia/Shanghai")
 
     @SuppressLint("ConstantLocale")
-    private val DATE_ONLY_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
+    private val DATE_ONLY_FORMAT: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
 
     @SuppressLint("ConstantLocale")
-    val SERVER_DATETIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val SERVER_DATETIME_FORMAT: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
     @SuppressLint("ConstantLocale")
-    private val DATETIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm", Locale.getDefault())
+    private val DATETIME_FORMAT: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("yy/MM/dd HH:mm", Locale.getDefault())
 
     @SuppressLint("ConstantLocale")
-    private val DATETIME_FORMAT_WITHOUT_YEAR: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd HH:mm", Locale.getDefault())
+    private val DATETIME_FORMAT_WITHOUT_YEAR: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("MM/dd HH:mm", Locale.getDefault())
 
     @SuppressLint("ConstantLocale")
-    val TIME_ONLY_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
+    val TIME_ONLY_FORMAT: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("HH:mm:ss", Locale.getDefault())
 
     @SuppressLint("ConstantLocale")
-    private val FILENAME_DATETIME_FORMAT: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
+    private val FILENAME_DATETIME_FORMAT: DateTimeFormatter =
+        DateTimeFormatter.ofPattern("yyyy-MM-dd-HH-mm-ss", Locale.getDefault())
 
 
     fun initialize(context: Context) {
@@ -58,7 +64,10 @@ object ReadableTime {
         timeFormat = DawnApp.applicationDataStore.displayTimeFormat
     }
 
-    fun getDateString(dateTime: LocalDateTime, format: DateTimeFormatter = DATE_ONLY_FORMAT): String {
+    fun getDateString(
+        dateTime: LocalDateTime,
+        format: DateTimeFormatter = DATE_ONLY_FORMAT
+    ): String {
         return dateTime.format(format)
     }
 
@@ -86,7 +95,8 @@ object ReadableTime {
 
     // this converts server's time string to equivalent local DateTime to user's system timezone
     fun serverTimeStringToLocalJavaTime(str: String): LocalDateTime =
-        serverTimeStringToServerZoneTime(str).withZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime()
+        serverTimeStringToServerZoneTime(str).withZoneSameInstant(ZoneId.systemDefault())
+            .toLocalDateTime()
 
     fun getDisplayTime(time: String): String {
         return when (timeFormat) {
@@ -96,7 +106,8 @@ object ReadableTime {
         }
     }
 
-    fun getDisplayTime(time: LocalDateTime, format: DateTimeFormatter = DATETIME_FORMAT): String = time.format(format)
+    fun getDisplayTime(time: LocalDateTime, format: DateTimeFormatter = DATETIME_FORMAT): String =
+        time.format(format)
 
     private fun getPlainDisplayTime(time: String): String {
         val nowDate = ZonedDateTime.now()

@@ -34,7 +34,10 @@ import sh.xsl.reedisland.screens.util.ContentTransformation.transformForumName
 import timber.log.Timber
 
 
-class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timelineClickListener: TimelineClickListener? = null) : BaseNodeAdapter() {
+class CommunityNodeAdapter(
+    val forumClickListener: ForumClickListener,
+    val timelineClickListener: TimelineClickListener? = null
+) : BaseNodeAdapter() {
 
     companion object {
         const val EXPAND_COLLAPSE_PAYLOAD = 110
@@ -79,7 +82,8 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
             nodes.add(TimelineCommunityNode(timelines))
         }
         // Communities
-        val commonForumIds = communities.firstOrNull { it.isCommonForums() }?.forums?.map { it.id } ?: emptyList()
+        val commonForumIds =
+            communities.firstOrNull { it.isCommonForums() }?.forums?.map { it.id } ?: emptyList()
         for (c in communities) {
             if (c.isCommonForums() || c.isCommonPosts()) {
                 nodes.add(CommunityNode(c))
@@ -93,7 +97,8 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
                 nodes.add(CommunityNode(noDuplicateCommunity))
             }
         }
-        if (nodes.size == 1 && nodes.first() is BaseExpandNode) (nodes.first() as BaseExpandNode).isExpanded = true
+        if (nodes.size == 1 && nodes.first() is BaseExpandNode) (nodes.first() as BaseExpandNode).isExpanded =
+            true
         setList(nodes)
     }
 
@@ -142,7 +147,12 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
 
         override fun onClick(helper: BaseViewHolder, view: View, data: BaseNode, position: Int) {
             // 这里使用payload进行增量刷新（避免整个item刷新导致的闪烁，不自然）
-            getAdapter()!!.expandOrCollapse(position, animate = true, notify = true, parentPayload = EXPAND_COLLAPSE_PAYLOAD)
+            getAdapter()!!.expandOrCollapse(
+                position,
+                animate = true,
+                notify = true,
+                parentPayload = EXPAND_COLLAPSE_PAYLOAD
+            )
         }
     }
 
@@ -156,10 +166,18 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
                 try {
                     if (forum.isValidForum()) {
                         val biId = if (forum.id.toInt() > 0) forum.id.toInt() else 1
-                        val resourceId: Int = context.resources.getIdentifier("bi_$biId", "drawable", context.packageName)
+                        val resourceId: Int = context.resources.getIdentifier(
+                            "bi_$biId",
+                            "drawable",
+                            context.packageName
+                        )
                         helper.setImageResource(R.id.forumIcon, resourceId)
                     } else {
-                        val resourceId: Int = context.resources.getIdentifier("ic_label_24px", "drawable", context.packageName)
+                        val resourceId: Int = context.resources.getIdentifier(
+                            "ic_label_24px",
+                            "drawable",
+                            context.packageName
+                        )
                         helper.setImageResource(R.id.forumIcon, resourceId)
                     }
                 } catch (e: Exception) {
@@ -191,7 +209,8 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
         override fun convert(helper: BaseViewHolder, item: BaseNode) {
             val timeline = (item as TimelineNode).timeline
             helper.setText(R.id.forumName, timeline.name)
-            val resourceId: Int = context.resources.getIdentifier("bi_1", "drawable", context.packageName)
+            val resourceId: Int =
+                context.resources.getIdentifier("bi_1", "drawable", context.packageName)
             helper.setImageResource(R.id.forumIcon, resourceId)
         }
 
@@ -207,7 +226,8 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
             isExpanded = false
         }
 
-        override val childNode: MutableList<BaseNode> = community.forums.map { ForumNode(it) }.toMutableList()
+        override val childNode: MutableList<BaseNode> =
+            community.forums.map { ForumNode(it) }.toMutableList()
     }
 
     class ForumNode(val forum: Forum) : BaseNode() {
@@ -220,7 +240,8 @@ class CommunityNodeAdapter(val forumClickListener: ForumClickListener, val timel
             isExpanded = false
         }
 
-        override val childNode: MutableList<BaseNode> = timelines.map { TimelineNode(it) }.toMutableList()
+        override val childNode: MutableList<BaseNode> =
+            timelines.map { TimelineNode(it) }.toMutableList()
     }
 
     class TimelineNode(val timeline: Timeline) : BaseNode() {

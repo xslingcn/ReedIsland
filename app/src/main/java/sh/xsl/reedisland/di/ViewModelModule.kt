@@ -18,6 +18,10 @@
 package sh.xsl.reedisland.di
 
 import androidx.lifecycle.ViewModel
+import dagger.Binds
+import dagger.Module
+import dagger.android.ContributesAndroidInjector
+import dagger.multibindings.IntoMap
 import sh.xsl.reedisland.screens.MainActivity
 import sh.xsl.reedisland.screens.SharedViewModel
 import sh.xsl.reedisland.screens.comments.CommentsFragment
@@ -31,10 +35,6 @@ import sh.xsl.reedisland.screens.profile.*
 import sh.xsl.reedisland.screens.search.SearchFragment
 import sh.xsl.reedisland.screens.search.SearchViewModel
 import sh.xsl.reedisland.screens.subscriptions.*
-import dagger.Binds
-import dagger.Module
-import dagger.android.ContributesAndroidInjector
-import dagger.multibindings.IntoMap
 
 @Module
 abstract class ViewModelModule {

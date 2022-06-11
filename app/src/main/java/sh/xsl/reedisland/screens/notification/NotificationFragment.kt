@@ -42,6 +42,7 @@ import com.chad.library.adapter.base.module.DraggableModule
 import com.chad.library.adapter.base.util.getItemView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import com.google.android.material.card.MaterialCardView
+import dagger.android.support.DaggerFragment
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.NotificationAndPost
@@ -53,7 +54,6 @@ import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.screens.util.Layout
 import sh.xsl.reedisland.screens.widgets.spans.RoundBackgroundColorSpan
 import sh.xsl.reedisland.util.DawnConstants
-import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 class NotificationFragment : DaggerFragment() {
@@ -251,7 +251,8 @@ class NotificationFragment : DaggerFragment() {
                     ?: "" else item.notification.message
             holder.setText(R.id.content, ContentTransformation.transformContent(context, content))
             holder.setGone(R.id.newReplyCount, item.notification.read)
-            val forumName = SpannableString(sharedVM.getForumOrTimelineDisplayName(item.notification.fid))
+            val forumName =
+                SpannableString(sharedVM.getForumOrTimelineDisplayName(item.notification.fid))
             forumName.setSpan(
                 RoundBackgroundColorSpan(),
                 0,

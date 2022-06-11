@@ -24,22 +24,4 @@ data class SearchResult(
     val queryHits: Int, // # of return result matching the query
     val page: Int = 1, // current page of the result, to be set in VM
     val hits: List<Comment> = emptyList()
-) {
-    data class Hit(
-        val id: String,
-        val now: String,
-        val time: String,
-        val sage:String = "0",
-        val img: String = "",
-        val ext: String = "",
-        val title: String = "",
-        val resto: String, // the parent id that the hit replys to
-        val userid: String,
-        val email: String,
-        val content: String
-    ) {
-        var page:Int = 0 // to be set when data comes back
-        fun getImgUrl(): String = img + ext
-        fun getPostId(): String = if (resto == "0") id else resto
-    }
-}
+)

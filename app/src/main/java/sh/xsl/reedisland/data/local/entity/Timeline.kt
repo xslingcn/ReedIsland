@@ -11,9 +11,9 @@ data class Timeline(
     @PrimaryKey
     val id: String,
     val name: String,
-    @Json(name="showName")
+    @Json(name = "showName")
     val display_name: String,
-    @Json(name="msg")
+    @Json(name = "msg")
     val notice: String,
     val max_page: Int = 1,
 )

@@ -21,6 +21,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp.Companion.applicationDataStore
 import sh.xsl.reedisland.data.local.dao.PostDao
 import sh.xsl.reedisland.data.local.entity.Cookie
@@ -31,8 +33,6 @@ import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.util.EventPayload
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.SingleLiveEvent
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.random.Random
@@ -53,7 +53,6 @@ class ProfileViewModel @Inject constructor(
     private val randomTestLength = 40
 
     private var cookieTestMaxPage = 0
-
 
     fun updateCookie(cookie: Cookie) {
         viewModelScope.launch {
