@@ -41,7 +41,7 @@ object ContentTransformation {
     private val URL_PATTERN =
         Pattern.compile("(http|https)://[a-z0-9A-Z%-]+(\\.[a-z0-9A-Z%-]+)+(:\\d{1,5})?(/[a-zA-Z0-9-_~:#@!&',;=%/*.?+$\\[\\]()]+)?/?")
     private val AC_PATTERN = Pattern.compile("ac\\d+")
-    private val BV_PATTERN = Pattern.compile("BV\\d+")
+    private val BV_PATTERN = Pattern.compile("(av\\d+)|(bv|BV)\\w+")
     private val HIDE_PATTERN = Pattern.compile("\\[h](.+?)\\[/h]")
     private const val RGB_PATTERN = "(rgb\\(\\d{1,3}, \\d{1,3}, \\d{1,3}\\))"
     private val RGB_SPAN_PATTERN =
