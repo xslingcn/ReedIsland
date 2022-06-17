@@ -67,5 +67,5 @@ class PostHistory(
         val postDateTime: LocalDateTime
     )
 
-    fun getImgUrl() = (img + ext)
+    fun getImgUrl() = img?.let { (img + ext) } ?: ""
 }
