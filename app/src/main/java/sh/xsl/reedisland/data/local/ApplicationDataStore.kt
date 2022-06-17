@@ -29,6 +29,7 @@ import sh.xsl.reedisland.data.remote.NMBServiceClient
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.lazyOnMainOnly
 import timber.log.Timber
+import java.time.Duration
 import java.time.LocalDateTime
 import java.util.*
 import javax.inject.Inject
@@ -359,18 +360,16 @@ class ApplicationDataStore @Inject constructor(
 
     suspend fun getReedSession() {
         reedSession = reedSessionDao.get()?.let {
-            if (it.cookie.substringAfter("=").length == 160
-                && java.time.Duration.between(
-                    reedSessionDao.get()!!.lastUpdatedAt,
-                    LocalDateTime.now()
-                ).toDays() < 365
-            )
+            val daysToExpire =
+                Duration.between(it.lastUpdatedAt, LocalDateTime.now()).toDays()
+            if (it.cookie.substringAfter("=").length == 160 && daysToExpire < 365)
                 it.cookie
             else ""
         } ?: ""
-        reedSession = reedSession.isBlank().let {
-            reedSessionDao.insert(ReedSession(webService.getReedSession()))
-            reedSessionDao.get()!!.cookie
+        if (reedSession.isBlank()) {
+            val session = ReedSession(webService.getReedSession())
+            reedSessionDao.insert(session)
+            reedSession = session.cookie
         }
     }
 

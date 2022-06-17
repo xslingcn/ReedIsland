@@ -35,7 +35,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         return withContext(Dispatchers.IO) {
             val response = service.getVersion().execute()
             if (response.isSuccessful) {
-                response.headers().toMultimap()["set-cookie"]?.first() { str ->
+                response.headers().toMultimap()["set-cookie"]?.first { str ->
                     str.split(";")
                         .first { it.startsWith("REED_SESSION") && it.substringAfter("REED_SESSION=").length == 160 }
                         .isNotBlank()
