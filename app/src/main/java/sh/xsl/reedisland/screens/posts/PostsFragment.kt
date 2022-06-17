@@ -88,6 +88,7 @@ class PostsFragment : BaseNavFragment() {
                     // sometimes menu is prepared after sharedVM observation, add a catch update here
                     val count = sharedVM.notifications.value ?: 0
                     updateFeedNotificationIcon(count)
+                    setOnClickListener { onMenuItemSelected(rootView) }
                 }
                 context?.let { menu.findItem(R.id.forumRule).icon.setTint(getThemeInverseColor(it)) }
                 super.onPrepareMenu(menu)
