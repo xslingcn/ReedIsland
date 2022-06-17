@@ -58,7 +58,7 @@
     <string name="my_feed" translatable="false">我的订阅</string>
     <string name="feedId" translatable="false">订阅ID</string>
     <string name="edit_cookie_remark" translatable="false">编辑饼干备注</string>
-    <string name="default_cookie_name" translatable="false">默认饼干名称</string>
+    <string name="default_cookie_name" translatable="false">默认名称</string>
     <string name="time_display_format" translatable="false">时间显示格式</string>
     <string name="default_theme_setting" translatable="false">设置默认主题</string>
     <string name="animation_first_only" translatable="false">仅在首次出现时显示动画</string>
@@ -235,7 +235,7 @@
     <string name="blocked_post" translatable="false">No.%s 已经被屏蔽</string>
     <string name="external_share_content" translatable="false">%s\n分享自%s\n下载地址:\nhttps://ak9.cc/fLsicX</string>
     <string name="how_to_add_cookie" translatable="false">如何添加饼干</string>
-    <string name="add_cookie_help" translatable="false">本软件尚不支持微信小程序\n请从阿苇岛用户管理系统或微信小程序上保存二维码图片并导入，或保存饼干序列并手动添加\n（如果您有这个能力开发请和我联系或直接PR(*ﾟ∀ﾟ*)）</string>
+    <string name="add_cookie_help" translatable="false">请从阿苇岛用户管理系统获取二维码图片并导入。</string>
     <string name="roll_cheat" translatable="false">灌铅(大概)</string>
     <string name="latest_id_posted_at_time" translatable="false">%s   :   No.%s</string>
 </resources>
