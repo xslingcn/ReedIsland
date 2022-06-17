@@ -25,6 +25,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.graphics.ColorUtils
@@ -53,7 +54,7 @@ class DoodleActivity : AppCompatActivity(), DoodleView.Helper {
     private var mSideAnimator: ValueAnimator = ValueAnimator()
     private var mShowSide = true
     private var mHideSideRunnable: Runnable? = null
-    private val handler = Handler()
+    private val handler = Handler(Looper.getMainLooper())
 
     private val getImageBackground =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->

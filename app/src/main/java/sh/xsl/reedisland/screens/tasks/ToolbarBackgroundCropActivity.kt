@@ -74,26 +74,4 @@ class ToolbarBackgroundCropActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         getImage.launch("image/*")
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == UCrop.REQUEST_CROP && resultCode == Activity.RESULT_OK) {
-            val intent = Intent()
-            val resultUri = UCrop.getOutput(data!!)
-            intent.data = resultUri
-            setResult(RESULT_OK, intent)
-            finish()
-        } else if (requestCode == UCrop.REQUEST_CROP &&
-            (resultCode == UCrop.RESULT_ERROR || resultCode == Activity.RESULT_CANCELED)
-        ) {
-            if (data != null) {
-                Timber.e(UCrop.getError(data))
-            }
-            val intent = Intent()
-            setResult(RESULT_CANCELED, intent)
-            finish()
-        } else {
-            Timber.e("unhandled intent $requestCode $resultCode $data")
-        }
-    }
 }

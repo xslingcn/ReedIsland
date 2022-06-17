@@ -34,7 +34,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
-import com.king.zxing.Intents
 import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.screens.MainActivity
@@ -235,7 +234,7 @@ class IntentsHelper(
 
         override fun parseResult(resultCode: Int, intent: Intent?): String? {
             return if (intent == null || resultCode != Activity.RESULT_OK) null else intent.getStringExtra(
-                Intents.Scan.RESULT
+                "SCAN_RESULT"
             )
         }
     }

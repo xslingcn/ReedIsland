@@ -78,6 +78,7 @@
     <string name="please_select_timeline_filter_forums" translatable="false">请选择要屏蔽的版块</string>
     <string name="common_forum_setting_help" translatable="false"><b>点击下方版块即添加至常用分组\n\n长按并上下拖曳版块可排序\n\n长按并左右拖曳版块可从常用分组中移除\n\n编辑完成后返回即保存设置</b></string>
     <string name="pager_usage_help" translatable="false">本页面支持左滑右滑切换内容。\n\n可在自定义设置改变默认页面</string>
+    <string name="pager_subscription_help" translatable="false">本页面展示您在串页面点击收藏以添加订阅的串列表。\n\n长按串删除订阅，点击右下角按钮跳页。</string>
     <string name="default_forum_setting" translatable="false">App启动默认打开版块设置</string>
     <string name="common_posts_setting" translatable="false">常用串设置</string>
     <string name="add_common_post" translatable="false">添加常用串</string>

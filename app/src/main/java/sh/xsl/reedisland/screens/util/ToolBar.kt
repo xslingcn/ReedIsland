@@ -22,6 +22,7 @@ import android.content.res.Resources
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowCompat
 import androidx.core.view.updateLayoutParams
 import sh.xsl.reedisland.R
 import timber.log.Timber
@@ -59,8 +60,7 @@ object ToolBar {
 
     // expand toolbar to status bar
     fun Activity.immersiveToolbarInitialization() = apply {
-        window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+        WindowCompat.setDecorFitsSystemWindows(window, false)
     }
 
     private fun View.setMarginTop(value: Int = topMargin) =

@@ -25,9 +25,9 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.king.zxing.CaptureActivity
+import com.king.zxing.DecodeConfig
 import com.king.zxing.DecodeFormatManager
-import com.king.zxing.Intents
-import com.king.zxing.camera.FrontLightMode
+import com.king.zxing.analyze.MultiFormatAnalyzer
 import com.king.zxing.util.CodeUtils
 import com.king.zxing.util.LogUtils
 import sh.xsl.reedisland.R
@@ -51,7 +51,7 @@ class QRCookieActivity : CaptureActivity() {
                     val res = CodeUtils.parseQRCode(file.path)
                     if (res != null) {
                         val intent = Intent()
-                        intent.putExtra(Intents.Scan.RESULT, res)
+                        intent.putExtra("SCAN_RESULT", res)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     } else {
@@ -78,11 +78,15 @@ class QRCookieActivity : CaptureActivity() {
         LogUtils.setPriority(LogUtils.ERROR)
 
         themeStatusBar()
+    }
 
-        //获取CaptureHelper，里面有扫码相关的配置设置
-        captureHelper.playBeep(false) //播放音效
-            .vibrate(true) //震动
-            .decodeFormats(DecodeFormatManager.QR_CODE_FORMATS)//设置只识别二维码会提升速度
-            .frontLightMode(FrontLightMode.OFF) //设置闪光灯模式
+    override fun initCameraScan() {
+        super.initCameraScan()
+        val decodeConfig: DecodeConfig = DecodeConfig()
+            .setHints(DecodeFormatManager.QR_CODE_HINTS) //设置只识别二维码会提升速度
+
+        cameraScan.setPlayBeep(false) //播放音效
+            .setVibrate(true) //震动
+            .setAnalyzer(MultiFormatAnalyzer(decodeConfig))
     }
 }

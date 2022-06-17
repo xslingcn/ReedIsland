@@ -25,7 +25,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.isDigitsOnly
 import androidx.core.text.toSpannable
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
@@ -76,64 +78,74 @@ class SearchFragment : BaseNavFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_fragment_search, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        pageCounter = menu.findItem(R.id.pageCounter).actionView.findViewById(R.id.text)
-        context?.let { menu.findItem(R.id.search).icon.setTint(Layout.getThemeInverseColor(it)) }
-        super.onPrepareOptionsMenu(menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.search -> {
-                if (DawnApp.applicationDataStore.firstCookieHash == null) {
-                    toast(R.string.need_cookie_to_search)
-                    return true
-                }
-
-                MaterialDialog(requireContext()).show {
-                    lifecycleOwner(this@SearchFragment)
-                    title(R.string.search)
-                    customView(R.layout.dialog_search, noVerticalPadding = true).apply {
-                        val searchInputText = findViewById<TextView>(R.id.searchInputText)
-                        findViewById<Button>(R.id.search).setOnClickListener {
-                            val query = searchInputText.text.toString()
-                            if (query.isNotBlank() && query != viewModel.query) {
-                                refreshing = true
-                                viewModel.search(query)
-                                currentPage = 0
-                                dismiss()
-                            } else {
-                                toast(R.string.please_input_valid_text)
-                            }
-                        }
-
-                        findViewById<Button>(R.id.jumpToPost).setOnClickListener {
-                            val threadId = searchInputText.text.filter { it.isDigit() }.toString()
-                            if (threadId.isNotEmpty()) {
-                                dismiss()
-                                viewCaching = DawnApp.applicationDataStore.getViewCaching()
-                                // Does not have fid here. fid will be generated when data comes back in reply
-                                val navAction =
-                                    MainNavDirections.actionGlobalCommentsFragment(threadId, "")
-                                findNavController().navigate(navAction)
-                            } else {
-                                toast(R.string.please_input_valid_text)
-                            }
-                        }
-                    }
-                }
-                return true
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, inflater: MenuInflater) {
+                inflater.inflate(R.menu.menu_fragment_search, menu)
             }
-            else -> super.onOptionsItemSelected(item)
-        }
+
+            override fun onPrepareMenu(menu: Menu) {
+                pageCounter = menu.findItem(R.id.pageCounter).actionView.findViewById(R.id.text)
+                context?.let {
+                    menu.findItem(R.id.search).icon.setTint(
+                        Layout.getThemeInverseColor(
+                            it
+                        )
+                    )
+                }
+                super.onPrepareMenu(menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                return when (item.itemId) {
+                    R.id.search -> {
+                        if (DawnApp.applicationDataStore.firstCookieHash == null) {
+                            toast(R.string.need_cookie_to_search)
+                            return true
+                        }
+
+                        MaterialDialog(requireContext()).show {
+                            lifecycleOwner(this@SearchFragment)
+                            title(R.string.search)
+                            customView(R.layout.dialog_search, noVerticalPadding = true).apply {
+                                val searchInputText = findViewById<TextView>(R.id.searchInputText)
+                                findViewById<Button>(R.id.search).setOnClickListener {
+                                    val query = searchInputText.text.toString()
+                                    if (query.isNotBlank() && query != viewModel.query) {
+                                        refreshing = true
+                                        viewModel.search(query)
+                                        currentPage = 0
+                                        dismiss()
+                                    } else {
+                                        toast(R.string.please_input_valid_text)
+                                    }
+                                }
+
+                                findViewById<Button>(R.id.jumpToPost).setOnClickListener {
+                                    val threadId =
+                                        searchInputText.text.filter { it.isDigit() }.toString()
+                                    if (threadId.isNotEmpty()) {
+                                        dismiss()
+                                        viewCaching = DawnApp.applicationDataStore.getViewCaching()
+                                        // Does not have fid here. fid will be generated when data comes back in reply
+                                        val navAction =
+                                            MainNavDirections.actionGlobalCommentsFragment(
+                                                threadId,
+                                                ""
+                                            )
+                                        findNavController().navigate(navAction)
+                                    } else {
+                                        toast(R.string.please_input_valid_text)
+                                    }
+                                }
+                            }
+                        }
+                        return true
+                    }
+                    else -> false
+                }
+            }
+
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     override fun onCreateView(

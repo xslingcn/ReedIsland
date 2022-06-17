@@ -127,7 +127,7 @@ class ProfileViewModel @Inject constructor(
                     message
                 } else {
                     dom!!.getElementsByClass("system-message")
-                        .first().children().not(".jump").text()
+                        .first()?.children()?.not(".jump")?.text()!!
                 }
             } else {
                 Timber.e(message)

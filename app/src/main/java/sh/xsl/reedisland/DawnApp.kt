@@ -138,6 +138,7 @@ class DawnApp : DaggerApplication() {
                 }
                 MMKVLogLevel.LevelNone -> {
                 }
+                else -> {}
             }
         }
 

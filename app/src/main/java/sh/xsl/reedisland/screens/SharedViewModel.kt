@@ -289,8 +289,8 @@ class SharedViewModel @Inject constructor(
                 if (messageType == APIMessageResponse.MessageType.String) {
                     message
                 } else {
-                    dom!!.getElementsByClass("system-message").first().children().not(".jump")
-                        .text()
+                    dom!!.getElementsByClass("system-message").first()?.children()?.not(".jump")
+                        ?.text()!!
                 }
             } else {
                 Timber.e(message)

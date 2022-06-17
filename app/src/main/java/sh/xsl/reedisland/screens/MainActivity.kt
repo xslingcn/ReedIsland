@@ -29,14 +29,13 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewPropertyAnimator
+import android.os.Looper
+import android.view.*
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.net.toUri
+import androidx.core.view.MenuProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination
@@ -101,7 +100,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
 
     private var doubleBackToExitPressedOnce = false
-    private val mHandler = Handler()
+    private val mHandler = Handler(Looper.getMainLooper())
     private val mRunnable = Runnable { doubleBackToExitPressedOnce = false }
     private var reselectCDNRunnable: Runnable? = null
 
@@ -114,20 +113,6 @@ class MainActivity : DaggerAppCompatActivity() {
     private var currentAnimatorSet: ViewPropertyAnimator? = null
 
     private var forumDrawer: ForumDrawerPopup? = null
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_activity_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                findNavController(R.id.navHostFragment).popBackStack()
-            }
-        }
-        return false
-    }
 
     init {
         // load Resources
@@ -146,6 +131,20 @@ class MainActivity : DaggerAppCompatActivity() {
     private var currentFragmentId: Int = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_activity_main, menu)
+            }
+
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                when (item.itemId) {
+                    android.R.id.home -> {
+                        findNavController(R.id.navHostFragment).popBackStack()
+                    }
+                }
+                return false
+            }
+        })
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.toolbar.apply {
