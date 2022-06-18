@@ -37,7 +37,7 @@ data class Comment(
     val title: String?,
     val email: String?,
     val now: String,
-    val content: String?,
+    var content: String?,
     val img: String?,
     val ext: String?,
     var page: Int = 1,

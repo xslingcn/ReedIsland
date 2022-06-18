@@ -127,7 +127,7 @@ class TrendRepository @Inject constructor(
         for (reply in data.comments) {
             if (reply.userid == po) {
                 val content =
-                    if (reply.content?.startsWith("@") == true) reply.content.substringAfter("<br />\n") else reply.content
+                    if (reply.content?.startsWith("@") == true) reply.content?.substringAfter("<br />\n") else reply.content
                 val list = content?.split(trendDelimiter, ignoreCase = true)
                 if (list?.size == trendLength) {
                     try {

@@ -44,8 +44,7 @@ object ContentTransformation {
     private val BV_PATTERN = Pattern.compile("(av\\d+)|(bv|BV)\\w{10}")
     private val HIDE_PATTERN = Pattern.compile("\\[h](.+?)\\[/h]")
     private const val RGB_PATTERN = "(rgb\\(\\d{1,3}, \\d{1,3}, \\d{1,3}\\))"
-    private val RGB_SPAN_PATTERN =
-        Pattern.compile("color: $RGB_PATTERN;")
+    private val RGB_SPAN_PATTERN = Pattern.compile("color: $RGB_PATTERN;")
     private const val CUSTOM_HIDE_PATTERN_OPEN = "`-hide-`"
     private const val CUSTOM_HIDE_PATTERN_CLOSE = "`/-hide-`"
     private val CUSTOM_HIDE_PATTERN =
@@ -62,8 +61,8 @@ object ContentTransformation {
 
     private fun handleRGBSpan(string: String?): String? {
         var result = string
-        string?.let {
-            val m: Matcher = RGB_SPAN_PATTERN.matcher(string)
+        result?.let {
+            val m: Matcher = RGB_SPAN_PATTERN.matcher(it)
             while (m.find()) {
                 val mr = Pattern.compile(RGB_PATTERN).matcher(m.group())
                 mr.find()
@@ -74,7 +73,7 @@ object ContentTransformation {
                     color[1].trim().toInt(),
                     color[2].trim().toInt()
                 )
-                result = string.replace(mr.group(), hexColor)
+                result = it.replace(mr.group(), hexColor)
             }
         }
         return result
@@ -183,7 +182,7 @@ object ContentTransformation {
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 setSpan(
-                    RelativeSizeSpan(1.1f),
+                    RelativeSizeSpan(1.05f),
                     start,
                     end,
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
