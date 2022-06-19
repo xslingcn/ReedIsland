@@ -24,8 +24,13 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
         <item name="android:colorEdgeEffect">@color/colorPrimary</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/backgroundLight</item>
+        <item name="android:selectableItemBackground">@color/selectableItemBackground</item>
         <item name="md_corner_radius">10dp</item>
     </style>
 
@@ -45,7 +50,7 @@
 
     <style name="PreferenceItemSummary">
         <item name="android:textSize">12sp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
+        <item name="android:textColor">?android:attr/textColorTertiary</item>
         <item name="paddingStart">20dp</item>
     </style>
 

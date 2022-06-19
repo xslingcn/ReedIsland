@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="4dp"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/edit"
@@ -51,8 +51,8 @@
         app:layout_constraintStart_toEndOf="@id/remark"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_edit_24px"
-        tools:ignore="ContentDescription"
-        app:tint="@color/gray_400" />
+        app:tint="@color/gray_400"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/content"

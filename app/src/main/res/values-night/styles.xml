@@ -1,0 +1,18 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="DawnTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/textColorPrimaryDark</item>
+        <item name="android:textColorSecondary">@color/textColorSecondaryDark</item>
+        <item name="android:textColorTertiary">@color/textColorTertiaryDark</item>
+        <item name="android:colorEdgeEffect">@color/colorPrimary</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/backgroundDark</item>
+        <item name="android:selectableItemBackground">@color/selectableItemBackgroundDark</item>
+        <item name="md_corner_radius">10dp</item>
+    </style>
+</resources>

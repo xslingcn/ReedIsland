@@ -26,7 +26,7 @@
         android:layout_width="@dimen/menu_item_ripple_size"
         android:layout_height="@dimen/menu_item_ripple_size"
         android:layout_gravity="center"
-        android:background="?attr/selectableItemBackgroundBorderless"/>
+        android:background="?attr/selectableItemBackgroundBorderless" />
 
     <!-- Create a view larger than material_menu_icon_size so that red dot can be shifted to the right/top -->
     <!-- 32dp is still w/in spec... look at ActionMenItemView.MAX_ICON_SIZE-->
@@ -40,8 +40,8 @@
             android:layout_height="@dimen/menu_item_icon_size"
             android:layout_gravity="center"
             android:src="@drawable/ic_notifications_24px"
-            tools:ignore="ContentDescription"
-            app:tint="?android:attr/textColorPrimary" />
+            app:tint="?android:attr/textColorSecondary"
+            tools:ignore="ContentDescription" />
 
         <FrameLayout
             android:id="@+id/viewAlertRedCircle"
@@ -57,8 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="10sp"/>
+                android:textColor="?android:attr/textColorSecondary"
+                android:textSize="10sp" />
 
         </FrameLayout>
 

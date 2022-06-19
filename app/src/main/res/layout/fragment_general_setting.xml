@@ -38,14 +38,14 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="12dp" />
 
-<!--    <include-->
-<!--        android:id="@+id/feedId"-->
-<!--        layout="@layout/list_item_preference"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
-<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
+    <!--    <include-->
+    <!--        android:id="@+id/feedId"-->
+    <!--        layout="@layout/list_item_preference"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+    <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
 
     <include
@@ -59,23 +59,23 @@
     <!--        app:layout_constraintTop_toBottomOf="@id/feedId" />-->
 
 
-    <include
-        android:id="@+id/autoUpdateFeed"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/useReadingProgress" />
+    <!--    <include-->
+    <!--        android:id="@+id/autoUpdateFeed"-->
+    <!--        layout="@layout/list_item_preference"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/useReadingProgress" />-->
 
-    <include
-        android:id="@+id/autoUpdateFeedDot"
-        layout="@layout/list_item_preference"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
-        app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/autoUpdateFeed" />
+    <!--    <include-->
+    <!--        android:id="@+id/autoUpdateFeedDot"-->
+    <!--        layout="@layout/list_item_preference"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/autoUpdateFeed" />-->
 
     <include
         android:id="@+id/viewCaching"
@@ -84,7 +84,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
-        app:layout_constraintTop_toBottomOf="@id/autoUpdateFeedDot" />
+        app:layout_constraintTop_toBottomOf="@id/useReadingProgress" />
+    <!--        app:layout_constraintTop_toBottomOf="@id/autoUpdateFeedDot" />-->
 
     <include
         android:id="@+id/clearCommentCache"
@@ -95,14 +96,14 @@
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@id/viewCaching" />
 
-<!--    <include-->
-<!--        android:id="@+id/clearTrendCache"-->
-<!--        layout="@layout/list_item_preference"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
-<!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/clearCommentCache" />-->
+    <!--    <include-->
+    <!--        android:id="@+id/clearTrendCache"-->
+    <!--        layout="@layout/list_item_preference"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintEnd_toEndOf="@id/guidelineEnd"-->
+    <!--        app:layout_constraintStart_toStartOf="@id/guidelineStart"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/clearCommentCache" />-->
 
     <include
         android:id="@+id/restoreBlockedPosts"
@@ -112,6 +113,6 @@
         app:layout_constraintEnd_toEndOf="@id/guidelineEnd"
         app:layout_constraintStart_toStartOf="@id/guidelineStart"
         app:layout_constraintTop_toBottomOf="@id/clearCommentCache" />
-<!--        app:layout_constraintTop_toBottomOf="@id/clearTrendCache" />-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/clearTrendCache" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2020 Fishballzzz
   ~  *
   ~  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_alignParentStart="true"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="?android:attr/windowBackground"
     android:clickable="true"
     android:focusable="true"
     android:paddingTop="4dp"
@@ -36,8 +35,8 @@
         android:layout_gravity="center"
         android:layout_marginStart="30dp"
         android:padding="4dp"
-        tools:ignore="ContentDescription"
-        app:tint="#828282" />
+        app:tint="#828282"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/forumName"
@@ -46,7 +45,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="2dp"
         android:text="@string/sample_forum"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="16sp" />
 
 </LinearLayout>

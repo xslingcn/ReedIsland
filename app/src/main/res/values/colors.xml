@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2020 Fishballzzz
   ~  *
   ~  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +24,18 @@
     <!-- paint -->
     <color name="pure_light">@android:color/white</color>
     <color name="pure_dark">#ff212121</color>
+    <!-- background -->
+    <color name="backgroundLight">@android:color/white</color>
+    <color name="backgroundDark">#202124</color>
+    <color name="selectableItemBackground">@color/backgroundLight</color>
+    <color name="selectableItemBackgroundDark">#22272e</color>
+    <!-- text -->
+    <color name="textColorPrimary">#DD000000</color>
+    <color name="textColorPrimaryDark">#FFFFFF</color>
+    <color name="textColorSecondary">#DD000000</color>
+    <color name="textColorSecondaryDark">#FFc7c7c7</color>
+    <color name="textColorTertiary">#89000000</color>
+    <color name="textColorTertiaryDark">#FF8c8c8c</color>
 
     <color name="gray_400">#ff727272</color>
     <!--

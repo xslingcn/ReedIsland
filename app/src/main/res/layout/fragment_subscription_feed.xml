@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2020 Fishballzzz
   ~  *
   ~  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,10 +16,10 @@
   -->
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".screens.subscriptions.FeedsFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -31,10 +30,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="70dp"
         android:visibility="visible"
-        app:tint="?android:attr/textColorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_bookmarks_24px" />
+        app:srcCompat="@drawable/ic_bookmarks_24px"
+        app:tint="?android:attr/textColorSecondary" />
 
     <include
         android:id="@+id/srlAndRv"

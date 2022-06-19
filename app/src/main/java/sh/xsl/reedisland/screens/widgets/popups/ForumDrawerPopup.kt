@@ -128,13 +128,13 @@ class ForumDrawerPopup(
                 Configuration.UI_MODE_NIGHT_YES -> {
                     text = "光来 (╬ﾟдﾟ)"
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_brightness_5_24px)
-                    setIconTintResource(R.color.pure_light)
+                    setIconTintResource(R.color.backgroundLight)
                     nightModeOn = true
                 }
                 Configuration.UI_MODE_NIGHT_NO -> {
                     text = "光走 (;´Д`)"
                     icon = ContextCompat.getDrawable(context, R.drawable.ic_brightness_2_24px)
-                    setIconTintResource(R.color.pure_dark)
+                    setIconTintResource(R.color.backgroundDark)
                     nightModeOn = false
                 }
             }

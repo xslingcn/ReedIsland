@@ -81,15 +81,15 @@ class PostsFragment : BaseNavFragment() {
             }
 
             override fun onPrepareMenu(menu: Menu) {
-                val rootView = menu.findItem(R.id.feedNotification)
-                rootView.actionView.apply {
-                    redCircle = findViewById(R.id.viewAlertRedCircle)
-                    countTextView = findViewById(R.id.viewAlertCountTextView)
-                    // sometimes menu is prepared after sharedVM observation, add a catch update here
-                    val count = sharedVM.notifications.value ?: 0
-                    updateFeedNotificationIcon(count)
-                    setOnClickListener { onMenuItemSelected(rootView) }
-                }
+//                val rootView = menu.findItem(R.id.feedNotification)
+//                rootView.actionView.apply {
+//                    redCircle = findViewById(R.id.viewAlertRedCircle)
+//                    countTextView = findViewById(R.id.viewAlertCountTextView)
+//                    // sometimes menu is prepared after sharedVM observation, add a catch update here
+//                    val count = sharedVM.notifications.value ?: 0
+//                    updateFeedNotificationIcon(count)
+//                    setOnClickListener { onMenuItemSelected(rootView) }
+//                }
                 context?.let { menu.findItem(R.id.forumRule).icon.setTint(getThemeInverseColor(it)) }
                 super.onPrepareMenu(menu)
             }
@@ -142,12 +142,12 @@ class PostsFragment : BaseNavFragment() {
                         }
                         return true
                     }
-                    R.id.feedNotification -> {
-                        val action =
-                            PostsFragmentDirections.actionPostsFragmentToNotificationFragment()
-                        findNavController().navigate(action)
-                        return true
-                    }
+//                    R.id.feedNotification -> {
+//                        val action =
+//                            PostsFragmentDirections.actionPostsFragmentToNotificationFragment()
+//                        findNavController().navigate(action)
+//                        return true
+//                    }
                     else -> false
                 }
             }

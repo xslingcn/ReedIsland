@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/current_page"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/currentPage"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +56,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/sample_int"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/maxPageSuffix"
             app:layout_constraintStart_toEndOf="@+id/currentPageSuffix"
@@ -71,7 +71,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"
             android:text="@string/total_page"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/maxPage"
             app:layout_constraintStart_toEndOf="@+id/currentPage"
@@ -86,7 +86,7 @@
             android:layout_marginStart="8dp"
             android:text="@string/sample_int"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            android:textColor="?android:attr/textColorPrimary"
+            android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/maxPageSuffix"
@@ -102,7 +102,7 @@
         android:layout_marginTop="8dp"
         android:text="@string/page_jump"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@id/pageCountContainer"
         app:layout_constraintEnd_toEndOf="parent"
@@ -119,8 +119,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/pageInput"
         app:srcCompat="@drawable/ic_first_page_black_48px"
-        tools:ignore="ContentDescription"
-        app:tint="@color/colorPrimary" />
+        app:tint="@color/colorPrimary"
+        tools:ignore="ContentDescription" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/pageInput"
@@ -148,8 +148,8 @@
         app:layout_constraintStart_toEndOf="@+id/pageInput"
         app:layout_constraintTop_toTopOf="@+id/pageInput"
         app:srcCompat="@drawable/ic_last_page_black_48px"
+        app:tint="@color/colorPrimary"
         tools:ignore="ContentDescription"
-        tools:layout_constraintHorizontal_weight="1"
-        app:tint="@color/colorPrimary" />
+        tools:layout_constraintHorizontal_weight="1" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ /* Copyright 2020 Fishballzzz
   ~  *
   ~  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="?attr/selectableItemBackground"
+    android:background="?android:attr/windowBackground"
     android:clickable="true"
     android:focusable="true"
     tools:viewBindingIgnore="true">

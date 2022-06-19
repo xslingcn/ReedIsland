@@ -94,11 +94,11 @@ class DoodleView : View {
 
         when (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
             Configuration.UI_MODE_NIGHT_NO -> {
-                mBgColor = resources.getColor(R.color.pure_light, null)
+                mBgColor = resources.getColor(R.color.backgroundLight, null)
                 paintColor = resources.getColor(R.color.pure_dark, null)
             }
             Configuration.UI_MODE_NIGHT_YES -> {
-                mBgColor = resources.getColor(R.color.pure_dark, null)
+                mBgColor = resources.getColor(R.color.backgroundDark, null)
                 paintColor = resources.getColor(R.color.pure_light, null)
             }
         }
