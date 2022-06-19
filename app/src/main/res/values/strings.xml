@@ -55,6 +55,7 @@
     <string name="reply_comment" translatable="false">回复</string>
     <string name="copy_comment" translatable="false">内容</string>
     <string name="copy_id" translatable="false">串号</string>
+    <string name="no_content_image" translatable="false">图片</string>
     <string name="my_feed" translatable="false">我的订阅</string>
     <string name="feedId" translatable="false">订阅ID</string>
     <string name="edit_cookie_remark" translatable="false">编辑饼干备注</string>

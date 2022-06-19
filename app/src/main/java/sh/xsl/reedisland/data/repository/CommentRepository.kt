@@ -262,12 +262,6 @@ class CommentRepository @Inject constructor(
         return DataResource.create(LoadingStatus.SUCCESS, data.comments)
     }
 
-    fun getLocalQuote(
-        id: String,
-        commentList: List<Comment>
-    ): Comment? =
-        commentList.find { it.id == id } ?: getHeaderPost(id)
-
     // DO NOT SAVE ADS
     private suspend fun saveComments(id: String, page: Int, serverComments: List<Comment>) =
         coroutineScope {

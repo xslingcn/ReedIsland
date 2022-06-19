@@ -67,6 +67,12 @@ class CommentsViewModel @Inject constructor(
         else emitSource(quoteRepo.getQuote(id))
     }
 
+    fun getLocalQuote(
+        id: String,
+        commentList: List<Comment>
+    ): Comment? =
+        commentList.find { it.id == id } ?: commentRepo.getHeaderPost(id)
+
     private fun setLoadingStatus(status: LoadingStatus, message: String? = null) {
         loadingStatus.postValue(SingleLiveEvent.create(status, message))
     }
@@ -86,78 +92,6 @@ class CommentsViewModel @Inject constructor(
         }
     }
 
-    fun preProcessReference(comments: List<Comment>): List<Comment> {
-        val referencePattern = Pattern.compile("&gt;&gt;?(?:No.)?(\\d+)")
-        val resList = ArrayList(comments.map { it.copy() })
-        resList.forEach {
-            it.content?.run {
-                var lastLeading = this
-                var lastTrailing = ""
-                var m = referencePattern.matcher(this)
-                while (m.find()) {
-                    val leading =
-                        if (lastTrailing.isBlank()) lastLeading.substring(0, m.start())
-                        else lastLeading.plus(lastTrailing.substring(0, m.start()))
-                    val trailing =
-                        if (lastTrailing.isBlank())
-                            lastLeading.substring(m.end(), lastLeading.length)
-                        else lastTrailing.substring(m.end(), lastTrailing.length)
-                    val quote = commentRepo.getLocalQuote(
-                        m.group(1)!!,
-                        comments
-                    )
-                    quote?.apply {
-                        val nlPattern = "(<br\\s*\\/?>)|(\n)"
-                        content?.apply {
-                            var quoteContent = this
-                            val mn = referencePattern.matcher(quoteContent)
-                            // remove other references
-                            while (mn.find()) quoteContent = quoteContent.replace(mn.group(0)!!, "")
-                            // remove new lines
-                            quoteContent = quoteContent.replace(nlPattern.toRegex(), " ")
-                            val builder = StringBuilder()
-                            run countDoubleChar@{
-                                val doubleChar = "[^\\x00-\\xff]+".toRegex()
-                                var i = 0
-                                val maxChar =
-                                    Resources.getSystem().displayMetrics.widthPixels.div(30)
-                                quoteContent.forEach { c ->
-                                    i += if (doubleChar.containsMatchIn(it.toString())) 2 else 1
-                                    if (i >= maxChar) return@countDoubleChar builder.append("...")
-                                    builder.append(c)
-                                }
-                            }
-                            lastLeading = leading.plus(
-                                if (leading.isNotBlank() && !leading.endsWithNewLine()) "<br/>"
-                                else ""
-                            ).plus(m.group(0))
-                                .plus("<font color=#808080><small><i> ")
-                                .plus(builder.toString()).plus("</i></small></font>")
-                        } ?: img?.apply {
-                            lastLeading = leading.plus(
-                                if (leading.isNotBlank() && !leading.endsWithNewLine()) "<br/>"
-                                else ""
-                            ).plus(m.group(0))
-                                .plus("<font color=#808080><small><i> ")
-                                .plus("图片").plus("</i></small></font>")
-                        }
-                        lastTrailing = trailing
-                    }
-                    m = referencePattern.matcher(lastTrailing)
-                }
-                if (!lastTrailing.startsWithNewLine() && lastTrailing.isNotBlank())
-                    lastTrailing = "<br/>".plus(lastTrailing)
-                it.content = lastLeading.plus(lastTrailing)
-            }
-        }
-        return resList.toList()
-    }
-
-    private fun String.endsWithNewLine() =
-        this.endsWith("\n") || this.endsWith("<br/>", true) || this.endsWith("<br />", true)
-
-    private fun String.startsWithNewLine() =
-        this.startsWith("\n") || this.startsWith("<br/>", true) || this.startsWith("<br />", true)
 
     private fun loadLandingPage(targetPage: Int) {
         getNextPage(
