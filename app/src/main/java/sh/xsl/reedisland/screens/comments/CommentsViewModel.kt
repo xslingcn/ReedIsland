@@ -107,11 +107,14 @@ class CommentsViewModel @Inject constructor(
                         comments
                     )
                     quote?.apply {
+                        val nlPattern = "(<br\\s*\\/?>)|(\n)"
                         content?.apply {
                             var quoteContent = this
                             val mn = referencePattern.matcher(quoteContent)
+                            // remove other references
                             while (mn.find()) quoteContent = quoteContent.replace(mn.group(0)!!, "")
-                            quoteContent = quoteContent.replace("<br/>", " ").replace("\n", "")
+                            // remove new lines
+                            quoteContent = quoteContent.replace(nlPattern.toRegex(), " ")
                             val builder = StringBuilder()
                             run countDoubleChar@{
                                 val doubleChar = "[^\\x00-\\xff]+".toRegex()
@@ -125,18 +128,14 @@ class CommentsViewModel @Inject constructor(
                                 }
                             }
                             lastLeading = leading.plus(
-                                if (leading.isNotBlank() && !leading.endsWith("<br/>") &&
-                                    !leading.endsWith("\n")
-                                ) "<br/>"
+                                if (leading.isNotBlank() && !leading.endsWithNewLine()) "<br/>"
                                 else ""
                             ).plus(m.group(0))
                                 .plus("<font color=#808080><small><i> ")
                                 .plus(builder.toString()).plus("</i></small></font>")
                         } ?: img?.apply {
                             lastLeading = leading.plus(
-                                if (leading.isNotBlank() && !leading.endsWith("<br/>") &&
-                                    !leading.endsWith("\n")
-                                ) "<br/>"
+                                if (leading.isNotBlank() && !leading.endsWithNewLine()) "<br/>"
                                 else ""
                             ).plus(m.group(0))
                                 .plus("<font color=#808080><small><i> ")
@@ -146,13 +145,19 @@ class CommentsViewModel @Inject constructor(
                     }
                     m = referencePattern.matcher(lastTrailing)
                 }
-                if (!lastTrailing.startsWith("<br/>") && lastTrailing.isNotBlank())
+                if (!lastTrailing.startsWithNewLine() && lastTrailing.isNotBlank())
                     lastTrailing = "<br/>".plus(lastTrailing)
                 it.content = lastLeading.plus(lastTrailing)
             }
         }
         return resList.toList()
     }
+
+    private fun String.endsWithNewLine() =
+        this.endsWith("\n") || this.endsWith("<br/>", true) || this.endsWith("<br />", true)
+
+    private fun String.startsWithNewLine() =
+        this.startsWith("\n") || this.startsWith("<br/>", true) || this.startsWith("<br />", true)
 
     private fun loadLandingPage(targetPage: Int) {
         getNextPage(
