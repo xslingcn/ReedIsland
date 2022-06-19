@@ -38,7 +38,6 @@ import java.util.regex.Pattern
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlin.collections.set
-import kotlin.text.StringBuilder
 
 @Singleton
 class CommentRepository @Inject constructor(
@@ -259,7 +258,7 @@ class CommentRepository @Inject constructor(
          *  set LoadingStatus to Success to hide the header
          */
 
-        saveComments(id, page, preProcessReference(data.comments))
+        saveComments(id, page, data.comments)
         return DataResource.create(LoadingStatus.SUCCESS, preProcessReference(data.comments))
     }
 
@@ -268,50 +267,64 @@ class CommentRepository @Inject constructor(
         val resList = ArrayList(comments.map { it.copy() })
         resList.forEach {
             it.content?.run {
-                var res = this
-                val m = referencePattern.matcher(res)
+                var lastLeading = this
+                var lastTrailing = ""
+                var m = referencePattern.matcher(this)
                 while (m.find()) {
-                    val leading = this.substring(0, m.start())
-                    val trailing = this.substring(m.end(), this.length)
+                    val leading =
+                        if (lastTrailing.isBlank()) lastLeading.substring(0, m.start())
+                        else lastLeading.plus(lastTrailing.substring(0, m.start()))
+                    val trailing =
+                        if (lastTrailing.isBlank())
+                            lastLeading.substring(m.end(), lastLeading.length)
+                        else lastTrailing.substring(m.end(), lastTrailing.length)
                     val quote = getInPageQuote(
                         m.group(1)!!,
                         comments
                     )
-                    quote?.content?.apply {
-                        val mn = referencePattern.matcher(this)
-                        var quoteContent = this
-                        while (mn.find()) quoteContent = quoteContent.replace(mn.group(0)!!, "")
-                        quoteContent = quoteContent.replace("<br/>", " ").replace("\n", "")
-                        val builder = StringBuilder()
-                        run countDoubleChar@{
-                            val doubleChar = "[^\\x00-\\xff]+".toRegex()
-                            var i = 0
-                            val maxChar = Resources.getSystem().displayMetrics.widthPixels.div(30)
-                            Timber.e(maxChar.toString())
-                            Timber.e(quoteContent)
-                            quoteContent.forEach { c ->
-                                i += if (doubleChar.containsMatchIn(it.toString())) 2 else 1
-                                if (i >= maxChar) return@countDoubleChar builder.append("...")
-                                builder.append(c)
+                    quote?.apply {
+                        content?.apply {
+                            var quoteContent = this
+                            val mn = referencePattern.matcher(quoteContent)
+                            while (mn.find()) quoteContent = quoteContent.replace(mn.group(0)!!, "")
+                            quoteContent = quoteContent.replace("<br/>", " ").replace("\n", "")
+                            val builder = StringBuilder()
+                            run countDoubleChar@{
+                                val doubleChar = "[^\\x00-\\xff]+".toRegex()
+                                var i = 0
+                                val maxChar =
+                                    Resources.getSystem().displayMetrics.widthPixels.div(30)
+                                quoteContent.forEach { c ->
+                                    i += if (doubleChar.containsMatchIn(it.toString())) 2 else 1
+                                    if (i >= maxChar) return@countDoubleChar builder.append("...")
+                                    builder.append(c)
+                                }
                             }
+                            lastLeading = leading.plus(
+                                if (leading.isNotBlank() && !leading.endsWith("<br/>") &&
+                                    !leading.endsWith("\n")
+                                ) "<br/>"
+                                else ""
+                            ).plus(m.group(0))
+                                .plus("<font color=#808080><small><i> ")
+                                .plus(builder.toString()).plus("</i></small></font>")
+                        } ?: img?.apply {
+                            lastLeading = leading.plus(
+                                if (leading.isNotBlank() && !leading.endsWith("<br/>") &&
+                                    !leading.endsWith("\n")
+                                ) "<br/>"
+                                else ""
+                            ).plus(m.group(0))
+                                .plus("<font color=#808080><small><i> ")
+                                .plus("图片").plus("</i></small></font>")
                         }
-                        res = leading.plus(
-                            if (leading.isNotBlank() &&
-                                !leading.endsWith("<br/>") &&
-                                !leading.endsWith("\n")
-                            ) "<br/>"
-                            else ""
-                        ).plus(m.group(0))
-                            .plus("<font color=#808080><small><i> ")
-                            .plus(builder.toString()).plus("</i></small></font>")
-                            .plus(
-                                if (!trailing.startsWith("<br/>") && trailing.isNotBlank())
-                                    "<br/>".plus(trailing)
-                                else trailing
-                            )
+                        lastTrailing = trailing
                     }
+                    m = referencePattern.matcher(lastTrailing)
                 }
-                it.content = res
+                if (!lastTrailing.startsWith("<br/>") && lastTrailing.isNotBlank())
+                    lastTrailing = "<br/>".plus(lastTrailing)
+                it.content = lastLeading.plus(lastTrailing)
             }
         }
         return resList.toList()
