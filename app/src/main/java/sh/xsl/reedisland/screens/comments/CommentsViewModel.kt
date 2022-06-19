@@ -17,6 +17,7 @@
 
 package sh.xsl.reedisland.screens.comments
 
+import android.content.res.Resources
 import android.util.SparseArray
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ import sh.xsl.reedisland.data.repository.QuoteRepository
 import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.util.*
 import timber.log.Timber
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 class CommentsViewModel @Inject constructor(
@@ -82,6 +84,74 @@ class CommentsViewModel @Inject constructor(
                 currentPostFid = commentRepo.getFid(id)
             }
         }
+    }
+
+    fun preProcessReference(comments: List<Comment>): List<Comment> {
+        val referencePattern = Pattern.compile("&gt;&gt;?(?:No.)?(\\d+)")
+        val resList = ArrayList(comments.map { it.copy() })
+        resList.forEach {
+            it.content?.run {
+                var lastLeading = this
+                var lastTrailing = ""
+                var m = referencePattern.matcher(this)
+                while (m.find()) {
+                    val leading =
+                        if (lastTrailing.isBlank()) lastLeading.substring(0, m.start())
+                        else lastLeading.plus(lastTrailing.substring(0, m.start()))
+                    val trailing =
+                        if (lastTrailing.isBlank())
+                            lastLeading.substring(m.end(), lastLeading.length)
+                        else lastTrailing.substring(m.end(), lastTrailing.length)
+                    val quote = commentRepo.getLocalQuote(
+                        m.group(1)!!,
+                        comments
+                    )
+                    quote?.apply {
+                        content?.apply {
+                            var quoteContent = this
+                            val mn = referencePattern.matcher(quoteContent)
+                            while (mn.find()) quoteContent = quoteContent.replace(mn.group(0)!!, "")
+                            quoteContent = quoteContent.replace("<br/>", " ").replace("\n", "")
+                            val builder = StringBuilder()
+                            run countDoubleChar@{
+                                val doubleChar = "[^\\x00-\\xff]+".toRegex()
+                                var i = 0
+                                val maxChar =
+                                    Resources.getSystem().displayMetrics.widthPixels.div(30)
+                                quoteContent.forEach { c ->
+                                    i += if (doubleChar.containsMatchIn(it.toString())) 2 else 1
+                                    if (i >= maxChar) return@countDoubleChar builder.append("...")
+                                    builder.append(c)
+                                }
+                            }
+                            lastLeading = leading.plus(
+                                if (leading.isNotBlank() && !leading.endsWith("<br/>") &&
+                                    !leading.endsWith("\n")
+                                ) "<br/>"
+                                else ""
+                            ).plus(m.group(0))
+                                .plus("<font color=#808080><small><i> ")
+                                .plus(builder.toString()).plus("</i></small></font>")
+                        } ?: img?.apply {
+                            lastLeading = leading.plus(
+                                if (leading.isNotBlank() && !leading.endsWith("<br/>") &&
+                                    !leading.endsWith("\n")
+                                ) "<br/>"
+                                else ""
+                            ).plus(m.group(0))
+                                .plus("<font color=#808080><small><i> ")
+                                .plus("图片").plus("</i></small></font>")
+                        }
+                        lastTrailing = trailing
+                    }
+                    m = referencePattern.matcher(lastTrailing)
+                }
+                if (!lastTrailing.startsWith("<br/>") && lastTrailing.isNotBlank())
+                    lastTrailing = "<br/>".plus(lastTrailing)
+                it.content = lastLeading.plus(lastTrailing)
+            }
+        }
+        return resList.toList()
     }
 
     private fun loadLandingPage(targetPage: Int) {

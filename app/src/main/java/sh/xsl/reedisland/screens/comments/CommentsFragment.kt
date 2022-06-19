@@ -447,6 +447,7 @@ class CommentsFragment : DaggerFragment() {
                 mAdapter?.showNoData()
                 return@observe
             }
+            val referenced = viewModel.preProcessReference(it).toMutableList()
             updateCurrentPage()
             if (requireTitleUpdate) {
                 updateTitle()
@@ -454,12 +455,12 @@ class CommentsFragment : DaggerFragment() {
             }
             if (refreshing) {
                 binding?.srlAndRv?.recyclerView?.scrollToPosition(0)
-                mAdapter?.setNewInstance(it.toMutableList())
+                mAdapter?.setNewInstance(referenced)
             } else {
-                mAdapter?.setDiffNewData(it.toMutableList())
+                mAdapter?.setDiffNewData(referenced)
             }
             refreshing = false
-            updateCurrentlyAvailableImages(it)
+            updateCurrentlyAvailableImages(referenced)
             mAdapter?.setPo(viewModel.po)
             Timber.i("${this.javaClass.simpleName} Adapter will have ${mAdapter?.data?.size} comments")
         }
