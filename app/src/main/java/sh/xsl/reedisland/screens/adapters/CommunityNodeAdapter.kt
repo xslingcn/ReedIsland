@@ -102,6 +102,8 @@ class CommunityNodeAdapter(
             true
         ((nodes.firstOrNull { it is CommunityNode && it.community.id == "6" }) as? BaseExpandNode)?.isExpanded =
             true
+        ((nodes.firstOrNull { it is CommunityNode && it.community.id == "11" }) as? BaseExpandNode)?.isExpanded =
+            true
         if (nodes.size == 1 && nodes.first() is BaseExpandNode) (nodes.first() as BaseExpandNode).isExpanded =
             true
         setList(nodes)
