@@ -559,8 +559,8 @@ class CommentsFragment : DaggerFragment() {
                                 .plus("</i></small></font>")
                         }
                         lastTrailing = trailing
+                        m = referencePattern.matcher(lastTrailing)
                     }
-                    m = referencePattern.matcher(lastTrailing)
                 }
                 if (!lastTrailing.startsWithNewLine() && lastTrailing.isNotBlank())
                     lastTrailing = "<br/>".plus(lastTrailing)
