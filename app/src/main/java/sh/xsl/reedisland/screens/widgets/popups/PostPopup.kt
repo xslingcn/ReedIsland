@@ -483,6 +483,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         }
 
 
+        // TODO: follow new storage permission policy(use MediaStore)
         findViewById<Button>(R.id.postImage).setOnClickListener {
             if (!caller.intentsHelper.checkAndRequestSinglePermission(
                     caller, permission.READ_EXTERNAL_STORAGE, true
