@@ -677,9 +677,9 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                         )
                         clearEntries()
                         selectedCookie?.let { applicationDataStore.setLastUsedCookie(it) }
-                    }
+                        Toast.makeText(caller, "发送成功", Toast.LENGTH_LONG).show()
+                    } else Toast.makeText(caller, message, Toast.LENGTH_LONG).show()
                 }
-                Toast.makeText(caller, "发送成功", Toast.LENGTH_LONG).show()
             }
         }
     }

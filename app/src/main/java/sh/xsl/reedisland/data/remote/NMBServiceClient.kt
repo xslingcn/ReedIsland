@@ -108,7 +108,6 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<List<Post>> {
-//        throw RuntimeException("Oh")
         Timber.i("Downloading Posts on Forum $fid...")
         val call = service.getNMBPosts(
             if (fid.startsWith("-")) fid.substringAfter("-")
