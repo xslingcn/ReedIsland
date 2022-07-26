@@ -219,8 +219,12 @@ object ImageUtil {
 
     suspend fun getCompressedImageFileFromUri(caller: FragmentActivity, uri: Uri): File? {
         val source = getImageFileFromUri(caller, uri)
-        if (source == null || source.extension.lowercase(Locale.getDefault()) == "gif") {
+        if (source == null) {
             Timber.e("Did not get file from uri. Cannot compress...")
+            return null
+        }
+        if (source.extension.lowercase(Locale.getDefault()) == "gif" && source.length() shr 10 > 2048) {
+            Timber.e("Too big gif received. Cannot compress...")
             return null
         }
         if (source.exists() && source.length() < DawnConstants.SERVER_FILE_SIZE_LIMIT) {
