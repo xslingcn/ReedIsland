@@ -78,6 +78,7 @@ import sh.xsl.reedisland.screens.util.Layout
 import sh.xsl.reedisland.screens.util.Layout.toast
 import sh.xsl.reedisland.screens.util.Layout.updateHeaderAndFooter
 import sh.xsl.reedisland.screens.widgets.LinkifyTextView
+import sh.xsl.reedisland.screens.widgets.SingleAndDoubleClickListener
 import sh.xsl.reedisland.screens.widgets.popups.ImageViewerPopup
 import sh.xsl.reedisland.screens.widgets.popups.PostPopup
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
@@ -493,10 +494,18 @@ class CommentsFragment : DaggerFragment() {
 
         if (activity != null && isAdded) {
             (requireActivity() as MainActivity).run {
-                setToolbarClickListener {
-                    binding?.srlAndRv?.recyclerView?.layoutManager?.scrollToPosition(0)
-                    if (binding != null) showMenu()
-                }
+                setToolbarClickListener(object :
+                    SingleAndDoubleClickListener.SingleAndDoubleClickCallBack {
+                    override fun singleClicked() {
+                        // do nothing
+                    }
+
+                    override fun doubleClicked() {
+                        binding?.srlAndRv?.recyclerView?.layoutManager?.scrollToPosition(0)
+                        if (binding != null) showMenu()
+                    }
+
+                })
                 hideNav()
             }
         }

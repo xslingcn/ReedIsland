@@ -56,13 +56,22 @@ open class BaseNavFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        (requireActivity() as MainActivity).setToolbarClickListener {
-            if (activity != null && isAdded) {
-                mRecyclerView?.layoutManager?.scrollToPosition(0)
-                (requireActivity() as MainActivity).showNav()
-            }
+        (requireActivity() as MainActivity).run {
+            setToolbarClickListener(object :
+                SingleAndDoubleClickListener.SingleAndDoubleClickCallBack {
+                override fun doubleClicked() {
+                    if (activity != null && isAdded) {
+                        mRecyclerView?.layoutManager?.scrollToPosition(0)
+                        (requireActivity() as MainActivity).showNav()
+                    }
+                }
+
+                override fun singleClicked() {
+                    showDrawer()
+                }
+            })
+            showNav()
         }
-        (requireActivity() as MainActivity).showNav()
     }
 
     override fun onPause() {

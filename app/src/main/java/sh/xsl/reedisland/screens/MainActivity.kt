@@ -25,7 +25,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
@@ -69,7 +68,7 @@ import sh.xsl.reedisland.R
 import sh.xsl.reedisland.databinding.ActivityMainBinding
 import sh.xsl.reedisland.screens.util.ToolBar.immersiveToolbar
 import sh.xsl.reedisland.screens.util.ToolBar.immersiveToolbarInitialization
-import sh.xsl.reedisland.screens.widgets.DoubleClickListener
+import sh.xsl.reedisland.screens.widgets.SingleAndDoubleClickListener
 import sh.xsl.reedisland.screens.widgets.popups.ForumDrawerPopup
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.IntentsHelper
@@ -449,13 +448,9 @@ class MainActivity : DaggerAppCompatActivity() {
         currentAnimatorSet!!.start()
     }
 
-    fun setToolbarClickListener(listener: () -> Unit) {
+    fun setToolbarClickListener(callback: SingleAndDoubleClickListener.SingleAndDoubleClickCallBack) {
         binding.toolbar.setOnClickListener(
-            DoubleClickListener(callback = object : DoubleClickListener.DoubleClickCallBack {
-                override fun doubleClicked() {
-                    listener.invoke()
-                }
-            })
+            SingleAndDoubleClickListener(callback = callback)
         )
     }
 
