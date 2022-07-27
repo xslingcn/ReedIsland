@@ -17,7 +17,6 @@
 
 package sh.xsl.reedisland.screens.comments
 
-import android.content.res.Resources
 import android.util.SparseArray
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
@@ -27,7 +26,6 @@ import sh.xsl.reedisland.data.repository.QuoteRepository
 import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.util.*
 import timber.log.Timber
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 class CommentsViewModel @Inject constructor(
@@ -116,7 +114,7 @@ class CommentsViewModel @Inject constructor(
 
     fun getPreviousPage(forceUpdate: Boolean = true) {
         // Refresh when no data, usually error occurs
-        if (commentList.isNullOrEmpty()) {
+        if (commentList.isEmpty()) {
             getNextPage()
             return
         }

@@ -33,6 +33,7 @@ import com.king.zxing.util.LogUtils
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.screens.util.ToolBar.themeStatusBar
 import sh.xsl.reedisland.util.ImageUtil
+import sh.xsl.reedisland.util.IntentsHelper.Companion.CAMERA_SCAN_RESULT
 import timber.log.Timber
 
 class QRCookieActivity : CaptureActivity() {
@@ -51,7 +52,7 @@ class QRCookieActivity : CaptureActivity() {
                     val res = CodeUtils.parseQRCode(file.path)
                     if (res != null) {
                         val intent = Intent()
-                        intent.putExtra("SCAN_RESULT", res)
+                        intent.putExtra(CAMERA_SCAN_RESULT, res)
                         setResult(Activity.RESULT_OK, intent)
                         finish()
                     } else {
