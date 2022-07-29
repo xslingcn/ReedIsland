@@ -167,9 +167,9 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     }
 
     private fun updateCookies() {
-        if (selectedCookie == null || applicationDataStore.cookies.isNullOrEmpty()) {
+        if (selectedCookie == null || applicationDataStore.cookies.isEmpty()) {
             findViewById<Button>(R.id.postCookie)?.run {
-                text = if (applicationDataStore.cookies.isNullOrEmpty()) {
+                text = if (applicationDataStore.cookies.isEmpty()) {
                     context.getString(R.string.missing_cookie)
                 } else {
                     selectedCookie = applicationDataStore.cookies[0]
@@ -181,6 +181,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
 
     fun updateView(targetId: String?, newPost: Boolean, quote: String?) {
         if (targetId != "-1") this.targetId = targetId // cannot post to timeline
+        postContent?.editText?.hint = sharedVM.getForumTips(targetId)
         this.newPost = newPost
         updateTitle(targetId, newPost)
         updateCookies()
@@ -348,29 +349,31 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                         title(R.string.select_target_forum)
                         val mapping = sharedVM.forumNameMapping
                         //去除时间线
-                        listItemsSingleChoice(items = mapping.values.drop(1)) { _, index, text ->
+                        listItemsSingleChoice(
+                            items = mapping.values.drop(1)
+                        ) { _, index, text ->
                             targetId = mapping.keys.drop(1).toList()[index]
                             targetFid = targetId!!
                             postForum!!.text = text
                         }
                     }.onDismiss {
                         if (targetId == null) return@onDismiss
-                        if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
-                            postContent?.editText?.hint =
-                                applicationDataStore.luweiNotice?.nmbForums?.firstOrNull { f -> f.id == targetId }
-                                    ?.getPostRule()
-                        }
+//                        if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
+                        postContent?.editText?.hint = sharedVM.getForumTips(targetId!!)
+//                            sharedVM.applicationDataStore.luweiNotice?.nmbForums?.firstOrNull { f -> f.id == targetId }
+//                                ?.getPostRule()
+//                        }
                         updateTitle(targetId, newPost)
-                        if (postForum!!.text == "值班室") {
-                            MaterialDialog(context).show {
-                                lifecycleOwner(caller)
-                                title(R.string.report_reasons)
-                                listItemsSingleChoice(res = R.array.report_reasons) { _, _, text ->
-                                    postContent?.editText?.append("\n${context.getString(R.string.report_reasons)}: $text")
-                                }
-                                cancelOnTouchOutside(false)
-                            }
-                        }
+//                        if (postForum!!.text == "值班室") {
+//                            MaterialDialog(context).show {
+//                                lifecycleOwner(caller)
+//                                title(R.string.report_reasons)
+//                                listItemsSingleChoice(res = R.array.report_reasons) { _, _, text ->
+//                                    postContent?.editText?.append("\n${context.getString(R.string.report_reasons)}: $text")
+//                                }
+//                                cancelOnTouchOutside(false)
+//                            }
+//                        }
                     }
                 }
             }
@@ -424,7 +427,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                     R.id.postFace -> {
                         if (isChecked) {
                             KeyboardUtils.hideSoftInput(postContent!!)
-                            if (emojiAdapter.data.isNullOrEmpty()) {
+                            if (emojiAdapter.data.isEmpty()) {
                                 caller.lifecycleScope.launch {
                                     emojiAdapter.setDiffNewData(
                                         sharedVM.getAllEmoji().toMutableList()
@@ -466,7 +469,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
 
         postCookie = findViewById<Button>(R.id.postCookie).apply {
             setOnClickListener {
-                if (!applicationDataStore.cookies.isNullOrEmpty()) {
+                if (applicationDataStore.cookies.isNotEmpty()) {
                     KeyboardUtils.hideSoftInput(postContent!!)
                     MaterialDialog(context).show {
                         lifecycleOwner(caller)

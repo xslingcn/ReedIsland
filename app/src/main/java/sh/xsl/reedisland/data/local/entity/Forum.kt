@@ -35,7 +35,8 @@ data class Forum(
     val interval: String = "",
     val createdAt: String = "",
     val updateAt: String = "",
-    val status: String = ""
+    val status: String = "",
+    val tips: String? = ""
 ) {
     fun getDisplayName(): String = if (showName.isNotBlank()) showName else name
 

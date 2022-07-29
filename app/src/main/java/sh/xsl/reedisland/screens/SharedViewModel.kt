@@ -67,6 +67,8 @@ class SharedViewModel @Inject constructor(
 
     private var forumMsgMapping = mapOf<String, String>()
 
+    private var forumTipsMapping = mapOf<String, String>()
+
     private var timelineNameMapping = mapOf<String, String>()
     private var timelineMsgMapping = mapOf<String, String>()
 
@@ -184,7 +186,10 @@ class SharedViewModel @Inject constructor(
             list.filterNot { it.isCommonForums() || it.isCommonPosts() }.map { it.forums }.flatten()
         forumNameMapping =
             flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
-        forumMsgMapping = flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
+        forumMsgMapping =
+            flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
+        forumTipsMapping =
+            flatten.associateBy(keySelector = { it.id }, valueTransform = { it.tips ?: "" })
     }
 
     fun setBeiTaiForums(list: List<NoticeForum>) {
@@ -228,6 +233,9 @@ class SharedViewModel @Inject constructor(
 
     fun getRandomLoadingBible(): String =
         if (this::loadingBible.isInitialized) loadingBible.random() else "正在加载中..."
+
+    fun getForumTips(id: String?): String =
+        if (id.isNullOrBlank()) "" else forumTipsMapping[id] ?: ""
 
     fun getForumOrTimelineMsg(id: String): String =
         if (id.startsWith("-")) getTimelineMsg(id) else getForumMsg(id)
