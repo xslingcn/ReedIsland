@@ -330,10 +330,10 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
-//        applicationDataStore.getLatestLuweiNotice()?.let { luweiNotice ->
-//            sharedVM.setLuweiLoadingBible(luweiNotice.loadingMsgs)
+        applicationDataStore.getLatestLuweiNotice()?.let { luweiNotice ->
+            sharedVM.setLuweiLoadingBible(luweiNotice.loadingMsgs)
 //            sharedVM.setBeiTaiForums(luweiNotice.beitaiForums)
-//        }
+        }
 
 //        // first time app entry
 //        applicationDataStore.getFirstTimeUse().let {
