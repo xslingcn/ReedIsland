@@ -19,8 +19,10 @@ package sh.xsl.reedisland.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.squareup.moshi.JsonClass
 import java.time.LocalDateTime
 
+@JsonClass(generateAdapter = true)
 @Entity
 data class Emoji(
     val name: String,

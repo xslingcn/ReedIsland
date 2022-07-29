@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 24,
-    "identityHash": "75e5a10fb6d2e6326101c05a219cc314",
+    "version": 25,
+    "identityHash": "c050f2b87470eecede9f9cbb97881009",
     "entities": [
       {
         "tableName": "Community",
@@ -432,68 +432,6 @@
             "fieldPath": "read",
             "columnName": "read",
             "affinity": "INTEGER",
-            "notNull": true
-          },
-          {
-            "fieldPath": "lastUpdatedAt",
-            "columnName": "lastUpdatedAt",
-            "affinity": "TEXT",
-            "notNull": true
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "LuweiNotice",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `appVersion` TEXT NOT NULL, `beitaiForums` TEXT NOT NULL, `nmbForums` TEXT NOT NULL, `loadingMsgs` TEXT NOT NULL, `clientsInfo` TEXT NOT NULL, `whitelist` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL)",
-        "fields": [
-          {
-            "fieldPath": "id",
-            "columnName": "id",
-            "affinity": "INTEGER",
-            "notNull": false
-          },
-          {
-            "fieldPath": "appVersion",
-            "columnName": "appVersion",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "beitaiForums",
-            "columnName": "beitaiForums",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "nmbForums",
-            "columnName": "nmbForums",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "loadingMsgs",
-            "columnName": "loadingMsgs",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "clientsInfo",
-            "columnName": "clientsInfo",
-            "affinity": "TEXT",
-            "notNull": true
-          },
-          {
-            "fieldPath": "whitelist",
-            "columnName": "whitelist",
-            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -974,7 +912,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '75e5a10fb6d2e6326101c05a219cc314')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c050f2b87470eecede9f9cbb97881009')"
     ]
   }
 }

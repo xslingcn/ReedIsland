@@ -54,9 +54,15 @@ abstract class NMBJsonParser<T> {
         }
     }
 
-    class LuweiNoticeParser : NMBJsonParser<LuweiNotice>() {
-        override fun parse(response: String): LuweiNotice {
-            return moshi.adapter(LuweiNotice::class.java).fromJson(response)!!
+//    class LuweiNoticeParser : NMBJsonParser<LuweiNotice>() {
+//        override fun parse(response: String): LuweiNotice {
+//            return moshi.adapter(LuweiNotice::class.java).fromJson(response)!!
+//        }
+//    }
+
+    class DawnNoticeParser : NMBJsonParser<DawnNotice>() {
+        override fun parse(response: String): DawnNotice {
+            return moshi.adapter(DawnNotice::class.java).fromJson(response)!!
         }
     }
 

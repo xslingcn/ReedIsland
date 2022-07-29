@@ -95,10 +95,6 @@
                     android:host="f"
                     android:pathPrefix="/"
                     android:scheme="aweidao" />
-                <data
-                    android:host="t"
-                    android:pathPrefix="/"
-                    android:scheme="adnmb" />
             </intent-filter>
 
         </activity>

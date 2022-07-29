@@ -87,9 +87,14 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         return APIDataResponse.create(service.getConfig(), NMBJsonParser.NMBNoticeParser())
     }
 
-    suspend fun getLuweiNotice(): APIDataResponse<LuweiNotice> {
-        Timber.i("Downloading LuWeiNotice...")
-        return APIDataResponse.create(service.getLuweiNotice(), NMBJsonParser.LuweiNoticeParser())
+//    suspend fun getLuweiNotice(): APIDataResponse<LuweiNotice> {
+//        Timber.i("Downloading LuWeiNotice...")
+//        return APIDataResponse.create(service.getLuweiNotice(), NMBJsonParser.LuweiNoticeParser())
+//    }
+
+    suspend fun getDawnNotice(): APIDataResponse<DawnNotice> {
+        Timber.i("Downloading DawnNotice...")
+        return APIDataResponse.create(service.getDawnNotice(), NMBJsonParser.DawnNoticeParser())
     }
 
     suspend fun getCommunities(): APIDataResponse<List<Community>> {

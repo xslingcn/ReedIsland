@@ -20,10 +20,7 @@ package sh.xsl.reedisland.data.local.dao
 import androidx.room.TypeConverter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
-import sh.xsl.reedisland.data.local.entity.Forum
-import sh.xsl.reedisland.data.local.entity.LuweiNotice
-import sh.xsl.reedisland.data.local.entity.NoticeForum
-import sh.xsl.reedisland.data.local.entity.Trend
+import sh.xsl.reedisland.data.local.entity.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -52,14 +49,34 @@ class Converter {
     }
 
     @TypeConverter
-    fun jsonToWhiteList(value: String): LuweiNotice.WhiteList {
-        return moshi.adapter(LuweiNotice.WhiteList::class.java).fromJson(value)!!
+    fun jsonToKaomojiList(value: String): List<Emoji> {
+        return moshi.adapter<List<Emoji>>(
+            Types.newParameterizedType(
+                List::class.java,
+                Emoji::class.java
+            )
+        ).fromJson(value) ?: emptyList()
     }
 
     @TypeConverter
-    fun whiteListToJson(whiteList: LuweiNotice.WhiteList): String {
-        return moshi.adapter(LuweiNotice.WhiteList::class.java).toJson(whiteList)
+    fun kaomojiListToJson(list: List<Emoji>): String {
+        return moshi.adapter<List<Emoji>>(
+            Types.newParameterizedType(
+                List::class.java,
+                Emoji::class.java
+            )
+        ).toJson(list)
     }
+
+//    @TypeConverter
+//    fun jsonToWhiteList(value: String): LuweiNotice.WhiteList {
+//        return moshi.adapter(LuweiNotice.WhiteList::class.java).fromJson(value)!!
+//    }
+//
+//    @TypeConverter
+//    fun whiteListToJson(whiteList: LuweiNotice.WhiteList): String {
+//        return moshi.adapter(LuweiNotice.WhiteList::class.java).toJson(whiteList)
+//    }
 
 
     @TypeConverter
@@ -144,27 +161,27 @@ class Converter {
         ).toJson(list)
     }
 
-    @TypeConverter
-    fun jsonToClientsInfoMap(value: String): Map<String, LuweiNotice.ClientInfo> {
-        return moshi.adapter<Map<String, LuweiNotice.ClientInfo>>(
-            Types.newParameterizedType(
-                Map::class.java,
-                String::class.java,
-                LuweiNotice.ClientInfo::class.java
-            )
-        ).fromJson(value) ?: emptyMap()
-    }
-
-    @TypeConverter
-    fun clientsInfoMapToJson(map: Map<String, LuweiNotice.ClientInfo>): String {
-        return moshi.adapter<Map<String, LuweiNotice.ClientInfo>>(
-            Types.newParameterizedType(
-                Map::class.java,
-                String::class.java,
-                LuweiNotice.ClientInfo::class.java
-            )
-        ).toJson(map)
-    }
+//    @TypeConverter
+//    fun jsonToClientsInfoMap(value: String): Map<String, LuweiNotice.ClientInfo> {
+//        return moshi.adapter<Map<String, LuweiNotice.ClientInfo>>(
+//            Types.newParameterizedType(
+//                Map::class.java,
+//                String::class.java,
+//                LuweiNotice.ClientInfo::class.java
+//            )
+//        ).fromJson(value) ?: emptyMap()
+//    }
+//
+//    @TypeConverter
+//    fun clientsInfoMapToJson(map: Map<String, LuweiNotice.ClientInfo>): String {
+//        return moshi.adapter<Map<String, LuweiNotice.ClientInfo>>(
+//            Types.newParameterizedType(
+//                Map::class.java,
+//                String::class.java,
+//                LuweiNotice.ClientInfo::class.java
+//            )
+//        ).toJson(map)
+//    }
 
     @TypeConverter
     fun integerSetToString(set: MutableSet<Int>): String {

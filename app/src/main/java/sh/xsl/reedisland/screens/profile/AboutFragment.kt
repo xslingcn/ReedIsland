@@ -124,8 +124,8 @@ class AboutFragment : DaggerFragment() {
 //            }
 //        }
 
-//        binding!!.adnmbPrivacyAgreement.apply {
-//            key.setText(R.string.adnmb_privacy_agreement)
+//        binding!!.aweidaoPrivacyAgreement.apply {
+//            key.setText(R.string.aweidao_privacy_agreement)
 //            root.setOnClickListener {
 //                if (activity == null || !isAdded) return@setOnClickListener
 //                val navAction = MainNavDirections.actionGlobalCommentsFragment("11689471", "117")

@@ -149,7 +149,7 @@ class MainActivity : DaggerAppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         binding.toolbar.apply {
             immersiveToolbar()
-            setSubtitle(R.string.toolbar_subtitle_adnmb)
+            setSubtitle(R.string.toolbar_subtitle_aweidao)
         }
         immersiveToolbarInitialization()
         customToolbarBackground()
@@ -330,9 +330,13 @@ class MainActivity : DaggerAppCompatActivity() {
             }
         }
 
-        applicationDataStore.getLatestLuweiNotice()?.let { luweiNotice ->
-            sharedVM.setLuweiLoadingBible(luweiNotice.loadingMsgs)
+//        applicationDataStore.getLatestLuweiNotice()?.let { luweiNotice ->
+//            sharedVM.setLuweiLoadingBible(luweiNotice.loadingMsgs)
 //            sharedVM.setBeiTaiForums(luweiNotice.beitaiForums)
+//        }
+
+        applicationDataStore.getLatestDawnNotice()?.let { dawnNotice ->
+            sharedVM.setDawnLoadingBible(dawnNotice.loadingMsgs)
         }
 
 //        // first time app entry
@@ -576,33 +580,33 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    fun goToADNMB() {
-        Timber.d("Switching to AD......")
-        sharedVM.onADNMB()
-        RetrofitUrlManager.getInstance().putDomain("host", DawnConstants.ADNMBHost)
-        autoSelectCDNs()
+//    fun goToADNMB() {
+//        Timber.d("Switching to AD......")
+//        sharedVM.onADNMB()
+//        RetrofitUrlManager.getInstance().putDomain("host", DawnConstants.ADNMBHost)
+//        autoSelectCDNs()
+//
+//        sharedVM.setForumId(applicationDataStore.getDefaultForumId(), true)
+//
+//        binding.toolbar.setSubtitle(R.string.toolbar_subtitle_adnmb)
+//    }
 
-        sharedVM.setForumId(applicationDataStore.getDefaultForumId(), true)
-
-        binding.toolbar.setSubtitle(R.string.toolbar_subtitle_adnmb)
-    }
-
-    fun goToTNMB() {
-        Timber.d("Switching to BT......")
-        sharedVM.onTNMB()
-        RetrofitUrlManager.getInstance().putDomain("host", DawnConstants.TNMBHost)
-        RetrofitUrlManager.getInstance().putDomain("nmb", DawnConstants.TNMBHost)
-        RetrofitUrlManager.getInstance().putDomain("nmb-ref", DawnConstants.TNMBHost)
-
-        sharedVM.beitaiForums.firstOrNull()?.forums?.firstOrNull()?.id?.let {
-            sharedVM.setForumId(
-                it,
-                true
-            )
-        }
-
-        binding.toolbar.setSubtitle(R.string.toolbar_subtitle_tnmb)
-    }
+//    fun goToTNMB() {
+//        Timber.d("Switching to BT......")
+//        sharedVM.onTNMB()
+//        RetrofitUrlManager.getInstance().putDomain("host", DawnConstants.TNMBHost)
+//        RetrofitUrlManager.getInstance().putDomain("nmb", DawnConstants.TNMBHost)
+//        RetrofitUrlManager.getInstance().putDomain("nmb-ref", DawnConstants.TNMBHost)
+//
+//        sharedVM.beitaiForums.firstOrNull()?.forums?.firstOrNull()?.id?.let {
+//            sharedVM.setForumId(
+//                it,
+//                true
+//            )
+//        }
+//
+//        binding.toolbar.setSubtitle(R.string.toolbar_subtitle_tnmb)
+//    }
 
 
     private fun autoSelectCDNs() {

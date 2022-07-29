@@ -17,25 +17,25 @@
 
 package sh.xsl.reedisland.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import sh.xsl.reedisland.data.local.entity.LuweiNotice
-
-@Dao
-interface LuweiNoticeDao {
-    @Query("SELECT * From LuweiNotice ORDER BY id DESC LIMIT 1")
-    suspend fun getLatestLuweiNotice(): LuweiNotice?
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNotice(luweiNotice: LuweiNotice)
-
-    suspend fun insertNoticeWithTimestamp(luweiNotice: LuweiNotice) {
-        luweiNotice.setUpdatedTimestamp()
-        insertNotice(luweiNotice)
-    }
-
-    @Query("DELETE FROM LuweiNotice")
-    suspend fun nukeTable()
-}
+//import androidx.room.Dao
+//import androidx.room.Insert
+//import androidx.room.OnConflictStrategy
+//import androidx.room.Query
+//import sh.xsl.reedisland.data.local.entity.LuweiNotice
+//
+//@Dao
+//interface LuweiNoticeDao {
+//    @Query("SELECT * From LuweiNotice ORDER BY id DESC LIMIT 1")
+//    suspend fun getLatestLuweiNotice(): LuweiNotice?
+//
+//    @Insert(onConflict = OnConflictStrategy.REPLACE)
+//    suspend fun insertNotice(luweiNotice: LuweiNotice)
+//
+//    suspend fun insertNoticeWithTimestamp(luweiNotice: LuweiNotice) {
+//        luweiNotice.setUpdatedTimestamp()
+//        insertNotice(luweiNotice)
+//    }
+//
+//    @Query("DELETE FROM LuweiNotice")
+//    suspend fun nukeTable()
+//}

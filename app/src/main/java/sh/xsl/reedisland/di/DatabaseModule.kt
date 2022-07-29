@@ -75,10 +75,16 @@ object DatabaseModule {
         return dawnDatabase.nmbNoticeDao()
     }
 
+//    @Provides
+//    @Singleton
+//    fun provideLuweiNoticeDao(dawnDatabase: DawnDatabase): LuweiNoticeDao {
+//        return dawnDatabase.luweiNoticeDao()
+//    }
+
     @Provides
     @Singleton
-    fun provideLuweiNoticeDao(dawnDatabase: DawnDatabase): LuweiNoticeDao {
-        return dawnDatabase.luweiNoticeDao()
+    fun provideDawnNoticeDao(dawnDatabase: DawnDatabase): DawnNoticeDao {
+        return dawnDatabase.dawnNoticeDao()
     }
 
     @Provides

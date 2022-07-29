@@ -81,28 +81,28 @@ class SharedViewModel @Inject constructor(
     var beitaiForums: List<Community> = listOf()
         private set
 
-    fun onADNMB() {
-        DawnApp.onDomain(DawnConstants.ADNMBDomain)
-        currentDomain.value = DawnConstants.ADNMBDomain
-        communityList.value?.data?.filterNot { it.isCommonForums() || it.isCommonPosts() }
-            ?.map { it.forums }?.flatten()?.let { flatten ->
-                forumNameMapping =
-                    flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
-                forumMsgMapping =
-                    flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
-            }
+//    fun onADNMB() {
+//        DawnApp.onDomain(DawnConstants.ADNMBDomain)
+//        currentDomain.value = DawnConstants.ADNMBDomain
+//        communityList.value?.data?.filterNot { it.isCommonForums() || it.isCommonPosts() }
+//            ?.map { it.forums }?.flatten()?.let { flatten ->
+//                forumNameMapping =
+//                    flatten.associateBy(keySelector = { it.id }, valueTransform = { it.name })
+//                forumMsgMapping =
+//                    flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
+//            }
+//
+//    }
 
-    }
-
-    fun onTNMB() {
-        DawnApp.onDomain(DawnConstants.TNMBDomain)
-        currentDomain.value = DawnConstants.TNMBDomain
-        beitaiForums.firstOrNull()?.forums?.let {
-            forumNameMapping = it.associateBy(keySelector = { it.id }, valueTransform = { it.name })
-        }
-        forumMsgMapping = emptyMap()
-
-    }
+//    fun onTNMB() {
+//        DawnApp.onDomain(DawnConstants.TNMBDomain)
+//        currentDomain.value = DawnConstants.TNMBDomain
+//        beitaiForums.firstOrNull()?.forums?.let {
+//            forumNameMapping = it.associateBy(keySelector = { it.id }, valueTransform = { it.name })
+//        }
+//        forumMsgMapping = emptyMap()
+//
+//    }
 
     init {
 //        getRandomReedPicture()
@@ -192,33 +192,33 @@ class SharedViewModel @Inject constructor(
             flatten.associateBy(keySelector = { it.id }, valueTransform = { it.tips ?: "" })
     }
 
-    fun setBeiTaiForums(list: List<NoticeForum>) {
-        beitaiForums = listOf(
-            Community(
-                id = "beitai",
-                sort = "",
-                name = "备胎",
-                status = "",
-                forums = list.map { it.toForum() },
-                domain = DawnConstants.TNMBDomain
-            )
-        )
-    }
+//    fun setBeiTaiForums(list: List<NoticeForum>) {
+//        beitaiForums = listOf(
+//            Community(
+//                id = "beitai",
+//                sort = "",
+//                name = "备胎",
+//                status = "",
+//                forums = list.map { it.toForum() },
+//                domain = DawnConstants.TNMBDomain
+//            )
+//        )
+//    }
 
     fun setTimelineMappings(list: List<Timeline>) {
         timelineNameMapping = list.associateBy({ it.id }, { it.name })
         timelineMsgMapping = list.associateBy({ it.id }, { it.notice })
     }
 
-    fun getRandomReedPicture() {
-        viewModelScope.launch {
-            webNMBServiceClient.getRandomReedPicture().run {
-                if (this is APIDataResponse.Success) {
-                    reedPictureUrl.postValue(data!!)
-                }
-            }
-        }
-    }
+//    fun getRandomReedPicture() {
+//        viewModelScope.launch {
+//            webNMBServiceClient.getRandomReedPicture().run {
+//                if (this is APIDataResponse.Success) {
+//                    reedPictureUrl.postValue(data!!)
+//                }
+//            }
+//        }
+//    }
 
     // timeline has `-` prefix, otherwise is just regular forum
     fun setForumId(fid: String, refresh: Boolean = false) {
@@ -227,7 +227,7 @@ class SharedViewModel @Inject constructor(
         _selectedForumId.value = fid
     }
 
-    fun setLuweiLoadingBible(bible: List<String>) {
+    fun setDawnLoadingBible(bible: List<String>) {
         loadingBible = bible
     }
 

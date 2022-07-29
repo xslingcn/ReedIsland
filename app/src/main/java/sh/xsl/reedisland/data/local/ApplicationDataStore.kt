@@ -43,7 +43,8 @@ class ApplicationDataStore @Inject constructor(
     private val trendDao: DailyTrendDao,
     private val feedDao: FeedDao,
     private val NMBNoticeDao: NMBNoticeDao,
-    private val luweiNoticeDao: LuweiNoticeDao,
+    private val dawnNoticeDao: DawnNoticeDao,
+//    private val luweiNoticeDao: LuweiNoticeDao,
     private val releaseDao: ReleaseDao,
     private val blockedIdDao: BlockedIdDao,
     private val webService: NMBServiceClient
@@ -64,10 +65,13 @@ class ApplicationDataStore @Inject constructor(
         }
     }
 
-    var luweiNotice: LuweiNotice? = null
-        private set
+//    var luweiNotice: LuweiNotice? = null
+//        private set
 
     var nmbNotice: NMBNotice? = null
+        private set
+
+    var dawnNotice: DawnNotice? = null
         private set
 
     val mmkv: MMKV by lazyOnMainOnly { MMKV.defaultMMKV() }
@@ -373,19 +377,32 @@ class ApplicationDataStore @Inject constructor(
         }
     }
 
-    suspend fun getLatestLuweiNotice(): LuweiNotice? {
-        luweiNotice = luweiNoticeDao.getLatestLuweiNotice()
-        webService.getLuweiNotice().run {
+//    suspend fun getLatestLuweiNotice(): LuweiNotice? {
+//        luweiNotice = luweiNoticeDao.getLatestLuweiNotice()
+//        webService.getLuweiNotice().run {
+//            if (this is APIDataResponse.Success) {
+//                if (luweiNotice != data) {
+//                    luweiNotice = data
+//                    coroutineScope { launch { luweiNoticeDao.insertNoticeWithTimestamp(data!!) } }
+//                }
+//            } else {
+//                Timber.e(message)
+//            }
+//        }
+//        return luweiNotice
+//    }
+
+    suspend fun getLatestDawnNotice(): DawnNotice? {
+        dawnNotice = dawnNoticeDao.getLatestDawnNotice()
+        webService.getDawnNotice().run {
             if (this is APIDataResponse.Success) {
-                if (luweiNotice != data) {
-                    luweiNotice = data
-                    coroutineScope { launch { luweiNoticeDao.insertNoticeWithTimestamp(data!!) } }
-                }
+                if (dawnNotice != data) dawnNotice = data
+                coroutineScope { launch { dawnNoticeDao.insertNoticeWithTimestamp(data!!) } }
             } else {
                 Timber.e(message)
             }
         }
-        return luweiNotice
+        return dawnNotice
     }
 
     fun checkAcknowledgementPostingRule(): Boolean {

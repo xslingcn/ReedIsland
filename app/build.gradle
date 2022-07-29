@@ -63,8 +63,8 @@ android {
         applicationId "sh.xsl.reedisland"
         minSdkVersion 23
         targetSdkVersion 32
-        versionCode 48
-        versionName "v2.0.31"
+        versionCode 50
+        versionName "v2.0.40"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -176,7 +176,7 @@ dependencies {
 
     implementation 'com.github.yalantis:ucrop:2.2.8'
 
-    implementation 'com.github.jenly1314:zxing-lite:2.2.0'
+    implementation 'com.github.jenly1314:zxing-lite:2.2.1'
 
     implementation 'com.github.zhpanvip:viewpagerindicator:1.0.4'
 

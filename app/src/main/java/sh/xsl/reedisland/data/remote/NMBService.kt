@@ -40,8 +40,12 @@ interface NMBService {
     @GET("https://cover.acfunwiki.org/nmb-notice.json")
     fun getNMBNotice(): Call<ResponseBody>
 
-    @GET("https://cover.acfunwiki.org/luwei.json")
-    fun getLuweiNotice(): Call<ResponseBody>
+//    @GET("https://cover.acfunwiki.org/luwei.json")
+//    fun getLuweiNotice(): Call<ResponseBody>
+
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("https://static.xsl.sh/dawn/dawn.json")
+    fun getDawnNotice(): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v2/system/getConfig")

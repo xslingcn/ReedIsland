@@ -38,7 +38,8 @@ import sh.xsl.reedisland.data.local.entity.*
         Post::class,
         DailyTrend::class,
         NMBNotice::class,
-        LuweiNotice::class,
+//        LuweiNotice::class,
+        DawnNotice::class,
         Release::class,
         ReadingPage::class,
         ReedSession::class,
@@ -48,7 +49,7 @@ import sh.xsl.reedisland.data.local.entity.*
         BlockedId::class,
         Notification::class,
         Emoji::class],
-    version = 24
+    version = 25
 )
 @TypeConverters(Converter::class)
 abstract class DawnDatabase : RoomDatabase() {
@@ -59,7 +60,9 @@ abstract class DawnDatabase : RoomDatabase() {
     abstract fun postDao(): PostDao
     abstract fun dailyTrendDao(): DailyTrendDao
     abstract fun nmbNoticeDao(): NMBNoticeDao
-    abstract fun luweiNoticeDao(): LuweiNoticeDao
+
+    //    abstract fun luweiNoticeDao(): LuweiNoticeDao
+    abstract fun dawnNoticeDao(): DawnNoticeDao
     abstract fun releaseDao(): ReleaseDao
     abstract fun readingPageDao(): ReadingPageDao
     abstract fun reedSessionDao(): ReedSessionDao
@@ -361,17 +364,25 @@ abstract class DawnDatabase : RoomDatabase() {
             // add domain flags
             val migrate23To24 = object : Migration(23, 24) {
                 override fun migrate(database: SupportSQLiteDatabase) {
-                    database.execSQL("ALTER TABLE `BlockedId` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `BrowsingHistory` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `Comment` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `Community` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `Cookie` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `ReedSession` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `Feed` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `Notification` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `Post` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `PostHistory` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
-                    database.execSQL("ALTER TABLE `ReadingPage` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'adnmb'")
+                    database.execSQL("ALTER TABLE `BlockedId` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `BrowsingHistory` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `Comment` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `Community` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `Cookie` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `Feed` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `Notification` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `Post` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `PostHistory` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                    database.execSQL("ALTER TABLE `ReadingPage` ADD COLUMN `domain` TEXT NOT NULL DEFAULT 'aweidao'")
+                }
+            }
+
+            // store reed-session and dawn-notice, add tips column for forum
+            val migrate24To25 = object : Migration(24, 25) {
+                override fun migrate(database: SupportSQLiteDatabase) {
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `ReedSession` (`cookie` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL, `domain` TEXT NOT NULL, PRIMARY KEY(`cookie`))")
+                    database.execSQL("CREATE TABLE IF NOT EXISTS `DawnNotice` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `loadingMsgs` TEXT NOT NULL, `kaomojiList` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL)")
+                    database.execSQL("DROP TABLE `LuweiNotice`")
                 }
             }
 
@@ -404,7 +415,8 @@ abstract class DawnDatabase : RoomDatabase() {
                         migrate20To21,
                         migrate21To22,
                         migrate22To23,
-                        migrate23To24
+                        migrate23To24,
+                        migrate24To25
                     )
                     .build()
                 INSTANCE = instance
