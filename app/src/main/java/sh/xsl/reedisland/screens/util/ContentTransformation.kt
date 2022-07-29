@@ -59,9 +59,10 @@ object ContentTransformation {
         }
     }
 
-    private fun handleRGBSpan(string: String?): String? {
-        var result = string
-        result?.let {
+    private fun handleRGBSpan(string: String?): String {
+        if (string.isNullOrEmpty()) return ""
+        var result: String = string
+        result.let {
             val m: Matcher = RGB_SPAN_PATTERN.matcher(it)
             while (m.find()) {
                 val mr = Pattern.compile(RGB_PATTERN).matcher(m.group())
