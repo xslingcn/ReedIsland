@@ -31,7 +31,6 @@ import com.king.zxing.analyze.MultiFormatAnalyzer
 import com.king.zxing.util.CodeUtils
 import com.king.zxing.util.LogUtils
 import sh.xsl.reedisland.R
-import sh.xsl.reedisland.screens.util.ToolBar.themeStatusBar
 import sh.xsl.reedisland.util.ImageUtil
 import sh.xsl.reedisland.util.IntentsHelper.Companion.CAMERA_SCAN_RESULT
 import timber.log.Timber
@@ -78,7 +77,7 @@ class QRCookieActivity : CaptureActivity() {
 
         LogUtils.setPriority(LogUtils.ERROR)
 
-        themeStatusBar()
+//        themeStatusBar()
     }
 
     override fun initCameraScan() {

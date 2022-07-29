@@ -270,6 +270,6 @@ class IntentsHelper(
         const val TAKE_PICTURE = "take_picture"
         const val MAKE_DOODLE = "make_doodle"
         const val GET_COOKIE_FROM_QR_CODE = "get_cookie_from_qr_code"
-        const val CAMERA_SCAN_RESULT = "camera_scan_result"
+        const val CAMERA_SCAN_RESULT = "SCAN_RESULT"
     }
 }
