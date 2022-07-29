@@ -26,11 +26,11 @@
     android:paddingBottom="@dimen/dp_8"
     tools:viewBindingIgnore="true">
 
-    <ImageView
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        app:srcCompat="@drawable/lec_0032_033"
-        tools:ignore="ContentDescription" />
+    <!--    <ImageView-->
+    <!--        android:layout_width="36dp"-->
+    <!--        android:layout_height="36dp"-->
+    <!--        app:srcCompat="@drawable/lec_0032_033"-->
+    <!--        tools:ignore="ContentDescription" />-->
 
     <TextView
         android:layout_width="wrap_content"
@@ -41,10 +41,10 @@
         android:textColor="?android:attr/textColorSecondary"
         android:textSize="14sp" />
 
-    <ImageView
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        app:srcCompat="@drawable/lec_0049_050"
-        tools:ignore="ContentDescription" />
+    <!--    <ImageView-->
+    <!--        android:layout_width="36dp"-->
+    <!--        android:layout_height="36dp"-->
+    <!--        app:srcCompat="@drawable/lec_0049_050"-->
+    <!--        tools:ignore="ContentDescription" />-->
 
 </LinearLayout>

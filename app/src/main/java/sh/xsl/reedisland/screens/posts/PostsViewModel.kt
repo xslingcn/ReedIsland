@@ -123,7 +123,7 @@ class PostsViewModel @Inject constructor(
                 duplicateCount = 0
                 _loadingStatus.postValue(
                     SingleLiveEvent.create(
-                        LoadingStatus.NO_DATA, "已经刷新了${maxDuplicateCount}页但是依然没有找到新数据。。。"
+                        LoadingStatus.NO_DATA
                     )
                 )
             }
