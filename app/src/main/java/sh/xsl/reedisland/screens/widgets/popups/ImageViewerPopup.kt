@@ -214,7 +214,7 @@ class ImageViewerPopup(context: Context) : ImageViewerPopupView(context) {
             }
         }
         setupPlaceholder()
-        imageLoader?.loadSnapshot(urls[realPosition], snapshotView)
+        imageLoader?.loadSnapshot(urls[realPosition], snapshotView, srcView)
     }
 
     override fun doShowAnimation() {

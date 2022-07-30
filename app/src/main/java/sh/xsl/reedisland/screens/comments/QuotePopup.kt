@@ -52,7 +52,7 @@ class QuotePopup(
     private var mLiveQuote: LiveData<DataResource<Comment>>? = liveQuote
     override fun getImplLayoutId(): Int = R.layout.popup_quote
 
-    override fun getMaxWidth(): Int = (XPopupUtils.getWindowWidth(context) * .9f).toInt()
+    override fun getMaxWidth(): Int = (XPopupUtils.getAppWidth(context) * .9f).toInt()
 
     private val liveQuoteObs = Observer<DataResource<Comment>> {
         when (it.status) {
