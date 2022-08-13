@@ -80,12 +80,28 @@ interface NMBService {
     fun getNMBComments(
         @Header("Cookie") hash: String,
         @Query("id") id: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("newest") reverseOrder: Boolean,
+        @Query("po") onlyPo: Boolean
     ): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @GET("api/v1/ref")
     fun getNMBQuote(@Query("id") id: String, @Header("Cookie") cookie: String): Call<ResponseBody>
+
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1//viewHistory")
+    fun getNMBBrowsingHistory(
+        @Query("page") page: Int,
+        @Header("Cookie") cookie: String
+    ): Call<ResponseBody>
+
+    @Headers(DawnConstants.USER_AGENT)
+    @GET("api/v1//threadHistory")
+    fun getNMBPostHistory(
+        @Query("page") page: Int,
+        @Header("Cookie") cookie: String
+    ): Call<ResponseBody>
 
     @Headers(DawnConstants.USER_AGENT)
     @Multipart
@@ -120,7 +136,7 @@ interface NMBService {
     @POST("api/v1/search")
     fun postNMBSearch(
         @Part("keyword") query: RequestBody, @Part("page") page: RequestBody,
-        @Header("Cookie") cookie: String
+        @Part("sort") sort: String, @Header("Cookie") cookie: String
     ): Call<ResponseBody>
 }
 

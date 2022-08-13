@@ -154,7 +154,7 @@ class ProfileViewModel @Inject constructor(
         return webNMBServiceClient.getComments(
             cookieNameTestPostId,
             targetPage,
-            "userhash=$cookieHash"
+            userhash = "userhash=$cookieHash"
         ).run {
             if (this is APIDataResponse.Success) {
                 val maxPage = data!!.getMaxPage()

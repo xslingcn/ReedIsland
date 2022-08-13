@@ -117,6 +117,18 @@ abstract class NMBJsonParser<T> {
         }
     }
 
+    class BrowsingHistoryParser : NMBJsonParser<List<Post>>() {
+        override fun parse(response: String): List<Post> {
+            TODO("Not yet implemented")
+        }
+    }
+
+    class PostHistoryParser : NMBJsonParser<List<Comment>>() {
+        override fun parse(response: String): List<Comment> {
+            TODO("Not yet implemented")
+        }
+    }
+
     class SearchResultParser(val query: String, val page: Int) : NMBJsonParser<SearchResult>() {
         override fun parse(response: String): SearchResult {
             return JSONObject(response).run {

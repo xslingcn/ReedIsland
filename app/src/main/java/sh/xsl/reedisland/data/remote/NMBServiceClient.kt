@@ -48,6 +48,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         query: String,
         page: Int = 1,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        sort: String = "time",
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<SearchResult> {
         Timber.d("Getting search result for $query on Page $page...")
@@ -55,7 +56,8 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
             service.postNMBSearch(
                 query.toRequestBody(),
                 page.toString().toRequestBody(),
-                if (userhash != null) reedSession.plus(";$userhash") else reedSession
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession,
+                sort
             ),
             NMBJsonParser.SearchResultParser(query, page)
         )
@@ -126,6 +128,8 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun getComments(
         id: String,
         page: Int,
+        reverseOrder: Boolean = false,
+        onlyPo: Boolean = false,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
         reedSession: String = DawnApp.applicationDataStore.reedSession
     ): APIDataResponse<Post> {
@@ -133,7 +137,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         return APIDataResponse.create(
             service.getNMBComments(
                 if (userhash != null) reedSession.plus(";$userhash")
-                else reedSession, id, page
+                else reedSession, id, page, reverseOrder, onlyPo
             ),
             NMBJsonParser.CommentParser()
         )
@@ -166,6 +170,34 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
                 id,
                 if (userhash != null) reedSession.plus(";$userhash") else reedSession
             ), NMBJsonParser.QuoteParser()
+        )
+    }
+
+    suspend fun getBrowsingHistory(
+        page: Int,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIDataResponse<List<Post>> {
+        Timber.i("Downloading browsing history for $userhash...")
+        return APIDataResponse.create(
+            service.getNMBBrowsingHistory(
+                page,
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession,
+            ), NMBJsonParser.BrowsingHistoryParser()
+        )
+    }
+
+    suspend fun getPostHistory(
+        page: Int,
+        userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
+        reedSession: String = DawnApp.applicationDataStore.reedSession
+    ): APIDataResponse<List<Comment>> {
+        Timber.i("Downloading browsing history for $userhash...")
+        return APIDataResponse.create(
+            service.getNMBPostHistory(
+                page,
+                if (userhash != null) reedSession.plus(";$userhash") else reedSession,
+            ), NMBJsonParser.PostHistoryParser()
         )
     }
 
