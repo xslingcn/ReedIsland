@@ -39,6 +39,7 @@ import sh.xsl.reedisland.screens.adapters.animators.CustomAnimation1
 import sh.xsl.reedisland.screens.adapters.animators.CustomAnimation2
 import sh.xsl.reedisland.screens.posts.PostCardFactory
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
+import sh.xsl.reedisland.screens.widgets.spans.UserFunctionSpan
 
 
 class QuickAdapter<T>(
@@ -49,6 +50,7 @@ class QuickAdapter<T>(
     LoadMoreModule {
 
     private lateinit var referenceClickListener: ReferenceSpan.ReferenceClickHandler
+    private lateinit var functionClickListener: UserFunctionSpan.FunctionClickHandler
 
     private var po: String = ""
 
@@ -87,6 +89,10 @@ class QuickAdapter<T>(
 
     fun setReferenceClickListener(referenceClickListener: ReferenceSpan.ReferenceClickHandler) {
         this.referenceClickListener = referenceClickListener
+    }
+
+    fun setFunctionClickListener(functionClickListener: UserFunctionSpan.FunctionClickHandler) {
+        this.functionClickListener = functionClickListener
     }
 
     fun showNoData() {
@@ -170,7 +176,13 @@ class QuickAdapter<T>(
         convertSage(item.sage)
         convertRefId(context, item.id, item.isAd())
         convertImage(item.getImgUrl(), item.visible)
-        convertContent(context, item.content, referenceClickListener, item.visible)
+        convertContent(
+            context,
+            item.content,
+            referenceClickListener,
+            functionClickListener,
+            item.visible
+        )
         convertTitleAndName(
             item.getSimplifiedTitle(),
             item.getSimplifiedName(),
@@ -188,7 +200,13 @@ class QuickAdapter<T>(
     private fun BaseViewHolder.convertCommentWithPayload(payload: Payload.CommentPayload) {
         convertTimeStamp(payload.now)
         convertSage(payload.sage)
-        convertContent(context, payload.content, referenceClickListener, payload.visible)
+        convertContent(
+            context,
+            payload.content,
+            referenceClickListener,
+            functionClickListener,
+            payload.visible
+        )
         convertImage(payload.imgUrl, payload.visible)
         convertTitleAndName(payload.title, payload.name, payload.visible)
         convertExpandSummary(context, payload.visible)

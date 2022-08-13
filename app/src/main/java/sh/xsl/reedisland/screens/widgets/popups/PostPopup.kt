@@ -22,10 +22,8 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
-import android.graphics.Typeface
 import android.net.Uri
 import android.os.Handler
-import android.os.Looper
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import android.widget.*
@@ -58,11 +56,9 @@ import sh.xsl.reedisland.screens.adapters.QuickAdapter
 import sh.xsl.reedisland.screens.util.Layout
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.ImageUtil
-import sh.xsl.reedisland.util.ReadableTime
 import sh.xsl.reedisland.util.openLinksWithOtherApps
 import timber.log.Timber
 import java.io.File
-import java.time.Duration
 import java.time.LocalDateTime
 
 
@@ -87,7 +83,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     private var selectedCookie: Cookie? = null
     private var postCookie: Button? = null
     private var postForum: Button? = null
-    private var rollCheat: Button? = null
+    private var roll: Button? = null
     private var cheatTime: Long = 0
 
     private var summary: TextView? = null
@@ -106,44 +102,6 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     private var mHandler: Handler? = null
     private var latestPost: Pair<String, LocalDateTime>? = null
     private var counterUpdateCallback: Runnable? = null
-
-    private fun setCounterUpdateCallBack() {
-        counterUpdateCallback?.let { mHandler?.removeCallbacks(it) }
-        counterUpdateCallback = object : Runnable {
-            override fun run() {
-                try {
-                    if (latestPost != null) {
-                        summary?.visibility = View.VISIBLE
-                        val seconds =
-                            Duration.between(latestPost!!.second, LocalDateTime.now()).seconds
-                        if (seconds <= 120) {
-                            summary?.setTypeface(summary!!.typeface, Typeface.BOLD)
-                            summary?.text = context.getString(
-                                R.string.latest_id_posted_at_time,
-                                " $seconds 秒前",
-                                latestPost!!.first
-                            )
-                            mHandler?.postDelayed(this, 1000)
-                        } else {
-                            summary?.setTypeface(summary!!.typeface, Typeface.ITALIC)
-                            summary?.text = context.getString(
-                                R.string.latest_id_posted_at_time,
-                                ReadableTime.getDisplayTime(
-                                    latestPost!!.second,
-                                    ReadableTime.TIME_ONLY_FORMAT
-                                ),
-                                latestPost!!.first
-                            )
-                        }
-                    }
-                } catch (e: Exception) {
-                    counterUpdateCallback?.let { mHandler?.removeCallbacks(it) }
-                }
-            }
-        }
-        mHandler = Handler(Looper.getMainLooper())
-        counterUpdateCallback?.let { mHandler?.post(it) }
-    }
 
     private fun updateTitle(targetId: String?, newPost: Boolean) {
         findViewById<TextView>(R.id.postTitle).text =
@@ -166,6 +124,21 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         }
     }
 
+    private fun updateRollButton(newPost: Boolean) {
+        findViewById<Button>(R.id.roll).apply {
+            visibility = if (newPost) View.GONE else View.VISIBLE
+        }
+    }
+
+    private fun updateRollText(function: String?) {
+        function?.let {
+            postContent?.editText?.text?.insert(
+                postContent!!.editText!!.selectionStart,
+                String.format(context.resources.getString(R.string.inserted_function), it)
+            )
+        }
+    }
+
     private fun updateCookies() {
         if (selectedCookie == null || applicationDataStore.cookies.isEmpty()) {
             findViewById<Button>(R.id.postCookie)?.run {
@@ -183,9 +156,12 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         if (targetId != "-1") this.targetId = targetId // cannot post to timeline
         postContent?.editText?.hint = sharedVM.getForumTips(targetId)
         this.newPost = newPost
+
         updateTitle(targetId, newPost)
         updateCookies()
         updateForumButton(targetId, newPost)
+        updateRollButton(newPost)
+
         quote?.run { postContent?.editText?.text?.insert(0, quote) }
         if (report == true) setReportButtons()
     }
@@ -358,43 +334,47 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                         }
                     }.onDismiss {
                         if (targetId == null) return@onDismiss
-//                        if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
                         postContent?.editText?.hint = sharedVM.getForumTips(targetId!!)
-//                            sharedVM.applicationDataStore.luweiNotice?.nmbForums?.firstOrNull { f -> f.id == targetId }
-//                                ?.getPostRule()
-//                        }
                         updateTitle(targetId, newPost)
-//                        if (postForum!!.text == "值班室") {
-//                            MaterialDialog(context).show {
-//                                lifecycleOwner(caller)
-//                                title(R.string.report_reasons)
-//                                listItemsSingleChoice(res = R.array.report_reasons) { _, _, text ->
-//                                    postContent?.editText?.append("\n${context.getString(R.string.report_reasons)}: $text")
-//                                }
-//                                cancelOnTouchOutside(false)
-//                            }
-//                        }
                     }
                 }
             }
         }
 
-        findViewById<Button>(R.id.rollCheat).apply {
-            rollCheat = this
-            visibility = if (!newPost && targetFid == "111") View.VISIBLE else View.GONE
+        findViewById<Button>(R.id.roll).apply {
+            roll = this
 
             setOnClickListener {
-//                Toast.makeText(context, "ATM is watching you :)", Toast.LENGTH_SHORT).show()
-//                TODO: Need new mechanism for getting latest id
-//                if (System.currentTimeMillis() - cheatTime < 5000) {
-//                    Toast.makeText(context, "正在请求数据，请稍后。。。", Toast.LENGTH_SHORT).show()
-//                    return@setOnClickListener
-//                }
-//                cheatTime = System.currentTimeMillis()
-//                caller.lifecycleScope.launch {
-//                    latestPost = sharedVM.getLatestPostId()
-//                    setCounterUpdateCallBack()
-//                }
+                if (newPost) {
+                    postContent?.editText?.text?.insert(
+                        postContent!!.editText!!.selectionStart,
+                        context.resources.getString(R.string.inserted_roll)
+                    )
+                } else targetId?.let {
+                    val postId: String = targetId!!
+                    caller.lifecycleScope.launch {
+                        val functions = sharedVM.getUserFunctionsByPostId(postId)
+                        if (functions?.isEmpty() == true) {
+                            postContent?.editText?.text?.insert(
+                                postContent!!.editText!!.selectionStart,
+                                context.resources.getString(R.string.inserted_roll)
+                            )
+                            return@launch
+                        }
+                        functions?.let {
+                            KeyboardUtils.hideSoftInput(postContent!!)
+                            MaterialDialog(context).show {
+                                lifecycleOwner(caller)
+                                title(R.string.select_user_function)
+                                listItemsSingleChoice(
+                                    items = functions
+                                ) { _, _, text ->
+                                    updateRollText(text.toString())
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 

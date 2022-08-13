@@ -36,13 +36,18 @@ data class Forum(
     val createdAt: String = "",
     val updateAt: String = "",
     val status: String = "",
-    val tips: String? = ""
+    val tips: String? = "",
+    val type: String = ""
 ) {
     fun getDisplayName(): String = if (showName.isNotBlank()) showName else name
 
     fun isFakeForum(): Boolean = fgroup == "42" && sort == "42" && name == "42" && msg == "42"
 
     fun isValidForum(): Boolean = !isFakeForum()
+
+    fun isTimeLine(): Boolean = type == "1"
+
+    fun isLocked(): Boolean = status == "lock"
 
     companion object {
         fun makeFakeForum(id: String, showName: String): Forum {

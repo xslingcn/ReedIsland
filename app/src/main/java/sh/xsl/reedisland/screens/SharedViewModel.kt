@@ -335,6 +335,10 @@ class SharedViewModel @Inject constructor(
         }
     }
 
+    suspend fun getUserFunctionsByPostId(postId: String): List<String>? {
+        return postDao.findPostByIdSync(postId)?.userFunctions
+    }
+
     private suspend fun searchPostInForum(draft: PostHistory.Draft, targetFid: String) {
         Timber.d("Searching new Post in the first page of forum $targetFid")
         var saved = false

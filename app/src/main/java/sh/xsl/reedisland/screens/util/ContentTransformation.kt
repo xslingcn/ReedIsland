@@ -31,6 +31,7 @@ import sh.xsl.reedisland.R
 import sh.xsl.reedisland.screens.widgets.spans.HideSpan
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
 import sh.xsl.reedisland.screens.widgets.spans.SegmentSpacingSpan
+import sh.xsl.reedisland.screens.widgets.spans.UserFunctionSpan
 import sh.xsl.reedisland.util.ReadableTime
 import java.time.LocalDateTime
 import java.util.regex.Matcher
@@ -49,6 +50,14 @@ object ContentTransformation {
     private const val CUSTOM_HIDE_PATTERN_CLOSE = "`/-hide-`"
     private val CUSTOM_HIDE_PATTERN =
         Pattern.compile("$CUSTOM_HIDE_PATTERN_OPEN(.+?)$CUSTOM_HIDE_PATTERN_CLOSE")
+
+    private val FUNCTION_PATTERN = { type: FunctionMatch ->
+        when (type) {
+            FunctionMatch.SINGLE -> Pattern.compile("\\[s\\]([\\s\\S]*?)\\[\\/s\\]\\[r status=\"(ok|error)\"\\]([\\s\\S]*?)\\[\\/r\\]")
+            FunctionMatch.SINGLE_RAW -> Pattern.compile("\\[s\\]([\\s\\S]*?)\\[\\/s\\]\\[r status=(&#34;|\")(ok|error)(&#34;|\")\\]([\\s\\S]*?)\\[\\/r\\]")
+            FunctionMatch.FIELD -> Pattern.compile("\\[s\\]([\\s\\S]*)\\[\\/s\\]\\[r status=\"(ok|error)\"\\]([\\s\\S]*)\\[\\/r\\]")
+        }
+    }
 
     @Suppress("DEPRECATION")
     fun htmlToSpanned(string: String?): Spanned {
@@ -80,6 +89,16 @@ object ContentTransformation {
         return result
     }
 
+    private fun extractCodeSlices(string: String?): List<String> {
+        if (string.isNullOrEmpty()) return arrayListOf()
+        val codeSlices = arrayListOf<String>()
+        val m: Matcher = FUNCTION_PATTERN(FunctionMatch.SINGLE_RAW).matcher(string)
+        while (m.find()) {
+            m.group(1)?.apply { codeSlices.add(this) }
+        }
+        return codeSlices
+    }
+
     fun transformForumName(forumName: String) = htmlToSpanned(forumName)
 
     fun transformCookie(userId: String, admin: String, po: String = ""): Spannable {
@@ -106,17 +125,28 @@ object ContentTransformation {
     fun transformTime(now: String): String = ReadableTime.getDisplayTime(now)
     fun transformTime(now: LocalDateTime): String = ReadableTime.getDisplayTime(now)
 
+    fun transformCode(
+        code: String,
+        lineHeight: Int = DawnApp.applicationDataStore.lineHeight,
+        segGap: Int = DawnApp.applicationDataStore.lineHeight
+    ): SpannableStringBuilder {
+        return SpannableStringBuilder(htmlToSpanned(code))
+            .handleLineHeightAndSegGap(lineHeight, segGap)
+    }
+
     fun transformContent(
         context: Context,
         content: String,
         lineHeight: Int = DawnApp.applicationDataStore.lineHeight,
         segGap: Int = DawnApp.applicationDataStore.lineHeight,
-        referenceClickListener: ReferenceSpan.ReferenceClickHandler? = null
+        referenceClickListener: ReferenceSpan.ReferenceClickHandler? = null,
+        functionClickListener: UserFunctionSpan.FunctionClickHandler? = null
     ): SpannableStringBuilder {
         return SpannableStringBuilder(htmlToSpanned(content))
             .replaceHideTag()
             .handleTextUrl()
             .handleReference(context, referenceClickListener)
+            .handleUserFunction(context, content, functionClickListener)
             .handleAcUrl()
             .handleBvUrl()
             .handleHideTag()
@@ -198,6 +228,64 @@ object ContentTransformation {
         }
     }
 
+    private fun SpannableStringBuilder.handleUserFunction(
+        context: Context,
+        content: String,
+        functionClickListener: UserFunctionSpan.FunctionClickHandler? = null
+    ) = apply {
+        val mf: Matcher = FUNCTION_PATTERN(FunctionMatch.FIELD).matcher(this)
+        var codeIndex = 0
+        val codeSlices = extractCodeSlices(content)
+        while (mf.find()) {
+            val field = mf.group(0)!!
+            var fStart = mf.start()
+            var m: Matcher = FUNCTION_PATTERN(FunctionMatch.SINGLE).matcher(field)
+            while (m.find()) {
+                val start = fStart + m.start()
+                val end = m.group(3)?.let { start + it.length } ?: m.end()
+                replace(start, start + m.group(0)!!.length, m.group(3))
+                val succeeded = m.group(2) == "ok"
+                val rawCode =
+                    htmlToSpanned(codeSlices[codeIndex].replace(" ", "&nbsp;")).toString()
+                codeIndex = codeIndex.inc()
+                m = FUNCTION_PATTERN(FunctionMatch.SINGLE)
+                    .matcher(subSequence(end, length))
+                fStart = end
+                functionClickListener?.let {
+                    setSpan(
+                        UserFunctionSpan(rawCode, it),
+                        start,
+                        end,
+                        Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
+                }
+                setSpan(
+                    ForegroundColorSpan(
+                        context.resources.getColor(
+                            if (succeeded) R.color.colorPrimary else R.color.pink_500,
+                            null
+                        )
+                    ),
+                    start,
+                    end,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    RelativeSizeSpan(functionClickListener?.let { 1.00f } ?: 0.90f),
+                    start,
+                    end,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                setSpan(
+                    StyleSpan(Typeface.BOLD),
+                    start,
+                    end,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+            }
+        }
+    }
+
     private fun SpannableStringBuilder.handleTextUrl() = apply {
         val m: Matcher = URL_PATTERN.matcher(this)
         while (m.find()) {
@@ -260,5 +348,11 @@ object ContentTransformation {
             hideSpan.hideSecret(this, start, end - step)
             matchCount += 1
         }
+    }
+
+    enum class FunctionMatch {
+        SINGLE,
+        SINGLE_RAW,
+        FIELD
     }
 }

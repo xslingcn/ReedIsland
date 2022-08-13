@@ -18,6 +18,7 @@
 package sh.xsl.reedisland.data.local.entity
 
 import com.squareup.moshi.JsonClass
+import java.time.LocalDateTime
 
 @JsonClass(generateAdapter = true)
 data class Trend(
@@ -31,15 +32,21 @@ data class Trend(
         return Post(
             id = id,
             fid = fid,
-            img = "",
-            ext = "",
             now = "",
             userid = "",
             name = "",
             email = "",
             title = "",
             content = "",
-            admin = ""
+            admin = "",
+            sage = "",
+            ext = "",
+            status = "",
+            replyCount = "",
+            img = "",
+            userFunctions = emptyList(),
+            domain = "",
+            lastUpdatedAt = LocalDateTime.now()
         )
 
     }

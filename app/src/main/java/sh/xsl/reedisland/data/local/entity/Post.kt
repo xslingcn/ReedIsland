@@ -44,6 +44,7 @@ data class Post(
     val status: String = "",
     @Json(name = "replys") @Ignore var comments: List<Comment> = emptyList(), //replys 	主页展示回复的帖子(5个）
     val replyCount: String = "0",
+    val userFunctions: List<String> = emptyList(),
     val domain: String = DawnApp.currentDomain,
     var lastUpdatedAt: LocalDateTime = LocalDateTime.now()
 ) {
@@ -63,6 +64,7 @@ data class Post(
         admin: String,
         status: String,
         replyCount: String,
+        userFunctions: List<String>,
         domain: String,
         lastUpdatedAt: LocalDateTime
     ) : this(
@@ -81,6 +83,7 @@ data class Post(
         status,
         emptyList(),
         replyCount,
+        userFunctions,
         domain,
         lastUpdatedAt
     )
@@ -140,6 +143,7 @@ data class Post(
         result = 31 * result + admin.hashCode()
         result = 31 * result + status.hashCode()
         result = 31 * result + replyCount.hashCode()
+        result = 31 * result + userFunctions.hashCode()
         return result
     }
 
@@ -164,6 +168,7 @@ data class Post(
             status = status,
             comments = emptyList(),
             replyCount = replyCount,
+            userFunctions = userFunctions,
             domain = domain,
             lastUpdatedAt = lastUpdatedAt
         )

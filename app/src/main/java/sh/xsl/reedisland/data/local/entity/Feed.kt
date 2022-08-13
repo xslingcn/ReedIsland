@@ -75,6 +75,7 @@ data class Feed(
             status,
             emptyList(),
             "",
+            emptyList(),
             domain,
             LocalDateTime.now()
         )

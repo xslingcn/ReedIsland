@@ -21,7 +21,9 @@ import android.text.TextPaint
 import android.text.style.ClickableSpan
 import android.view.View
 
-class ReferenceSpan(val id: String, private val clickListener: ReferenceClickHandler? = null) :
+class ReferenceSpan(
+    val id: String, private val clickListener: ReferenceClickHandler? = null
+) :
     ClickableSpan() {
     override fun onClick(widget: View) {
         clickListener?.handleReference(id)

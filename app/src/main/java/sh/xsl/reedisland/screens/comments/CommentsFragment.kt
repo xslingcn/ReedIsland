@@ -82,6 +82,7 @@ import sh.xsl.reedisland.screens.widgets.SingleAndDoubleClickListener
 import sh.xsl.reedisland.screens.widgets.popups.ImageViewerPopup
 import sh.xsl.reedisland.screens.widgets.popups.PostPopup
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
+import sh.xsl.reedisland.screens.widgets.spans.UserFunctionSpan
 import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.lazyOnMainOnly
 import timber.log.Timber
@@ -142,6 +143,12 @@ class CommentsFragment : DaggerFragment() {
                 setReferenceClickListener(object : ReferenceSpan.ReferenceClickHandler {
                     override fun handleReference(id: String) {
                         displayQuote(id)
+                    }
+                })
+
+                setFunctionClickListener(object : UserFunctionSpan.FunctionClickHandler {
+                    override fun handleFunction(code: String) {
+                        displayFunction(code)
                     }
                 })
 
@@ -799,6 +806,14 @@ class CommentsFragment : DaggerFragment() {
             })
             .isDestroyOnDismiss(true)
             .asCustom(top)
+            .show()
+    }
+
+    fun displayFunction(code: String) {
+        if (activity == null || !isAdded) return
+        XPopup.Builder(context)
+            .isDestroyOnDismiss(true)
+            .asCustom(FunctionPopup(this, code))
             .show()
     }
 

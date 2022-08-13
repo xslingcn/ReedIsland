@@ -160,13 +160,12 @@
             app:layout_constraintStart_toStartOf="@+id/postContent" />
 
         <Button
-            android:id="@+id/rollCheat"
+            android:id="@+id/roll"
             style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@string/roll_cheat"
             android:textAllCaps="false"
-            android:visibility="gone"
             app:icon="@drawable/ic_adjust_24px"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toTopOf="@+id/ButtonGroupContainer"
@@ -184,7 +183,7 @@
             app:icon="@drawable/ic_cookie_black_24px"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toTopOf="@+id/ButtonGroupContainer"
-            app:layout_constraintEnd_toStartOf="@id/rollCheat"
+            app:layout_constraintEnd_toStartOf="@id/roll"
             app:layout_constraintStart_toEndOf="@+id/postForum"
             app:strokeWidth="0dp" />
 

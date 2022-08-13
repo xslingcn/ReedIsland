@@ -35,6 +35,7 @@ import sh.xsl.reedisland.screens.util.ContentTransformation
 import sh.xsl.reedisland.screens.widgets.ClickableMovementMethod
 import sh.xsl.reedisland.screens.widgets.spans.ReferenceSpan
 import sh.xsl.reedisland.screens.widgets.spans.RoundBackgroundColorSpan
+import sh.xsl.reedisland.screens.widgets.spans.UserFunctionSpan
 import java.time.LocalDateTime
 
 fun BaseViewHolder.convertUserId(userId: String, admin: String, po: String = ""): BaseViewHolder {
@@ -133,12 +134,14 @@ fun BaseViewHolder.convertContent(
     context: Context,
     content: String?,
     referenceClickListener: ReferenceSpan.ReferenceClickHandler? = null,
+    functionClickListener: UserFunctionSpan.FunctionClickHandler? = null,
     visible: Boolean = true
 ): BaseViewHolder {
     val res = ContentTransformation.transformContent(
         context = context,
         content = content ?: "",
-        referenceClickListener = referenceClickListener
+        referenceClickListener = referenceClickListener,
+        functionClickListener = functionClickListener
     )
     if (res.isNotBlank()) setText(R.id.content, res)
     setGone(R.id.content, res.isBlank() || !visible)
