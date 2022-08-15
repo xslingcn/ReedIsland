@@ -157,6 +157,7 @@ interface EmojiDao {
         default.add(Emoji("防剧透", "[h][/h]", false, now))
         default.add(Emoji("全角空格", "　", false, now))
         default.add(Emoji("齐齐蛤尔", "(`ヮ´ )σ`∀´) ﾟ∀ﾟ)σ\n", false, now))
+        default.add(Emoji("呼伦悲尔", "･ﾟ( ﾉд`ﾟ)・_ゝ・)´Д`)\n", false, now))
         default.add(Emoji("UK酱", "\\　︵\nᐕ)⁾⁾", false, now))
 
         insertAll(default)
