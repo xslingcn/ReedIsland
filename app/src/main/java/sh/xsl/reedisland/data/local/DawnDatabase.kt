@@ -384,8 +384,7 @@ abstract class DawnDatabase : RoomDatabase() {
                     database.execSQL("CREATE TABLE IF NOT EXISTS `DawnNotice` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `loadingMsgs` TEXT NOT NULL, `kaomojiList` TEXT NOT NULL, `lastUpdatedAt` TEXT NOT NULL)")
                     database.execSQL("DROP TABLE `LuweiNotice`")
 
-                    database.execSQL("ALTER TABLE `Post` ADD COLUMN `userFunctions` TEXT NOT NULL DEFAULT ''")
-
+                    database.execSQL("ALTER TABLE `Post` ADD COLUMN `userFunctions` TEXT NOT NULL DEFAULT '[]'")
                 }
             }
 
