@@ -136,7 +136,7 @@ interface NMBService {
     @POST("api/v1/search")
     fun postNMBSearch(
         @Part("keyword") query: RequestBody, @Part("page") page: RequestBody,
-        @Part("sort") sort: String, @Header("Cookie") cookie: String
+        @Part("sort") sort: RequestBody, @Header("Cookie") cookie: String
     ): Call<ResponseBody>
 }
 

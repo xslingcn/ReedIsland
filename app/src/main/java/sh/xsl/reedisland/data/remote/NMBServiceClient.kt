@@ -56,8 +56,8 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
             service.postNMBSearch(
                 query.toRequestBody(),
                 page.toString().toRequestBody(),
+                sort.toRequestBody(),
                 if (userhash != null) reedSession.plus(";$userhash") else reedSession,
-                sort
             ),
             NMBJsonParser.SearchResultParser(query, page)
         )
