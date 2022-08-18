@@ -78,8 +78,9 @@ class QuoteRepository @Inject constructor(
             // if local already has cache, update some fields
             // otherwise save new reply cache with default value
             cache?.run {
-                data.page = cache.page
-                data.parentId = cache.parentId
+                data.page = page
+                if (parentId == "0" && data.parentId != "0") parentId = data.parentId
+                else data.parentId = parentId
             }
             coroutineScope {
                 launch {

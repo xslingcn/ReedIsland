@@ -22,11 +22,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.BlockedIdDao
 import sh.xsl.reedisland.data.local.entity.BlockedId
 import sh.xsl.reedisland.data.local.entity.Post
 import sh.xsl.reedisland.data.remote.APIDataResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
+import sh.xsl.reedisland.util.DawnConstants
 import sh.xsl.reedisland.util.EventPayload
 import sh.xsl.reedisland.util.LoadingStatus
 import sh.xsl.reedisland.util.SingleLiveEvent
@@ -46,6 +48,7 @@ class PostsViewModel @Inject constructor(
     private var _currentFid: String? = null
     val currentFid: String? get() = _currentFid
     private var pageCount = 1
+    private var cacheDomain = DawnApp.currentDomain
 
     // allow certain attempts on auto getting next page, afterwards require user interaction
     private var duplicateCount = 0
@@ -59,7 +62,7 @@ class PostsViewModel @Inject constructor(
         getBlockedIds()
     }
 
-    fun getBlockedIds() {
+    private fun getBlockedIds() {
         viewModelScope.launch {
             val blockedIds = blockedIdDao.getAllBlockedIds()
             blockedPostIds = mutableListOf()
@@ -77,7 +80,7 @@ class PostsViewModel @Inject constructor(
     fun getPosts() {
         viewModelScope.launch {
             _loadingStatus.postValue(SingleLiveEvent.create(LoadingStatus.LOADING))
-            val fid = _currentFid ?: "134"
+            val fid = _currentFid ?: DawnConstants.TIMELINE_COMMUNITY_ID
             Timber.d("Getting threads from $fid on page $pageCount")
             webService.getPosts(fid, pageCount).run {
                 if (this is APIDataResponse.Error) {
@@ -139,7 +142,7 @@ class PostsViewModel @Inject constructor(
         getPosts()
     }
 
-    fun clearCache() {
+    private fun clearCache() {
         postList.clear()
         postIds.clear()
         pageCount = 1

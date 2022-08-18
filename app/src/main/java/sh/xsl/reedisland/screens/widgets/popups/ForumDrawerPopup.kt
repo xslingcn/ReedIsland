@@ -29,6 +29,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.DrawerPopupView
+import me.dkzwm.widget.srl.MaterialSmoothRefreshLayout
+import me.dkzwm.widget.srl.RefreshingListenerAdapter
+import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.MainNavDirections
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Community
@@ -67,7 +70,8 @@ class ForumDrawerPopup(
                     sharedVM.setForumId("-${timeline.id}")
                 }
             }
-        })
+        }, DawnApp.applicationDataStore.getExpandedCommunityIDs()
+    )
 
     private var reedImageUrl: String = ""
     private var reedImageView: ImageView? = null

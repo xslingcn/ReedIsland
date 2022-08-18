@@ -46,5 +46,5 @@ interface DailyTrendDao {
     suspend fun delete(dailyTrend: DailyTrend)
 
     @Query("DELETE FROM DailyTrend")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

@@ -17,17 +17,34 @@
 
 package sh.xsl.reedisland.screens.notification
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import sh.xsl.reedisland.data.local.dao.NotificationDao
 import sh.xsl.reedisland.data.local.entity.Notification
+import sh.xsl.reedisland.data.local.entity.NotificationAndPost
+import timber.log.Timber
 import javax.inject.Inject
 
 class NotificationViewModel @Inject constructor(private val notificationDao: NotificationDao) :
     ViewModel() {
-    var notificationAndPost = notificationDao.getLiveAllNotificationsAndPosts()
-        private set
+    private var _notificationAndPost: LiveData<List<NotificationAndPost>>? = null
+    val notificationAndPost = MediatorLiveData<List<NotificationAndPost>>()
+
+    init {
+        getLiveNotifications()
+    }
+
+    private fun getLiveNotifications() {
+        Timber.d("Getting live notifications...")
+        if (_notificationAndPost != null) notificationAndPost.removeSource(_notificationAndPost!!)
+        _notificationAndPost = notificationDao.getLiveAllNotificationsAndPosts()
+        notificationAndPost.addSource(_notificationAndPost!!) {
+            notificationAndPost.value = it
+        }
+    }
 
     fun deleteNotification(notification: Notification) {
         viewModelScope.launch {
@@ -41,9 +58,5 @@ class NotificationViewModel @Inject constructor(private val notificationDao: Not
             notification.newReplyCount = 0
             notificationDao.insertNotification(notification)
         }
-    }
-
-    fun refresh() {
-        notificationAndPost = notificationDao.getLiveAllNotificationsAndPosts()
     }
 }

@@ -416,13 +416,9 @@ class PostsFragment : BaseNavFragment() {
 //            }
 //        }
 
-        sharedVM.currentDomain.observe(viewLifecycleOwner) {
-            if (it != cacheDomain) {
-                viewModel.clearCache()
-                viewModel.getBlockedIds()
-                cacheDomain = it
-            }
-        }
+//        sharedVM.currentDomain.observe(viewLifecycleOwner) {
+//            viewModel.changeDomain(it)
+//        }
 
         sharedVM.notifications.observe(viewLifecycleOwner) { updateFeedNotificationIcon(it) }
 

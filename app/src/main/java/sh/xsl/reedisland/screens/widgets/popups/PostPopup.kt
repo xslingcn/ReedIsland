@@ -111,16 +111,19 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     }
 
     private fun getForumTitle(targetId: String): String {
-        return if (targetId == "-1") ""
+        return if (targetId == DawnConstants.TIMELINE_COMMUNITY_ID) ""
         else sharedVM.forumNameMapping[targetId] ?: ""
     }
 
     private fun updateForumButton(targetId: String?, newPost: Boolean) {
         findViewById<Button>(R.id.postForum).apply {
             visibility = if (!newPost) View.GONE else View.VISIBLE
-            if (newPost && targetId != null && targetId != "-1") {
-                text = getForumTitle(targetId)
-            }
+            text =
+                if (newPost && targetId != null && targetId != DawnConstants.TIMELINE_COMMUNITY_ID) {
+                    getForumTitle(targetId)
+                } else {
+                    context.getString(R.string.choose_forum)
+                }
         }
     }
 
@@ -153,7 +156,8 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     }
 
     fun updateView(targetId: String?, newPost: Boolean, quote: String?) {
-        if (targetId != "-1") this.targetId = targetId // cannot post to timeline
+        if (targetId != DawnConstants.TIMELINE_COMMUNITY_ID) this.targetId =
+            targetId // cannot post to timeline
         postContent?.editText?.hint = sharedVM.getForumTips(targetId)
         this.newPost = newPost
 
@@ -332,6 +336,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                             targetFid = targetId!!
                             postForum!!.text = text
                         }
+                        // TODO 去除已停止回复的版块
                     }.onDismiss {
                         if (targetId == null) return@onDismiss
                         postContent?.editText?.hint = sharedVM.getForumTips(targetId!!)
@@ -493,8 +498,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         }
 
         findViewById<Button>(R.id.forumRule).setOnClickListener {
-            val fid =
-                if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) if (newPost && targetId != null) targetId!! else targetFid else (sharedVM.selectedForumId.value!!)
+            val fid = if (newPost && targetId != null) targetId!! else targetFid
             try {
                 val biId = if (fid.toInt() > 0) fid.toInt() else 1
                 MaterialDialog(context).show {
@@ -648,6 +652,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                 report
             ).let { message ->
                 postProgressDialog.dismiss()
+                Timber.d("Post successfully sent with response $message")
                 dismissWith {
                     if (message == "Ok") {
                         sharedVM.searchAndSavePost(

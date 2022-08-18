@@ -50,6 +50,37 @@ data class Comment(
     @Ignore
     var visible: Boolean = true
 
+    // only compares by server fields
+    override fun equals(other: Any?): Boolean =
+        if (other is Comment)
+            id == other.id && parentId == other.parentId && page == other.page && img == other.img
+                    && ext == other.ext && now == other.now
+                    && userid == other.userid && name == other.name
+                    && email == other.email && title == other.title
+                    && content == other.content && sage == other.sage
+                    && admin == other.admin && status == other.status
+                    && domain == other.domain
+        else false
+
+
+    override fun hashCode(): Int {
+        var result = id.hashCode()
+        result = 31 * result + parentId.hashCode()
+        result = 31 * result + page.hashCode()
+        result = 31 * result + img.hashCode()
+        result = 31 * result + ext.hashCode()
+        result = 31 * result + now.hashCode()
+        result = 31 * result + userid.hashCode()
+        result = 31 * result + name.hashCode()
+        result = 31 * result + email.hashCode()
+        result = 31 * result + title.hashCode()
+        result = 31 * result + content.hashCode()
+        result = 31 * result + sage.hashCode()
+        result = 31 * result + admin.hashCode()
+        result = 31 * result + status.hashCode()
+        result = 31 * result + domain.hashCode()
+        return result
+    }
 
     fun getSimplifiedTitle(): String =
         if (isAd()) "广告"

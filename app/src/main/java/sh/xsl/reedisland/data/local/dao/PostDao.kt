@@ -59,5 +59,5 @@ interface PostDao {
     suspend fun delete(post: Post)
 
     @Query("DELETE FROM Post")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

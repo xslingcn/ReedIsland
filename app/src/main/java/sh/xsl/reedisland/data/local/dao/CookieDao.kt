@@ -55,5 +55,5 @@ interface CookieDao {
     suspend fun delete(cookie: Cookie)
 
     @Query("DELETE FROM Cookie")
-    fun nukeTable()
+    suspend fun nukeTable()
 }

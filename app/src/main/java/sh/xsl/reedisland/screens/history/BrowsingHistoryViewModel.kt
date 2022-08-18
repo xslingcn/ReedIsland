@@ -22,6 +22,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import sh.xsl.reedisland.data.local.dao.BrowsingHistoryDao
 import sh.xsl.reedisland.data.local.entity.BrowsingHistoryAndPost
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
@@ -29,8 +30,8 @@ class BrowsingHistoryViewModel @Inject constructor(private val browsingHistoryDa
     ViewModel() {
 
     // get a week's history by default
-    var endDate: LocalDateTime = LocalDateTime.now()
-    var startDate: LocalDateTime = endDate.minusWeeks(1)
+    var endDate: LocalDateTime = LocalDate.now().atTime(23, 59)
+    var startDate: LocalDateTime = LocalDate.now().atTime(0, 0).minusWeeks(1)
     private var currentList: LiveData<List<BrowsingHistoryAndPost>>? = null
     val browsingHistoryList = MediatorLiveData<List<BrowsingHistoryAndPost>>()
 

@@ -67,7 +67,7 @@ class CommentRepository @Inject constructor(
 
     suspend fun setPost(id: String, fid: String) {
         clearCache()
-        Timber.d("Setting new Thread: $id")
+        Timber.d("Setting new $fid Thread: $id")
         fifoPostList.add(id)
         if (commentsMap[id] == null) commentsMap[id] = SparseArray()
         if (postMap[id] == null) postMap[id] = postDao.findPostByIdSync(id)

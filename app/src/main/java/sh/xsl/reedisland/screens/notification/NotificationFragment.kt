@@ -105,13 +105,13 @@ class NotificationFragment : DaggerFragment() {
         viewModel.notificationAndPost.observe(viewLifecycleOwner, notificationObs)
 
 
-        sharedVM.currentDomain.observe(viewLifecycleOwner) {
-            if (it != cacheDomain) {
-                viewModel.refresh()
-                viewModel.notificationAndPost.observe(viewLifecycleOwner, notificationObs)
-                cacheDomain = it
-            }
-        }
+//        sharedVM.currentDomain.observe(viewLifecycleOwner) {
+//            if (it != cacheDomain) {
+//                viewModel.refresh()
+//                viewModel.notificationAndPost.observe(viewLifecycleOwner, notificationObs)
+//                cacheDomain = it
+//            }
+//        }
         // Inflate the layout for this fragment
         return binding!!.root
     }

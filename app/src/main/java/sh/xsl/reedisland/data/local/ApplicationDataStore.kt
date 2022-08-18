@@ -31,7 +31,6 @@ import sh.xsl.reedisland.util.lazyOnMainOnly
 import timber.log.Timber
 import java.time.Duration
 import java.time.LocalDateTime
-import java.util.*
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -112,30 +111,46 @@ class ApplicationDataStore @Inject constructor(
         if (newHost != "auto") RetrofitUrlManager.getInstance().putDomain("nmb-ref", refCDN)
     }
 
-    private var feedId: String? = null
-    fun getFeedId(): String {
-        if (feedId == null) {
-            feedId = mmkv.getString(DawnConstants.FEED_ID, "")
+//    private var feedId: String? = null
+//    fun getFeedId(): String {
+//        if (feedId == null) {
+//            feedId = mmkv.getString(DawnConstants.FEED_ID, "")
+//        }
+//        if (feedId.isNullOrBlank()) {
+//            setFeedId(UUID.randomUUID().toString())
+//        }
+//        return feedId!!
+//    }
+//
+//    fun setFeedId(value: String) {
+//        if (feedId != value) {
+//            GlobalScope.launch { feedDao.nukeTable() }
+//        }
+//        feedId = value
+//        mmkv.putString(DawnConstants.FEED_ID, value)
+//    }
+
+    private var expandedCommunityIDs: Set<String>? = null
+
+    fun getExpandedCommunityIDs(): Set<String> {
+        if (expandedCommunityIDs == null) {
+            expandedCommunityIDs =
+                mmkv.getStringSet(DawnConstants.EXPANDED_COMMUNITY_IDS, setOf("6", "11"))
         }
-        if (feedId.isNullOrBlank()) {
-            setFeedId(UUID.randomUUID().toString())
-        }
-        return feedId!!
+        return expandedCommunityIDs!!
     }
 
-    fun setFeedId(value: String) {
-        if (feedId != value) {
-            GlobalScope.launch { feedDao.nukeTable() }
-        }
-        feedId = value
-        mmkv.putString(DawnConstants.FEED_ID, value)
+    fun setExpandedCommunityIDs(set: Set<String>) {
+        expandedCommunityIDs = set
+        mmkv.putStringSet(DawnConstants.EXPANDED_COMMUNITY_IDS, set)
     }
 
     private var defaultForumId: String? = null
 
     fun getDefaultForumId(): String {
         if (defaultForumId == null) {
-            defaultForumId = mmkv.getString(DawnConstants.DEFAULT_FORUM_ID, "134")
+            defaultForumId =
+                mmkv.getString(DawnConstants.DEFAULT_FORUM_ID, DawnConstants.TIMELINE_COMMUNITY_ID)
         }
         return defaultForumId!!
     }
@@ -182,7 +197,7 @@ class ApplicationDataStore @Inject constructor(
     fun getSortEmojiByLastUsedStatus(): Boolean {
         if (sortEmojiByLastUsedStatus == null) {
             sortEmojiByLastUsedStatus =
-                mmkv.getBoolean(DawnConstants.SORT_EMOJI_BY_LAST_USED_AT, false)
+                mmkv.getBoolean(DawnConstants.SORT_EMOJI_BY_LAST_USED_AT, true)
         }
         return sortEmojiByLastUsedStatus!!
     }

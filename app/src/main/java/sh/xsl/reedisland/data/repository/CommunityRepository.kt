@@ -18,17 +18,16 @@
 package sh.xsl.reedisland.data.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
+import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.CommunityDao
 import sh.xsl.reedisland.data.local.dao.TimelineDao
 import sh.xsl.reedisland.data.local.entity.Community
 import sh.xsl.reedisland.data.local.entity.Timeline
 import sh.xsl.reedisland.data.remote.APIDataResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
-import sh.xsl.reedisland.util.DataResource
-import sh.xsl.reedisland.util.LoadingStatus
-import sh.xsl.reedisland.util.getLocalListDataResource
-import sh.xsl.reedisland.util.getLocalLiveDataAndRemoteResponse
+import sh.xsl.reedisland.util.*
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,8 +38,8 @@ class CommunityRepository @Inject constructor(
     private val communityDao: CommunityDao,
     private val timelineDao: TimelineDao
 ) {
-    val communityList = getLiveData<Community>(communityDao::getAll, webService::getCommunities)
-    val timelineList = getLiveData<Timeline>(timelineDao::getAll, webService::getTimeLines)
+    val communityList = getLiveData(communityDao::getAll, webService::getCommunities)
+    val timelineList = getLiveData(timelineDao::getAll, webService::getTimeLines)
 
     private inline fun <reified T> getLiveData(
         noinline localFetcher: () -> LiveData<List<T>>,

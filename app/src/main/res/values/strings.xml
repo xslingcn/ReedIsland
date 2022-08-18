@@ -82,6 +82,8 @@
     <string name="pager_usage_help" translatable="false">本页面支持左滑右滑切换内容。\n\n可在自定义设置改变默认页面</string>
     <string name="pager_subscription_help" translatable="false">本页面展示您在串页面点击收藏以添加订阅的串列表。\n\n长按串删除订阅，点击右下角按钮跳页。</string>
     <string name="default_forum_setting" translatable="false">App启动默认打开版块设置</string>
+    <string name="communities_expansion_setting" translatable="false">默认展开版块设置</string>
+    <string name="communities_expansion_setting_summary" translatable="false">默认展开板块: %s</string>
     <string name="common_posts_setting" translatable="false">常用串设置</string>
     <string name="add_common_post" translatable="false">添加常用串</string>
     <string name="add_common_post_remark" translatable="false">常用串备注</string>
@@ -101,8 +103,10 @@
     <string name="about" translatable="false">关于</string>
     <string name="trend" translatable="false">本周热榜</string>
     <string name="basic_title" translatable="false">阿苇岛</string>
+    <string name="boards" translatable="false">版块</string>
     <string name="toolbar_subtitle_aweidao" translatable="false">阿苇岛 · aweidao.com</string>
     <string name="toolbar_subtitle_tnmb" translatable="false">备胎岛 · tnmb.org</string>
+    <string name="timeline">时间线</string>
     <string name="need_cookie_to_post" translatable="false">没有饼干不能发串哦。。</string>
     <string name="need_content_to_post" translatable="false">:(没有上传的内容或文件</string>
     <string name="please_give_permission_and_try_again" translatable="false">请给予权限并重复操作</string>

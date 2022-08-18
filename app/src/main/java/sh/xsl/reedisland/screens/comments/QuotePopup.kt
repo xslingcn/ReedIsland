@@ -161,7 +161,7 @@ class QuotePopup(
 
 
         findViewById<Button>(R.id.jumpToQuotedPost).run {
-            visibility = if (quote.parentId.equals("0")) View.VISIBLE else View.GONE
+            visibility = if (quote.parentId == "0") View.VISIBLE else View.GONE
             setOnClickListener {
                 if (isShow) {
                     mCaller?.jumpToNewPost(quote.id)

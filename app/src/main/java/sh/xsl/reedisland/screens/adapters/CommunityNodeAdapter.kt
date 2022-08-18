@@ -31,12 +31,14 @@ import sh.xsl.reedisland.data.local.entity.Community
 import sh.xsl.reedisland.data.local.entity.Forum
 import sh.xsl.reedisland.data.local.entity.Timeline
 import sh.xsl.reedisland.screens.util.ContentTransformation.transformForumName
+import sh.xsl.reedisland.util.DawnConstants
 import timber.log.Timber
 
 
 class CommunityNodeAdapter(
     val forumClickListener: ForumClickListener,
-    val timelineClickListener: TimelineClickListener? = null
+    val timelineClickListener: TimelineClickListener? = null,
+    val expandedCommunities: Set<String>? = null
 ) : BaseNodeAdapter() {
 
     companion object {
@@ -79,14 +81,19 @@ class CommunityNodeAdapter(
         val nodes = mutableListOf<BaseNode>()
         // Timelines
         if (timelines.isNotEmpty()) {
-            nodes.add(TimelineCommunityNode(timelines))
+            nodes.add(
+                TimelineCommunityNode(
+                    timelines,
+                    expandedCommunities?.contains(DawnConstants.TIMELINE_COMMUNITY_ID)
+                )
+            )
         }
         // Communities
         val commonForumIds =
             communities.firstOrNull { it.isCommonForums() }?.forums?.map { it.id } ?: emptyList()
         for (c in communities) {
             if (c.isCommonForums() || c.isCommonPosts()) {
-                nodes.add(CommunityNode(c))
+                nodes.add(CommunityNode(c, expandedCommunities?.contains(c.id)))
             } else {
                 val noDuplicateCommunity = Community(
                     c.id,
@@ -94,16 +101,15 @@ class CommunityNodeAdapter(
                     c.name,
                     c.status,
                     c.forums.filterNot { f -> commonForumIds.contains(f.id) })
-                nodes.add(CommunityNode(noDuplicateCommunity))
+                if (c.forums.isNotEmpty()) nodes.add(
+                    CommunityNode(
+                        noDuplicateCommunity,
+                        expandedCommunities?.contains(c.id)
+                    )
+                )
             }
         }
 
-        ((nodes.firstOrNull { it is CommunityNode && it.community.isCommonForums() }) as? BaseExpandNode)?.isExpanded =
-            true
-        ((nodes.firstOrNull { it is CommunityNode && it.community.id == "6" }) as? BaseExpandNode)?.isExpanded =
-            true
-        ((nodes.firstOrNull { it is CommunityNode && it.community.id == "11" }) as? BaseExpandNode)?.isExpanded =
-            true
         if (nodes.size == 1 && nodes.first() is BaseExpandNode) (nodes.first() as BaseExpandNode).isExpanded =
             true
         setList(nodes)
@@ -205,7 +211,7 @@ class CommunityNodeAdapter(
     inner class TimelineCommunityProvider : CommunityProvider() {
         override val itemViewType: Int = 3
         override fun convert(helper: BaseViewHolder, item: BaseNode) {
-            helper.setText(R.id.communityName, "时间线")
+            helper.setText(R.id.communityName, context.getString(R.string.timeline))
             setArrowSpin(helper, item, false)
         }
     }
@@ -227,10 +233,10 @@ class CommunityNodeAdapter(
     }
 
 
-    class CommunityNode(val community: Community) : BaseExpandNode() {
+    class CommunityNode(val community: Community, expanded: Boolean?) : BaseExpandNode() {
 
         init {
-            isExpanded = false
+            isExpanded = expanded ?: false
         }
 
         override val childNode: MutableList<BaseNode> =
@@ -241,10 +247,10 @@ class CommunityNodeAdapter(
         override val childNode: MutableList<BaseNode>? = null
     }
 
-    class TimelineCommunityNode(timelines: List<Timeline>) : BaseExpandNode() {
+    class TimelineCommunityNode(timelines: List<Timeline>, expanded: Boolean?) : BaseExpandNode() {
 
         init {
-            isExpanded = false
+            isExpanded = expanded ?: false
         }
 
         override val childNode: MutableList<BaseNode> =

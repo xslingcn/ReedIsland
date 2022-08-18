@@ -78,8 +78,8 @@ class SharedViewModel @Inject constructor(
     // TODO: clear cache when domain change
     val currentDomain: MutableLiveData<String> = MutableLiveData()
 
-    var beitaiForums: List<Community> = listOf()
-        private set
+//    var beitaiForums: List<Community> = listOf()
+//        private set
 
 //    fun onADNMB() {
 //        DawnApp.onDomain(DawnConstants.ADNMBDomain)
@@ -249,19 +249,13 @@ class SharedViewModel @Inject constructor(
     }
 
     fun getForumOrTimelineDisplayName(fid: String): String {
-        return if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
-            if (fid.startsWith("-")) getTimelineDisplayName(fid) else getForumDisplayName(fid)
-        } else {
-            beitaiForums.firstOrNull()?.forums?.find { it.id == fid }?.getDisplayName() ?: "备胎岛"
+        var name = forumNameMapping[fid]
+        if (name.isNullOrBlank() && fid.startsWith("-")) {
+            val id = fid.substringAfter("-")
+            if (id.isNotBlank()) name = timelineNameMapping[id]
         }
-    }
-
-    private fun getForumDisplayName(fid: String): String =
-        if (fid.isBlank()) "" else forumNameMapping[fid] ?: "阿苇岛"
-
-    private fun getTimelineDisplayName(fid: String): String {
-        val id = fid.substringAfter("-")
-        return if (id.isBlank()) "" else timelineNameMapping[id] ?: "阿苇岛"
+        if (name.isNullOrBlank()) name = "版块"
+        return name
     }
 
     fun getSelectedPostForumName(fid: String): String = getForumOrTimelineDisplayName(fid)
@@ -443,24 +437,25 @@ class SharedViewModel @Inject constructor(
     suspend fun getLatestPostId(): Pair<String, LocalDateTime> {
         var id = "0"
         var time = ""
-        webNMBServiceClient.getPosts("4", 1).run {
-            if (this is APIDataResponse.Success) {
-                data?.map { post ->
-                    if (post.id > id) {
-                        id = post.id
-                        time = post.now
-                    }
-                    post.comments.map { comment ->
-                        if (comment.id > id) {
-                            id = comment.id
-                            time = comment.now
+        webNMBServiceClient.getPosts(DawnConstants.TIMELINE_COMMUNITY_ID, 1)
+            .run {
+                if (this is APIDataResponse.Success) {
+                    data?.map { post ->
+                        if (post.id > id) {
+                            id = post.id
+                            time = post.now
+                        }
+                        post.comments.map { comment ->
+                            if (comment.id > id) {
+                                id = comment.id
+                                time = comment.now
+                            }
                         }
                     }
+                } else {
+                    Timber.e(message)
                 }
-            } else {
-                Timber.e(message)
             }
-        }
         return Pair(
             if (id == "0") {
                 "没有读取到串号。。"

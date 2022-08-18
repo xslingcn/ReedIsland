@@ -31,6 +31,7 @@ import android.os.Looper
 import android.os.SystemClock
 import android.text.style.UnderlineSpan
 import android.view.*
+import android.view.animation.LinearInterpolator
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -688,7 +689,7 @@ class CommentsFragment : DaggerFragment() {
             alpha(0f)
             translationY(binding!!.bottomToolbar.height.toFloat())
             duration = 250
-            interpolator = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
+            interpolator = LinearInterpolator()
             setListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator?) {}
                 override fun onAnimationEnd(animation: Animator?) {
@@ -714,7 +715,7 @@ class CommentsFragment : DaggerFragment() {
             alpha(1f)
             translationY(0f)
             duration = 250
-            interpolator = AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR
+            interpolator = LinearInterpolator()
             setListener(object : Animator.AnimatorListener {
                 override fun onAnimationRepeat(animation: Animator?) {}
                 override fun onAnimationEnd(animation: Animator?) {

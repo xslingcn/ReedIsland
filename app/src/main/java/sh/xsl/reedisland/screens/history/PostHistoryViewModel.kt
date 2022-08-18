@@ -22,13 +22,14 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.ViewModel
 import sh.xsl.reedisland.data.local.dao.PostHistoryDao
 import sh.xsl.reedisland.data.local.entity.PostHistory
+import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.inject.Inject
 
 class PostHistoryViewModel @Inject constructor(private val postHistoryDao: PostHistoryDao) :
     ViewModel() {
-    var endDate: LocalDateTime = LocalDateTime.now()
-    var startDate: LocalDateTime = endDate.minusWeeks(1)
+    var endDate: LocalDateTime = LocalDate.now().atTime(23, 59)
+    var startDate: LocalDateTime = LocalDate.now().atTime(0, 0).minusWeeks(1)
     private var currentList: LiveData<List<PostHistory>>? = null
     val postHistoryList = MediatorLiveData<List<PostHistory>>()
 

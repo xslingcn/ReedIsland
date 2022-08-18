@@ -25,8 +25,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.ConnectivityManager
-import android.net.Uri
+import android.net.*
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -36,6 +36,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.net.toUri
 import androidx.core.view.MenuProvider
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDestination
@@ -92,8 +93,6 @@ class MainActivity : DaggerAppCompatActivity() {
 
     private val sharedVM: SharedViewModel by viewModels { viewModelFactory }
 
-    // The BroadcastReceiver that tracks network connectivity changes.
-    private var networkStateReceiver: NetworkReceiver? = null
     private var lastNetworkTestTime: Long = 0
     private var lastSuccessfulBaseCDN: String = ""
     private var lastSuccessfulRefCDN: String = ""
@@ -102,7 +101,10 @@ class MainActivity : DaggerAppCompatActivity() {
     private var doubleBackToExitPressedOnce = false
     private val mHandler = Handler(Looper.getMainLooper())
     private val mRunnable = Runnable { doubleBackToExitPressedOnce = false }
-    private var reselectCDNRunnable: Runnable? = null
+    private var reselectCDNRunnable: Runnable = Runnable {
+        Timber.d("Re-selecting CDNs after network changes")
+        autoSelectCDNs()
+    }
 
     enum class NavScrollSate {
         UP,
@@ -160,10 +162,12 @@ class MainActivity : DaggerAppCompatActivity() {
 
         handleIntentFilterNavigation(intent)
 
-        if (networkStateReceiver == null) {
-            val filter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
-            networkStateReceiver = NetworkReceiver()
-            registerReceiver(networkStateReceiver, filter)
+        val connectionLiveData = ConnectionLiveData(this)
+        connectionLiveData.observe(this) { isConnected ->
+            isConnected?.let {
+                mHandler.removeCallbacks(reselectCDNRunnable)
+                mHandler.postDelayed(reselectCDNRunnable, 3000)
+            }
         }
 
         intentsHelper = IntentsHelper(activityResultRegistry, this)
@@ -215,7 +219,6 @@ class MainActivity : DaggerAppCompatActivity() {
             val raw = data.toString().substringAfterLast("/")
             if (raw.isNotBlank()) {
                 val id = if (raw.contains("?")) raw.substringBefore("?") else raw
-                // TODO tnmb
                 if ((count == 1 && data.host == "t") || (count == 2 && path[1] == 't')) {
                     val navAction = MainNavDirections.actionGlobalCommentsFragment(id, "")
                     val navHostFragment =
@@ -229,7 +232,10 @@ class MainActivity : DaggerAppCompatActivity() {
                         supportFragmentManager.findFragmentById(R.id.navHostFragment)
                     if (navHostFragment is NavHostFragment) {
                         if (navHostFragment.navController.currentDestination?.id != R.id.postsFragment) {
-                            navHostFragment.navController.popBackStack(R.id.postsFragment, false)
+                            navHostFragment.navController.popBackStack(
+                                R.id.postsFragment,
+                                false
+                            )
                         }
                     }
                     val fid = sharedVM.getForumIdByName(URLDecoder.decode(id, "UTF-8"))
@@ -239,7 +245,10 @@ class MainActivity : DaggerAppCompatActivity() {
                         supportFragmentManager.findFragmentById(R.id.navHostFragment)
                     if (navHostFragment is NavHostFragment) {
                         if (navHostFragment.navController.currentDestination?.id != R.id.postsFragment) {
-                            navHostFragment.navController.popBackStack(R.id.postsFragment, false)
+                            navHostFragment.navController.popBackStack(
+                                R.id.postsFragment,
+                                false
+                            )
                         }
                     }
                     sharedVM.setForumId(id)
@@ -260,9 +269,6 @@ class MainActivity : DaggerAppCompatActivity() {
                         if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
                             sharedVM.communityList.value?.data?.let { drawer.setCommunities(it) }
                             sharedVM.timelineList.value?.data?.let { drawer.setTimelines(it) }
-                        } else {
-                            sharedVM.beitaiForums.let { drawer.setCommunities(it) }
-                            drawer.setTimelines(emptyList())
                         }
                         sharedVM.reedPictureUrl.value?.let { drawer.setReedPicture(it) }
                         drawer.loadReedPicture()
@@ -313,6 +319,11 @@ class MainActivity : DaggerAppCompatActivity() {
 
         applicationDataStore.getReedSession()
         if (sharedVM.selectedForumId.value == null) sharedVM.setForumId(applicationDataStore.getDefaultForumId())
+        sharedVM.selectedForumId.value?.let { fid ->
+            if (fid.isNotBlank()) {
+                setToolbarTitle(sharedVM.getForumOrTimelineDisplayName(fid))
+            }
+        }
 
         applicationDataStore.getLatestNMBNotice()?.let { notice ->
             if (this.isFinishing) return@let
@@ -367,7 +378,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 currentFragmentId = destination.id
                 updateTitleAndBottomNav(destination)
             }
-            binding.bottomNavBar.setOnNavigationItemReselectedListener { item: MenuItem ->
+            binding.bottomNavBar.setOnItemReselectedListener { item: MenuItem ->
                 if (item.itemId == R.id.postsFragment && currentFragmentId == R.id.postsFragment) showDrawer()
             }
             binding.bottomNavBar.setupWithNavController(navController)
@@ -389,6 +400,7 @@ class MainActivity : DaggerAppCompatActivity() {
         if (!doubleBackToExitPressedOnce && findNavController(R.id.navHostFragment).previousBackStackEntry == null) {
             doubleBackToExitPressedOnce = true
             Toast.makeText(this, R.string.press_again_to_exit, Toast.LENGTH_SHORT).show()
+            mHandler.removeCallbacks(mRunnable)
             mHandler.postDelayed(mRunnable, 2000)
             return
         }
@@ -398,8 +410,7 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         mHandler.removeCallbacks(mRunnable)
-        reselectCDNRunnable?.let { mHandler.removeCallbacks(it) }
-        networkStateReceiver?.let { unregisterReceiver(it) }
+        mHandler.removeCallbacks(reselectCDNRunnable)
     }
 
     fun hideNav() {
@@ -667,7 +678,8 @@ class MainActivity : DaggerAppCompatActivity() {
                             }
                             // Ref
                             if (ref == "auto") {
-                                availableConnections.values.toList().firstOrNull { it in refCDNs }
+                                availableConnections.values.toList()
+                                    .firstOrNull { it in refCDNs }
                                     ?.let {
                                         Timber.d("Using $it for Ref")
                                         lastSuccessfulRefCDN = url
@@ -687,22 +699,76 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private class NetworkReceiver : BroadcastReceiver() {
-        private var lastConnectionType: Int? = null
-        override fun onReceive(context: Context, intent: Intent) {
-            val info =
-                (context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager).activeNetworkInfo
-            if (info?.type != lastConnectionType && info?.isConnected == true) {
-                (context as? MainActivity)?.run {
-                    reselectCDNRunnable = Runnable {
-                        Timber.d("Re-selecting CDNs after network changes")
-                        autoSelectCDNs()
+    // source: https://stackoverflow.com/questions/36421930/connectivitymanager-connectivity-action-deprecated
+    class ConnectionLiveData(val context: Context) : LiveData<Boolean>() {
+
+        private var connectivityManager: ConnectivityManager =
+            context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        private lateinit var connectivityManagerCallback: ConnectivityManager.NetworkCallback
+
+        private val networkRequestBuilder: NetworkRequest.Builder = NetworkRequest.Builder()
+            .addTransportType(NetworkCapabilities.TRANSPORT_CELLULAR)
+            .addTransportType(NetworkCapabilities.TRANSPORT_WIFI)
+
+        override fun onActive() {
+            super.onActive()
+            updateConnection()
+            when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.N -> connectivityManager.registerDefaultNetworkCallback(
+                    getConnectivityMarshmallowManagerCallback()
+                )
+                else -> marshmallowNetworkAvailableRequest()
+            }
+        }
+
+        override fun onInactive() {
+            super.onInactive()
+            connectivityManager.unregisterNetworkCallback(connectivityManagerCallback)
+        }
+
+        private fun marshmallowNetworkAvailableRequest() {
+            connectivityManager.registerNetworkCallback(
+                networkRequestBuilder.build(),
+                getConnectivityMarshmallowManagerCallback()
+            )
+        }
+
+        private fun getConnectivityMarshmallowManagerCallback(): ConnectivityManager.NetworkCallback {
+            connectivityManagerCallback = object : ConnectivityManager.NetworkCallback() {
+                override fun onCapabilitiesChanged(
+                    network: Network,
+                    networkCapabilities: NetworkCapabilities
+                ) {
+                    networkCapabilities.let { capabilities ->
+                        if (capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) && capabilities.hasCapability(
+                                NetworkCapabilities.NET_CAPABILITY_VALIDATED
+                            )
+                        ) {
+                            postValue(true)
+                        }
                     }
-                    mHandler.postDelayed(reselectCDNRunnable!!, 3000)
+                }
+
+                override fun onLost(network: Network) {
+                    postValue(false)
                 }
             }
-            lastConnectionType = info?.type
+            return connectivityManagerCallback
+        }
+
+        // source https://stackoverflow.com/questions/53532406/activenetworkinfo-type-is-deprecated-in-api-level-28
+        private fun updateConnection() {
+            val networkCapabilities = connectivityManager.activeNetwork
+            val actNw =
+                connectivityManager.getNetworkCapabilities(networkCapabilities)
+            actNw?.apply {
+                when {
+                    hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ||
+                            hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ||
+                            hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> postValue(true)
+                    else -> postValue(false)
+                }
+            } ?: postValue(false)
         }
     }
-
 }

@@ -68,10 +68,10 @@ class PostHistoryFragment : BaseNavFragment() {
     private val viewModel: PostHistoryViewModel by viewModels { viewModelFactory }
 
     private var showNewPosts = true
-    private var showReplys = true
+    private var showReplies = true
 
     private var postHeader = SectionHeader("发布") { togglePosts() }
-    private var replyHeader = SectionHeader("回复") { toggleReplys() }
+    private var replyHeader = SectionHeader("回复") { toggleReplies() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -166,8 +166,8 @@ class PostHistoryFragment : BaseNavFragment() {
         displayList(viewModel.postHistoryList.value ?: emptyList())
     }
 
-    private fun toggleReplys() {
-        showReplys = !showReplys
+    private fun toggleReplies() {
+        showReplies = !showReplies
         displayList(viewModel.postHistoryList.value ?: emptyList())
     }
 
@@ -176,29 +176,25 @@ class PostHistoryFragment : BaseNavFragment() {
         val data: MutableList<Any> = ArrayList()
         data.add(postHeader)
         if (showNewPosts) {
-            list.filter { it.newPost }.run {
-                map {
-                    val dateString = ReadableTime.getDateString(it.postDateTime)
-                    if (lastDate == null || dateString != lastDate) {
-                        data.add(dateString)
-                    }
-                    data.add(it)
-                    lastDate = dateString
+            list.filter { it.newPost }.forEach {
+                val dateString = ReadableTime.getDateString(it.postDateTime)
+                if (lastDate == null || dateString != lastDate) {
+                    data.add(dateString)
                 }
+                data.add(it)
+                lastDate = dateString
             }
         }
         data.add(replyHeader)
-        if (showReplys) {
-            list.filterNot { it.newPost }.run {
-                lastDate = null
-                map {
-                    val dateString = ReadableTime.getDateString(it.postDateTime)
-                    if (lastDate == null || dateString != lastDate) {
-                        data.add(dateString)
-                    }
-                    data.add(it)
-                    lastDate = dateString
+        if (showReplies) {
+            lastDate = null
+            list.filterNot { it.newPost }.forEach {
+                val dateString = ReadableTime.getDateString(it.postDateTime)
+                if (lastDate == null || dateString != lastDate) {
+                    data.add(dateString)
                 }
+                data.add(it)
+                lastDate = dateString
             }
         }
         mAdapter?.setDiffNewData(data)
@@ -210,7 +206,7 @@ class PostHistoryFragment : BaseNavFragment() {
             )
         )
 
-        Timber.i("${this.javaClass.simpleName} Adapter will have ${list.size} items")
+        Timber.i("${this.javaClass.simpleName} Adapter will have ${data.size} items")
     }
 
     inner class PostHistoryBinder(private val sharedViewModel: SharedViewModel) :

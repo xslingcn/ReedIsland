@@ -132,7 +132,7 @@ class BrowsingHistoryFragment : BaseNavFragment() {
             }
             var lastDate: String? = null
             val data: MutableList<Any> = ArrayList()
-            list.map {
+            list.forEach {
                 val dateString = ReadableTime.getDateString(
                     it.browsingHistory.browsedDateTime
                 )
@@ -152,7 +152,7 @@ class BrowsingHistoryFragment : BaseNavFragment() {
                     false
                 )
             )
-            Timber.i("${this.javaClass.simpleName} Adapter will have ${list.size} items")
+            Timber.i("${this.javaClass.simpleName} Adapter will have ${data.size} items")
         }
 
         sharedVM.currentDomain.observe(viewLifecycleOwner) {
