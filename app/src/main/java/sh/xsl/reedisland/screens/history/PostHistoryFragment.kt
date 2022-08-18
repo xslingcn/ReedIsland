@@ -63,7 +63,7 @@ class PostHistoryFragment : BaseNavFragment() {
     private var binding: FragmentHistoryPostBinding? = null
     private var mAdapter: QuickMultiBinder? = null
     private var viewCaching = false
-    private var cacheDomain = DawnConstants.ADNMBDomain
+    private var cacheDomain = DawnConstants.AWEIDomain
 
     private val viewModel: PostHistoryViewModel by viewModels { viewModelFactory }
 

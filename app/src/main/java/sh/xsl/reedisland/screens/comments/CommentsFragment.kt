@@ -59,7 +59,6 @@ import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
 import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.afollestad.materialdialogs.list.listItemsSingleChoice
-import com.google.android.material.animation.AnimationUtils
 import com.google.android.material.textfield.TextInputLayout
 import com.lxj.xpopup.XPopup
 import com.lxj.xpopup.core.BasePopupView
@@ -103,7 +102,7 @@ class CommentsFragment : DaggerFragment() {
 
     private var mAdapter: QuickAdapter<Comment>? = null
     private var viewCaching = false
-    private var cacheDomain = DawnConstants.ADNMBDomain
+    private var cacheDomain = DawnConstants.AWEIDomain
     private var refreshing = false
 
     // last visible item indicates the current page, uses for remembering last read page
@@ -346,7 +345,7 @@ class CommentsFragment : DaggerFragment() {
                             }
                             1 -> copyText(
                                 "串地址",
-                                "${DawnConstants.ADNMBHost}/t/${viewModel.currentPostId}"
+                                "${DawnConstants.AWEIHost}/t/${viewModel.currentPostId}"
                             )
                             2 -> copyText("串号", ">>No.${viewModel.currentPostId}")
                             else -> {

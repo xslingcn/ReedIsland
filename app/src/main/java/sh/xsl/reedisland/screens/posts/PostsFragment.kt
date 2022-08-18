@@ -129,7 +129,7 @@ class PostsFragment : BaseNavFragment() {
                             message(text = sharedVM.getForumOrTimelineMsg(fid)) {
                                 html { link ->
                                     val uri = if (link.startsWith("/")) {
-                                        DawnConstants.ADNMBHost + link
+                                        DawnConstants.AWEIHost + link
                                     } else link
                                     openLinksWithOtherApps(uri, requireActivity())
                                 }
@@ -137,7 +137,7 @@ class PostsFragment : BaseNavFragment() {
                             positiveButton(R.string.acknowledge)
                             @Suppress("DEPRECATION")
                             neutralButton(R.string.basic_rules) {
-                                openLinksWithOtherApps(DawnConstants.ADNMBHost, requireActivity())
+                                openLinksWithOtherApps(DawnConstants.AWEIHost, requireActivity())
                             }
                         }
                         return true

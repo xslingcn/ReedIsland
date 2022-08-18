@@ -103,7 +103,6 @@
     <string name="about" translatable="false">关于</string>
     <string name="trend" translatable="false">本周热榜</string>
     <string name="basic_title" translatable="false">阿苇岛</string>
-    <string name="boards" translatable="false">版块</string>
     <string name="toolbar_subtitle_aweidao" translatable="false">阿苇岛 · aweidao.com</string>
     <string name="toolbar_subtitle_tnmb" translatable="false">备胎岛 · tnmb.org</string>
     <string name="timeline">时间线</string>
@@ -113,7 +112,7 @@
     <string name="please_try_again" translatable="false">请重复操作</string>
     <string name="please_try_again_later" translatable="false">请稍后再试</string>
     <string name="content_copied" translatable="false">%s已复制</string>
-    <string name="might_need_to_restart_to_apply_setting" translatable="false">设置没有生效时请杀死程序后台并重新启动</string>
+    <string name="might_need_to_restart_to_apply_setting" translatable="false">设置没有生效时请清除程序后台并重新启动</string>
     <string name="restart_to_apply_setting" translatable="false">设置将在重启后生效（需要清除后台）</string>
     <string name="save_image_selection" translatable="false">要保存图片吗?</string>
     <string name="cannot_load_image_file" translatable="false">无法读取图片文件</string>
@@ -193,19 +192,19 @@
     <string name="checked_filtered_comment" translatable="false">查看隐藏%dcm</string>
     <string name="transparent_white" translatable="false">(*´∀`)简约黑白</string>
     <string name="colorful" translatable="false">炫酷全彩(つд⊂)</string>
-    <string name="clear_trend_cache" translatable="false">清除本地热榜缓存</string>
-    <string name="clear_trend_cache_confirm_message" translatable="false">将要清除热榜的本地缓存。清除后数据不能恢复！确认清除吗？</string>
-    <string name="cleared_trend_cache_message" translatable="false">热榜的本地缓存已经清除</string>
+    <!--    <string name="clear_trend_cache" translatable="false">清除本地热榜缓存</string>-->
+    <!--    <string name="clear_trend_cache_confirm_message" translatable="false">将要清除热榜的本地缓存。清除后数据不能恢复！确认清除吗？</string>-->
+    <!--    <string name="cleared_trend_cache_message" translatable="false">热榜的本地缓存已经清除</string>-->
     <string name="clear_comment_cache" translatable="false">清除本地串缓存</string>
     <string name="clear_comment_cache_confirm_message" translatable="false">将要清除串的本地缓存，不会清除阅读进度和饼干。清除后数据不能恢复！确认清除吗？</string>
     <string name="cleared_comment_cache_message" translatable="false">串的本地缓存已经清除</string>
     <string name="restore_blocked_post" translatable="false">恢复屏蔽串</string>
     <string name="restore_blocked_post_confirm_message" translatable="false">将要清除本地屏蔽串的记录，被屏蔽的串将被恢复。确认恢复吗？</string>
     <string name="restored_blocked_post" translatable="false">本地记录的屏蔽串已经被恢复</string>
-    <string name="set_base_cdn" translatable="false">设置默认请求CDN</string>
-    <string name="set_ref_cdn" translatable="false">设置引用请求CDN</string>
-    <string name="set_base_cdn_prompt" translatable="false">CDN格式如下:\n<b>https://adnmb2.com\n</b><b>https://adnmb3.com\n</b><b>https://nmb.fastmirror.org\n\n</b><b>本设置将影响看串发串功能\n注意!错误更改CDN会导致无法读取数据！</b></string>
-    <string name="set_ref_cdn_prompt" translatable="false">CDN格式如下:\n<b>https://adnmb2.com\n</b><b>https://adnmb3.com\n\n</b><b>本设置将影响查看串外引用功能\n不能使用 <strike>https://nmb.fastmirror.org\n</strike>注意!错误更改CDN会导致无法读取数据！</b></string>
+    <!--    <string name="set_base_cdn" translatable="false">设置默认请求CDN</string>-->
+    <!--    <string name="set_ref_cdn" translatable="false">设置引用请求CDN</string>-->
+    <!--    <string name="set_base_cdn_prompt" translatable="false">CDN格式如下:\n<b>https://adnmb2.com\n</b><b>https://adnmb3.com\n</b><b>https://nmb.fastmirror.org\n\n</b><b>本设置将影响看串发串功能\n注意!错误更改CDN会导致无法读取数据！</b></string>-->
+    <!--    <string name="set_ref_cdn_prompt" translatable="false">CDN格式如下:\n<b>https://adnmb2.com\n</b><b>https://adnmb3.com\n\n</b><b>本设置将影响查看串外引用功能\n不能使用 <strike>https://nmb.fastmirror.org\n</strike>注意!错误更改CDN会导致无法读取数据！</b></string>-->
     <string name="acknowledge" translatable="false">我知道了</string>
     <string name="post_options" translatable="false">串选项</string>
     <string name="report" translatable="false">举报</string>

@@ -72,7 +72,7 @@ class FeedsFragment : BaseNavFragment() {
     private var viewCaching = false
     private var refreshing = false
 
-    private var cacheDomain = DawnConstants.ADNMBDomain
+    private var cacheDomain = DawnConstants.AWEIDomain
 
     @SuppressLint("CheckResult")
     override fun onCreateView(

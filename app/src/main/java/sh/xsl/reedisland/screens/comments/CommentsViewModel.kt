@@ -243,7 +243,7 @@ class CommentsViewModel @Inject constructor(
     }
 
     fun getExternalShareContent(): String {
-        return "${ContentTransformation.htmlToSpanned(commentRepo.getHeaderPost(currentPostId)?.content.toString())}\n\n${DawnConstants.ADNMBHost}/t/${currentPostId}\n"
+        return "${ContentTransformation.htmlToSpanned(commentRepo.getHeaderPost(currentPostId)?.content.toString())}\n\n${DawnConstants.AWEIHost}/t/${currentPostId}\n"
     }
 
     fun addFeed(id: String) {

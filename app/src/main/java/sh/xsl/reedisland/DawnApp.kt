@@ -36,7 +36,7 @@ class DawnApp : DaggerApplication() {
 
     companion object {
         lateinit var applicationDataStore: ApplicationDataStore
-        var currentDomain: String = DawnConstants.ADNMBDomain
+        var currentDomain: String = DawnConstants.AWEIDomain
             private set
 
         fun onDomain(domain: String) {
@@ -46,7 +46,7 @@ class DawnApp : DaggerApplication() {
         val currentThumbCDN: String
             get() =
                 when (currentDomain) {
-                    DawnConstants.ADNMBDomain -> "${DawnConstants.ADNMB_IMG_CDN}thumb/"
+                    DawnConstants.AWEIDomain -> "${DawnConstants.AWEI_IMG_CDN}thumb/"
                     DawnConstants.TNMBDomain -> "${DawnConstants.TNMB_IMG_CDN}thumb/"
                     else -> {
                         throw Exception("Unhandled Thumb CDN $currentDomain")
@@ -56,7 +56,7 @@ class DawnApp : DaggerApplication() {
         val currentImgCDN: String
             get() =
                 when (currentDomain) {
-                    DawnConstants.ADNMBDomain -> "${DawnConstants.ADNMB_IMG_CDN}image/"
+                    DawnConstants.AWEIDomain -> "${DawnConstants.AWEI_IMG_CDN}image/"
                     DawnConstants.TNMBDomain -> "${DawnConstants.TNMB_IMG_CDN}image/"
                     else -> {
                         throw Exception("Unhandled Image CDN $currentDomain")

@@ -21,10 +21,8 @@ import android.animation.Animator
 import android.animation.TypeEvaluator
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.net.*
 import android.os.Build
 import android.os.Bundle
@@ -179,7 +177,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 return@observe
             }
             if (it.data.isNullOrEmpty()) return@observe
-            if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) forumDrawer?.setCommunities(it.data)
+            if (DawnApp.currentDomain == DawnConstants.AWEIDomain) forumDrawer?.setCommunities(it.data)
             sharedVM.setForumMappings(it.data)
             Timber.i("Loaded ${it.data.size} communities to Adapter")
         }
@@ -190,7 +188,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 return@observe
             }
             if (it.data.isNullOrEmpty()) return@observe
-            if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) forumDrawer?.setTimelines(it.data)
+            if (DawnApp.currentDomain == DawnConstants.AWEIDomain) forumDrawer?.setTimelines(it.data)
             sharedVM.setTimelineMappings(it.data)
             Timber.i("Loaded ${it.data.size} timelines to Adapter")
         }
@@ -266,7 +264,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 .setPopupCallback(object : SimpleCallback() {
                     override fun beforeShow(popupView: BasePopupView?) {
                         super.beforeShow(popupView)
-                        if (DawnApp.currentDomain == DawnConstants.ADNMBDomain) {
+                        if (DawnApp.currentDomain == DawnConstants.AWEIDomain) {
                             sharedVM.communityList.value?.data?.let { drawer.setCommunities(it) }
                             sharedVM.timelineList.value?.data?.let { drawer.setTimelines(it) }
                         }

@@ -68,7 +68,7 @@ class NotificationFragment : DaggerFragment() {
 
     private var binding: FragmentNotificationBinding? = null
     private var mAdapter: NotificationAdapter? = null
-    private var cacheDomain: String = DawnConstants.ADNMBDomain
+    private var cacheDomain: String = DawnConstants.AWEIDomain
 
     private val notificationObs = Observer<List<NotificationAndPost>> { list ->
         if (list.isNullOrEmpty()) mAdapter?.showNoData()

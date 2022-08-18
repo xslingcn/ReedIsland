@@ -47,7 +47,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:subtitle="aweidao.com"
         app:subtitleTextColor="?android:attr/textColorSecondary"
-        app:title="@string/boards"
+        app:title="@string/forum"
         app:titleTextColor="?android:attr/textColorSecondary" />
 
     <androidx.fragment.app.FragmentContainerView

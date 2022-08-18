@@ -66,7 +66,7 @@ class BrowsingHistoryFragment : BaseNavFragment() {
 
     private val viewModel: BrowsingHistoryViewModel by viewModels { viewModelFactory }
 
-    private var cacheDomain: String = DawnConstants.ADNMBDomain
+    private var cacheDomain: String = DawnConstants.AWEIDomain
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

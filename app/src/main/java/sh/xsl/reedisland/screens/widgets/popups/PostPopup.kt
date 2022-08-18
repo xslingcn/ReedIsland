@@ -45,7 +45,6 @@ import com.lxj.xpopup.core.BottomPopupView
 import com.lxj.xpopup.interfaces.SimpleCallback
 import com.lxj.xpopup.util.KeyboardUtils
 import kotlinx.coroutines.launch
-import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.DawnApp.Companion.applicationDataStore
 import sh.xsl.reedisland.R
 import sh.xsl.reedisland.data.local.entity.Cookie
@@ -598,7 +597,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                 message(R.string.acknowledge_post_rules)
                 positiveButton(R.string.submit) {
                     applicationDataStore.acknowledgementPostingRule()
-                    openLinksWithOtherApps(DawnConstants.ADNMBHost, caller)
+                    openLinksWithOtherApps(DawnConstants.AWEIHost, caller)
                 }
                 negativeButton(R.string.cancel)
             }

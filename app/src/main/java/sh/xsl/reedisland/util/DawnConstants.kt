@@ -58,13 +58,13 @@ object DawnConstants {
     const val DEFAULT_TOOLBAR_IMAGE_NAME = "toolbar_bg.jpeg"
     const val DEFAULT_CDN = "default_cdn"
     const val REF_CDN = "ref_cdn"
-    const val ADNMBHost = "https://aweidao1.com"
+    const val AWEIHost = "https://aweidao1.com"
     const val APIHost = "https://aweidao1.com"
     const val fastMirrorHost = "aweidao1.com"
-    const val ADNMB_IMG_CDN = "https://aweidao1.com/image/"
+    const val AWEI_IMG_CDN = "https://aweidao1.com/image/"
     const val TNMB_IMG_CDN = "https://www.tnmb.org/Public/Upload/"
 
-    const val ADNMBDomain = "aweidao"
+    const val AWEIDomain = "aweidao"
     const val TNMBDomain = "tnmb"
     const val TNMBHost = "https://tnmb.org"
 
@@ -73,7 +73,7 @@ object DawnConstants {
 
     const val AUTHOR_EMAIL = "aliaseasy98@gmail.com"
     const val GITHUB_ADDRESS = "https://github.com/fishballzzz/DawnIslandK/issues"
-    const val DOWNLOAD_ADNMB = "https://app.adnmb.com"
+    const val DOWNLOAD_AWEI = "http://aweidao.com/app"
     const val DOWNLOAD_GITHUB = "https://github.com/fishballzzz/DawnIslandK/releases/latest"
     const val DOWNLOAD_GOOGLE_PLAY =
         "https://play.google.com/store/apps/details?id=sh.xsl.reedisland"
