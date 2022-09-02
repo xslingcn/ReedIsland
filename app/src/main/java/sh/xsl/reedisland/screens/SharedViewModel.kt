@@ -61,6 +61,9 @@ class SharedViewModel @Inject constructor(
     var forumNameMapping = mapOf<String, String>()
         private set
 
+    var postForumNameMapping = mapOf<String, String>()
+        private set
+
     private var forumMsgMapping = mapOf<String, String>()
 
     private var forumTipsMapping = mapOf<String, String>()
@@ -186,6 +189,9 @@ class SharedViewModel @Inject constructor(
             flatten.associateBy(keySelector = { it.id }, valueTransform = { it.msg })
         forumTipsMapping =
             flatten.associateBy(keySelector = { it.id }, valueTransform = { it.tips ?: "" })
+        postForumNameMapping =
+            flatten.filterNot { it.isLocked() || it.isTimeLine() }
+                .associateBy(keySelector = { it.id }, valueTransform = { it.name })
     }
 
 //    fun setBeiTaiForums(list: List<NoticeForum>) {

@@ -44,6 +44,8 @@ data class Forum(
     fun isFakeForum(): Boolean = fgroup == "42" && sort == "42" && name == "42" && msg == "42"
 
     fun isValidForum(): Boolean = !isFakeForum()
+    
+    fun isTimeLine(): Boolean = type == "1"
 
     fun isLocked(): Boolean = status == "lock"
 

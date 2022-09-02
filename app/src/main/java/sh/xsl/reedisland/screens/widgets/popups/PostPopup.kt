@@ -111,7 +111,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
 
     private fun getForumTitle(targetId: String): String {
         return if (targetId == DawnConstants.TIMELINE_FORUM_ID) ""
-        else sharedVM.forumNameMapping[targetId] ?: ""
+        else sharedVM.postForumNameMapping[targetId] ?: ""
     }
 
     private fun updateForumButton(targetId: String?, newPost: Boolean) {
@@ -326,12 +326,11 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
                     MaterialDialog(context).show {
                         lifecycleOwner(caller)
                         title(R.string.select_target_forum)
-                        val mapping = sharedVM.forumNameMapping
-                        //去除时间线
+                        val mapping = sharedVM.postForumNameMapping
                         listItemsSingleChoice(
-                            items = mapping.values.drop(1)
+                            items = mapping.values.toList()
                         ) { _, index, text ->
-                            targetId = mapping.keys.drop(1).toList()[index]
+                            targetId = mapping.keys.toList()[index]
                             targetFid = targetId!!
                             postForum!!.text = text
                         }
