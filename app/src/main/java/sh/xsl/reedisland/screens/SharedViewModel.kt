@@ -17,10 +17,7 @@
 
 package sh.xsl.reedisland.screens
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import sh.xsl.reedisland.DawnApp
@@ -49,7 +46,6 @@ class SharedViewModel @Inject constructor(
 ) : ViewModel() {
 
     val communityList: LiveData<DataResource<List<Community>>> = communityRepository.communityList
-    val timelineList: LiveData<DataResource<List<Timeline>>> = communityRepository.timelineList
 
     val notifications: LiveData<Int> = notificationDao.getLiveUnreadNotificationsCount()
 
@@ -238,25 +234,16 @@ class SharedViewModel @Inject constructor(
         if (id.isNullOrBlank()) "" else forumTipsMapping[id] ?: ""
 
     fun getForumOrTimelineMsg(id: String): String =
-        if (id.startsWith("-")) getTimelineMsg(id) else getForumMsg(id)
+        getTimelineMsg(id) ?: getForumMsg(id) ?: ""
 
-    private fun getForumMsg(id: String): String =
-        if (id.isBlank()) "" else forumMsgMapping[id] ?: ""
+    private fun getForumMsg(id: String): String? =
+        if (id.isBlank()) "" else forumMsgMapping[id]
 
-    private fun getTimelineMsg(id: String): String {
-        val mid = id.substringAfter("-")
-        return if (mid.isBlank()) "" else timelineMsgMapping[mid] ?: ""
-    }
+    private fun getTimelineMsg(id: String): String? =
+        if (id.isBlank()) "" else timelineMsgMapping[id]
 
-    fun getForumOrTimelineDisplayName(fid: String): String {
-        var name = forumNameMapping[fid]
-        if (name.isNullOrBlank() && fid.startsWith("-")) {
-            val id = fid.substringAfter("-")
-            if (id.isNotBlank()) name = timelineNameMapping[id]
-        }
-        if (name.isNullOrBlank()) name = "版块"
-        return name
-    }
+    fun getForumOrTimelineDisplayName(fid: String): String =
+        forumNameMapping[fid] ?: timelineNameMapping[fid] ?: "时间线"
 
     fun getSelectedPostForumName(fid: String): String = getForumOrTimelineDisplayName(fid)
 
@@ -437,7 +424,7 @@ class SharedViewModel @Inject constructor(
     suspend fun getLatestPostId(): Pair<String, LocalDateTime> {
         var id = "0"
         var time = ""
-        webNMBServiceClient.getPosts(DawnConstants.TIMELINE_COMMUNITY_ID, 1)
+        webNMBServiceClient.getPosts(DawnConstants.TIMELINE_FORUM_ID, 1)
             .run {
                 if (this is APIDataResponse.Success) {
                     data?.map { post ->

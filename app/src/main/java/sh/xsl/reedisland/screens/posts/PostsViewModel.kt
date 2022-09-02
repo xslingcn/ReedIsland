@@ -80,7 +80,7 @@ class PostsViewModel @Inject constructor(
     fun getPosts() {
         viewModelScope.launch {
             _loadingStatus.postValue(SingleLiveEvent.create(LoadingStatus.LOADING))
-            val fid = _currentFid ?: DawnConstants.TIMELINE_COMMUNITY_ID
+            val fid = _currentFid ?: DawnConstants.TIMELINE_FORUM_ID
             Timber.d("Getting threads from $fid on page $pageCount")
             webService.getPosts(fid, pageCount).run {
                 if (this is APIDataResponse.Error) {
@@ -97,11 +97,11 @@ class PostsViewModel @Inject constructor(
 
     private fun convertServerData(data: List<Post>, fid: String) {
         // assign fid if not timeline
-        if (!fid.startsWith("-")) data.map { it.fid = fid }
+        if (fid != DawnConstants.TIMELINE_FORUM_ID) data.map { it.fid = fid }
         val noDuplicates = data
             .filterNot { postIds.contains(it.id) }
             .filterNot { blockedPostIds?.contains(it.id) ?: false }
-            .filterNot { fid.startsWith("-") && (blockedForumIds?.contains(it.fid) ?: false) }
+            .filterNot { (fid == DawnConstants.TIMELINE_FORUM_ID && blockedForumIds?.contains(it.fid) ?: false) }
         pageCount += 1
         if (noDuplicates.isNotEmpty()) {
             duplicateCount = 0

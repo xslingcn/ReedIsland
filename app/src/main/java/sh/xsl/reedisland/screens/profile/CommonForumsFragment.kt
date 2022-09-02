@@ -97,7 +97,8 @@ class CommonForumsFragment : DaggerFragment() {
                 return@observe
             }
             if (it.data.isNullOrEmpty()) return@observe
-            val notCommon = it.data.filterNot { c -> c.isCommonForums() || c.isCommonPosts() }
+            val notCommon =
+                it.data.filterNot { c -> c.isTimeLine() || c.isCommonForums() || c.isCommonPosts() }
             val common = it.data.firstOrNull { c -> c.isCommonForums() }?.forums ?: emptyList()
             allForumAdapter.setCommunities(notCommon)
             commonForumAdapter?.setList(common.toMutableList())

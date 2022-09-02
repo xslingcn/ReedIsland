@@ -68,22 +68,10 @@ abstract class NMBJsonParser<T> {
 
     class CommunityParser : NMBJsonParser<List<Community>>() {
         override fun parse(response: String): List<Community> {
-            val forumList = JSONObject(response).run { optJSONArray("forumListV1") }
-            forumList?.remove(0)!!
+            val forumList = JSONObject(response).run { optJSONArray("forumListV1") }!!
             return moshi.adapter<List<Community>>(
                 Types.newParameterizedType(List::class.java, Community::class.java)
             ).fromJson(forumList.toString())!!
-        }
-    }
-
-    class TimelinesParser : NMBJsonParser<List<Timeline>>() {
-        override fun parse(response: String): List<Timeline> {
-            val forumList = JSONObject(response).run { optJSONArray("forumListV1") }?.get(0)
-            val timelineList = JSONObject(forumList.toString()).run { optJSONArray("forums") }!!
-//            Timber.d(timelineList.toString())
-            return moshi.adapter<List<Timeline>>(
-                Types.newParameterizedType(List::class.java, Timeline::class.java)
-            ).fromJson(timelineList.toString())!!
         }
     }
 

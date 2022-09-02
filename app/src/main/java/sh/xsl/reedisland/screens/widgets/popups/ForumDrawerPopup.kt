@@ -67,7 +67,7 @@ class ForumDrawerPopup(
             override fun onTimelineClick(timeline: Timeline) {
                 Timber.d("Clicked on Timeline ${timeline.name}")
                 dismissWith {
-                    sharedVM.setForumId("-${timeline.id}")
+                    sharedVM.setForumId(timeline.id)
                 }
             }
         }, DawnApp.applicationDataStore.getExpandedCommunityIDs()

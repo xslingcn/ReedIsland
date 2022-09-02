@@ -91,7 +91,7 @@ class CustomSettingFragment : DaggerFragment() {
                     return@setOnClickListener
                 }
                 val nonTimeline =
-                    serverForums!!.filter { f -> f.id != DawnConstants.TIMELINE_COMMUNITY_ID }
+                    serverForums!!.filter { f -> f.id != DawnConstants.TIMELINE_FORUM_ID }
                 val blockingFidIndices = mutableListOf<Int>()
                 for ((ind, f) in nonTimeline.withIndex()) {
                     if (blockedForumIds!!.contains(f.id)) {
@@ -159,14 +159,11 @@ class CustomSettingFragment : DaggerFragment() {
 
         binding?.defaultExpandCommunities?.apply {
             key.setText(R.string.communities_expansion_setting)
-            val communities = sharedViewModel.communityList.value?.data ?: listOf()
+            val communities =
+                sharedViewModel.communityList.value?.data ?: listOf()
             val expandedIDs = applicationDataStore.getExpandedCommunityIDs()
             val expandedNames = mutableListOf<String>()
-            if (expandedIDs.contains(DawnConstants.TIMELINE_COMMUNITY_ID)) expandedNames.add(
-                requireContext().getString(R.string.timeline)
-            )
-            expandedIDs.filterNot { it == DawnConstants.TIMELINE_COMMUNITY_ID }
-                .map { id -> communities.find { c -> c.id == id }?.name }
+            expandedIDs.map { id -> communities.find { c -> c.id == id }?.name }
                 .forEach { name -> if (!name.isNullOrBlank()) expandedNames.add(name) }
 
             summary.text = getString(
@@ -184,20 +181,13 @@ class CustomSettingFragment : DaggerFragment() {
                     lifecycleOwner(this@CustomSettingFragment)
                     title(R.string.communities_expansion_setting)
                     val items = mutableListOf<String>()
-                    items.add(context.getString(R.string.timeline))
                     items.addAll(communities.map { it.name })
                     val expanded = applicationDataStore.getExpandedCommunityIDs()
                     // find items indices
                     val expandedIndices = mutableListOf<Int>()
-                    // timeline
-                    if (expanded.contains(DawnConstants.TIMELINE_COMMUNITY_ID)) expandedIndices.add(
-                        0
-                    )
                     // communities
-                    for ((ind, c) in communities.withIndex()) {
-                        if (expanded.contains(c.id)) {
-                            expandedIndices.add(ind + 1)
-                        }
+                    communities.withIndex().forEach { (ind, c) ->
+                        if (expanded.contains(c.id)) expandedIndices.add(ind)
                     }
                     listItemsMultiChoice(
                         items = items,
@@ -205,16 +195,11 @@ class CustomSettingFragment : DaggerFragment() {
                         allowEmptySelection = true
                     ) { _, indices, _ ->
                         val newIDs = mutableListOf<String>()
-                        if (indices.contains(0)) newIDs.add(DawnConstants.TIMELINE_COMMUNITY_ID)
-                        newIDs.addAll(indices.filterNot { it == 0 }.map { communities[it - 1].id })
+                        newIDs.addAll(indices.map { communities[it].id })
                         applicationDataStore.setExpandedCommunityIDs(
                             newIDs.toSet().ifEmpty { setOf("none") })
                         val names = mutableListOf<String>()
-                        if (newIDs.contains(DawnConstants.TIMELINE_COMMUNITY_ID)) names.add(
-                            requireContext().getString(R.string.timeline)
-                        )
-                        newIDs.filterNot { it == DawnConstants.TIMELINE_COMMUNITY_ID }
-                            .map { id -> communities.find { c -> c.id == id }?.name }
+                        newIDs.map { id -> communities.find { c -> c.id == id }?.name }
                             .forEach { name -> if (!name.isNullOrBlank()) names.add(name) }
                         summary.text = getString(
                             R.string.communities_expansion_setting_summary,

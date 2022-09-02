@@ -177,21 +177,29 @@ class MainActivity : DaggerAppCompatActivity() {
                 return@observe
             }
             if (it.data.isNullOrEmpty()) return@observe
-            if (DawnApp.currentDomain == DawnConstants.AWEIDomain) forumDrawer?.setCommunities(it.data)
-            sharedVM.setForumMappings(it.data)
-            Timber.i("Loaded ${it.data.size} communities to Adapter")
+            val timelineList =
+                it.data.filter { c -> c.isTimeLine() }
+                    .map { c -> c.forums }.flatten().map { t -> t.toTimeLine() }
+            val communityList = it.data.filterNot { c -> c.isTimeLine() }
+            if (DawnApp.currentDomain == DawnConstants.AWEIDomain) {
+                forumDrawer?.setCommunities(communityList)
+                forumDrawer?.setTimelines(timelineList)
+            }
+            sharedVM.setForumMappings(communityList)
+            Timber.i("Loaded ${communityList.size} communities to Adapter")
+            sharedVM.setTimelineMappings(timelineList)
+            Timber.i("Loaded ${timelineList.size} timelines to Adapter")
         }
 
-        sharedVM.timelineList.observe(this) {
-            if (it.status == LoadingStatus.ERROR) {
-                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
-                return@observe
-            }
-            if (it.data.isNullOrEmpty()) return@observe
-            if (DawnApp.currentDomain == DawnConstants.AWEIDomain) forumDrawer?.setTimelines(it.data)
-            sharedVM.setTimelineMappings(it.data)
-            Timber.i("Loaded ${it.data.size} timelines to Adapter")
-        }
+//        sharedVM.timelineList.observe(this) {
+//            if (it.status == LoadingStatus.ERROR) {
+//                Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
+//                return@observe
+//            }
+//            if (it.data.isNullOrEmpty()) return@observe
+//            if (DawnApp.currentDomain == DawnConstants.AWEIDomain) forumDrawer?.setTimelines(it)
+//            sharedVM.setTimelineMappings(it)
+//        }
 
         sharedVM.reedPictureUrl.observe(this) { forumDrawer?.setReedPicture(it) }
 
@@ -213,7 +221,7 @@ class MainActivity : DaggerAppCompatActivity() {
         if (action == Intent.ACTION_VIEW && data != null) {
             val path = data.path
             if (path.isNullOrBlank()) return
-            val count = path.filter { it == '/' }.count()
+            val count = path.count { it == '/' }
             val raw = data.toString().substringAfterLast("/")
             if (raw.isNotBlank()) {
                 val id = if (raw.contains("?")) raw.substringBefore("?") else raw
@@ -265,8 +273,10 @@ class MainActivity : DaggerAppCompatActivity() {
                     override fun beforeShow(popupView: BasePopupView?) {
                         super.beforeShow(popupView)
                         if (DawnApp.currentDomain == DawnConstants.AWEIDomain) {
-                            sharedVM.communityList.value?.data?.let { drawer.setCommunities(it) }
-                            sharedVM.timelineList.value?.data?.let { drawer.setTimelines(it) }
+                            sharedVM.communityList.value?.data?.apply {
+                                drawer.setCommunities(filterNot { it.isTimeLine() })
+                                drawer.setTimelines(first { it.isTimeLine() }.forums.map { it.toTimeLine() })
+                            }
                         }
                         sharedVM.reedPictureUrl.value?.let { drawer.setReedPicture(it) }
                         drawer.loadReedPicture()

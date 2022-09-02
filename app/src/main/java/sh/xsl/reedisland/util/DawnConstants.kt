@@ -46,7 +46,8 @@ object DawnConstants {
     const val DEFAULT_TIME_FORMAT = 1
     const val FEED_ID = "feedId"
     const val DEFAULT_FORUM_ID = "default_forum_id"
-    const val TIMELINE_COMMUNITY_ID = "133"
+    const val TIMELINE_COMMUNITY_ID = "9"
+    const val TIMELINE_FORUM_ID = "133"
     const val EXPANDED_COMMUNITY_IDS = "expanded_community_ids"
     const val USE_APP_FIRST_TIME = "use_app_first_time"
     const val ACKNOWLEDGE_POSTING_RULES = "acknowledge_posting_rules"

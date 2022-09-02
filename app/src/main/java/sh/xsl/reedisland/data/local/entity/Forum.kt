@@ -45,9 +45,9 @@ data class Forum(
 
     fun isValidForum(): Boolean = !isFakeForum()
 
-    fun isTimeLine(): Boolean = type == "1"
-
     fun isLocked(): Boolean = status == "lock"
+
+    fun toTimeLine(): Timeline = Timeline(id, name, showName, msg)
 
     companion object {
         fun makeFakeForum(id: String, showName: String): Forum {

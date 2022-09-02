@@ -35,7 +35,7 @@ class CommentsViewModel @Inject constructor(
     var currentPostId: String = "0"
         private set
 
-    var currentPostFid: String = DawnConstants.TIMELINE_COMMUNITY_ID
+    var currentPostFid: String = DawnConstants.TIMELINE_FORUM_ID
         private set
 
     val po get() = commentRepo.getPo(currentPostId)
@@ -207,7 +207,7 @@ class CommentsViewModel @Inject constructor(
         if (clearEverything) {
             quoteRepo.clearCache()
             commentRepo.clearCache()
-            currentPostFid = DawnConstants.TIMELINE_COMMUNITY_ID
+            currentPostFid = DawnConstants.TIMELINE_FORUM_ID
             currentPostId = "0"
         }
     }

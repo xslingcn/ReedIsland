@@ -34,13 +34,11 @@ data class Community(
     val forums: List<Forum>,
     val domain: String = DawnApp.currentDomain
 ) {
-    fun isCommonForums(): Boolean {
-        return id == "1000"
-    }
+    fun isTimeLine(): Boolean = id == DawnConstants.TIMELINE_COMMUNITY_ID
 
-    fun isCommonPosts(): Boolean {
-        return id == "1001"
-    }
+    fun isCommonForums(): Boolean = id == "1000"
+
+    fun isCommonPosts(): Boolean = id == "1001"
 
     companion object {
         fun makeCommonForums(forums: List<Forum>, domain: String): Community {

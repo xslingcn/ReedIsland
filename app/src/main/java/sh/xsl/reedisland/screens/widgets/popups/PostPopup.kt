@@ -110,7 +110,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     }
 
     private fun getForumTitle(targetId: String): String {
-        return if (targetId == DawnConstants.TIMELINE_COMMUNITY_ID) ""
+        return if (targetId == DawnConstants.TIMELINE_FORUM_ID) ""
         else sharedVM.forumNameMapping[targetId] ?: ""
     }
 
@@ -118,7 +118,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
         findViewById<Button>(R.id.postForum).apply {
             visibility = if (!newPost) View.GONE else View.VISIBLE
             text =
-                if (newPost && targetId != null && targetId != DawnConstants.TIMELINE_COMMUNITY_ID) {
+                if (newPost && targetId != null && targetId != DawnConstants.TIMELINE_FORUM_ID) {
                     getForumTitle(targetId)
                 } else {
                     context.getString(R.string.choose_forum)
@@ -155,7 +155,7 @@ class PostPopup(private val caller: MainActivity, private val sharedVM: SharedVi
     }
 
     fun updateView(targetId: String?, newPost: Boolean, quote: String?) {
-        if (targetId != DawnConstants.TIMELINE_COMMUNITY_ID) this.targetId =
+        if (targetId != DawnConstants.TIMELINE_FORUM_ID) this.targetId =
             targetId // cannot post to timeline
         postContent?.editText?.hint = sharedVM.getForumTips(targetId)
         this.newPost = newPost

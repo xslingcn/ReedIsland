@@ -18,16 +18,16 @@
 package sh.xsl.reedisland.data.repository
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.liveData
-import sh.xsl.reedisland.DawnApp
 import sh.xsl.reedisland.data.local.dao.CommunityDao
 import sh.xsl.reedisland.data.local.dao.TimelineDao
 import sh.xsl.reedisland.data.local.entity.Community
-import sh.xsl.reedisland.data.local.entity.Timeline
 import sh.xsl.reedisland.data.remote.APIDataResponse
 import sh.xsl.reedisland.data.remote.NMBServiceClient
-import sh.xsl.reedisland.util.*
+import sh.xsl.reedisland.util.DataResource
+import sh.xsl.reedisland.util.LoadingStatus
+import sh.xsl.reedisland.util.getLocalListDataResource
+import sh.xsl.reedisland.util.getLocalLiveDataAndRemoteResponse
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -39,7 +39,6 @@ class CommunityRepository @Inject constructor(
     private val timelineDao: TimelineDao
 ) {
     val communityList = getLiveData(communityDao::getAll, webService::getCommunities)
-    val timelineList = getLiveData(timelineDao::getAll, webService::getTimeLines)
 
     private inline fun <reified T> getLiveData(
         noinline localFetcher: () -> LiveData<List<T>>,
@@ -73,15 +72,16 @@ class CommunityRepository @Inject constructor(
     private suspend inline fun <reified T> updateCache(remote: List<T>, remoteDataOnly: Boolean) {
         val comparator = when (T::class) {
             Community::class -> communityList.value?.data
-            Timeline::class -> timelineList.value?.data
             else -> throw Exception("Type not recognized")
         }
         if (remote.isNotEmpty() && (remoteDataOnly || remote != comparator)) {
             Timber.d("Remote ${T::class} differs from local or forced refresh. Updating...")
             @Suppress("UNCHECKED_CAST")
             when (T::class) {
-                Community::class -> communityDao.insertAll(remote as List<Community>)
-                Timeline::class -> timelineDao.insertAll(remote as List<Timeline>)
+                Community::class -> {
+                    communityDao.insertAll(remote as List<Community>)
+                    timelineDao.insertAll(remote.first { it.isTimeLine() }.forums.map { it.toTimeLine() })
+                }
                 else -> throw Exception("Type not recognized")
             }
 

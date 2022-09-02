@@ -104,11 +104,6 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         return APIDataResponse.create(service.getConfig(), NMBJsonParser.CommunityParser())
     }
 
-    suspend fun getTimeLines(): APIDataResponse<List<Timeline>> {
-        Timber.i("Downloading Timeline Forums...")
-        return APIDataResponse.create(service.getConfig(), NMBJsonParser.TimelinesParser())
-    }
-
     suspend fun getPosts(
         fid: String,
         page: Int,
@@ -117,8 +112,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     ): APIDataResponse<List<Post>> {
         Timber.i("Downloading Posts on Forum $fid...")
         val call = service.getNMBPosts(
-            if (fid.startsWith("-")) fid.substringAfter("-")
-            else fid, page,
+            fid, page,
             if (userhash != null) reedSession.plus(";$userhash")
             else reedSession
         )

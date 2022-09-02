@@ -38,7 +38,7 @@ import timber.log.Timber
 class CommunityNodeAdapter(
     val forumClickListener: ForumClickListener,
     val timelineClickListener: TimelineClickListener? = null,
-    val expandedCommunities: Set<String>? = null
+    private val expandedCommunities: Set<String>? = null
 ) : BaseNodeAdapter() {
 
     companion object {
