@@ -25,6 +25,9 @@ import org.json.JSONObject
 import retrofit2.Call
 import sh.xsl.reedisland.util.LoadingStatus
 import timber.log.Timber
+import java.net.SocketException
+import java.net.UnknownHostException
+import javax.net.ssl.SSLException
 
 sealed class APIDataResponse<T>(
     val status: LoadingStatus,
@@ -86,13 +89,16 @@ sealed class APIDataResponse<T>(
                     val msg = response.errorBody()?.string()
                     val errorMsg = if (!msg.isNullOrEmpty()) JSONObject(msg).optString(
                         "errmsg",
-                        msg
+                        "未知错误"
                     ) else response.message()
                     Timber.e(errorMsg)
-                    Error(errorMsg ?: "unknown error")
+                    Error(errorMsg ?: "未知错误")
                 }
             } catch (e: Exception) {
-                return Error(e.toString())
+                Timber.e(e)
+                return if (e is SSLException || e is UnknownHostException || e is SocketException)
+                    Error("网络错误")
+                else Error("未知错误 ${e.javaClass.simpleName}")
             }
         }
     }
