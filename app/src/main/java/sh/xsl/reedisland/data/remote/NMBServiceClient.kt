@@ -49,7 +49,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         page: Int = 1,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
         sort: String = "time",
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<SearchResult> {
         Timber.d("Getting search result for $query on Page $page...")
         return APIDataResponse.create(
@@ -108,7 +108,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         fid: String,
         page: Int,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<List<Post>> {
         Timber.i("Downloading Posts on Forum $fid...")
         val call = service.getNMBPosts(
@@ -125,7 +125,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         reverseOrder: Boolean = false,
         onlyPo: Boolean = false,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<Post> {
         Timber.i("Downloading Comments on Post $id on Page $page...")
         return APIDataResponse.create(
@@ -140,7 +140,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun getFeeds(
         page: Int,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<List<Feed.ServerFeed>> {
         Timber.i("Downloading Feeds on Page $page...")
         return APIDataResponse.create(
@@ -156,7 +156,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun getQuote(
         id: String,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<Comment> {
         Timber.i("Downloading Quote $id...")
         return APIDataResponse.create(
@@ -170,7 +170,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun getBrowsingHistory(
         page: Int,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<List<Post>> {
         Timber.i("Downloading browsing history for $userhash...")
         return APIDataResponse.create(
@@ -184,7 +184,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun getPostHistory(
         page: Int,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIDataResponse<List<Comment>> {
         Timber.i("Downloading browsing history for $userhash...")
         return APIDataResponse.create(
@@ -198,7 +198,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun addFeed(
         tid: String,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIMessageResponse {
         Timber.i("Adding Feed $tid...")
         return APIMessageResponse.create(
@@ -212,7 +212,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
     suspend fun delFeed(
         tid: String,
         userhash: String? = DawnApp.applicationDataStore.firstCookieHash,
-        reedSession: String = DawnApp.applicationDataStore.reedSession
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie
     ): APIMessageResponse {
         Timber.i("Deleting Feed $tid...")
         return APIMessageResponse.create(
@@ -231,7 +231,7 @@ class NMBServiceClient @Inject constructor(private val service: NMBService) {
         email: String?, title: String?,
         content: String?, water: String?,
         image: File?, userhash: String,
-        reedSession: String = DawnApp.applicationDataStore.reedSession,
+        reedSession: String = DawnApp.applicationDataStore.reedSessionCookie,
         report: Boolean? = null
     ): APIMessageResponse {
         return withContext(Dispatchers.IO) {

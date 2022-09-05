@@ -52,7 +52,8 @@ class ApplicationDataStore @Inject constructor(
     private var mCookies = mutableListOf<Cookie>()
     val cookies: List<Cookie> get() = mCookies
     val firstCookieHash get() = cookies.firstOrNull()?.getApiHeaderCookieHash()
-    var reedSession: String = ""
+    lateinit var reedSession: ReedSession
+    val reedSessionCookie get() = reedSession.cookie
 
     fun setLastUsedCookie(cookie: Cookie) {
         if (cookie != cookies.firstOrNull()) {
@@ -378,18 +379,20 @@ class ApplicationDataStore @Inject constructor(
     }
 
     suspend fun getReedSession() {
-        reedSession = reedSessionDao.get()?.let {
-            val daysToExpire =
+        reedSessionDao.get()?.let {
+            val daysSinceUpdate =
                 Duration.between(it.lastUpdatedAt, LocalDateTime.now()).toDays()
-            if (it.cookie.substringAfter("=").length == 160 && daysToExpire < 365)
-                it.cookie
-            else ""
-        } ?: ""
-        if (reedSession.isBlank()) {
-            val session = ReedSession(webService.getReedSession())
-            reedSessionDao.insert(session)
-            reedSession = session.cookie
-        }
+            if (it.cookie.substringAfter("=").length == 160 && daysSinceUpdate < 90)
+                reedSession = it
+            else updateReedSession(it)
+        } ?: updateReedSession()
+    }
+
+    private suspend fun updateReedSession(oldSession: ReedSession? = null) {
+        val session = ReedSession(webService.getReedSession())
+        oldSession?.let { reedSessionDao.delete(it) }
+        reedSessionDao.insert(session)
+        reedSession = session
     }
 
 //    suspend fun getLatestLuweiNotice(): LuweiNotice? {
