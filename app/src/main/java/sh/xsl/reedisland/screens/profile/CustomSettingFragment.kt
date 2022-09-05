@@ -91,7 +91,7 @@ class CustomSettingFragment : DaggerFragment() {
                     return@setOnClickListener
                 }
                 val nonTimeline =
-                    serverForums!!.filter { f -> f.id != DawnConstants.TIMELINE_FORUM_ID }
+                    serverForums!!.filterNot { f -> f.isTimeLine() || f.isLocked() }
                 val blockingFidIndices = mutableListOf<Int>()
                 for ((ind, f) in nonTimeline.withIndex()) {
                     if (blockedForumIds!!.contains(f.id)) {
